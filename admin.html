@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Glow City Dashboard</title>
+<style>
+:root{--bg:#120c1c;--karte:#1d1426;--rand:rgba(255,255,255,.1);--text:#f4eef8;--leise:#a99cb8;--pink:#ff4fa3;--gruen:#3ee08f}
+body{margin:0;background:var(--bg);color:var(--text);font:14px/1.45 Inter,system-ui,sans-serif}
+main{max-width:1200px;margin:0 auto;padding:20px 16px 60px}
+h1{font-size:22px;margin:0 0 4px}.hin{color:var(--leise);font-size:13px;margin:0 0 16px}
+.kacheln{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px;margin-bottom:16px}
+.kachel{background:var(--karte);border:1px solid var(--rand);border-radius:14px;padding:12px 14px}.kachel b{display:block;font-size:24px}.kachel span{color:var(--leise);font-size:12px}
+input{width:100%;box-sizing:border-box;padding:10px 12px;border-radius:10px;border:1px solid var(--rand);background:var(--karte);color:var(--text);font:inherit;margin-bottom:10px}
+.tab{overflow-x:auto;border:1px solid var(--rand);border-radius:14px}
+table{width:100%;border-collapse:collapse;min-width:900px}th,td{padding:9px 10px;text-align:left;border-bottom:1px solid var(--rand);white-space:nowrap}th{font-size:12px;color:var(--leise);font-weight:600;position:sticky;top:0;background:var(--karte)}
+td.zahl{text-align:right;font-variant-numeric:tabular-nums}.on{color:var(--gruen);font-weight:700}
+button{padding:6px 10px;border-radius:8px;border:1px solid var(--pink);background:transparent;color:var(--pink);font:600 12px Inter,sans-serif;cursor:pointer}
+.fehler{padding:14px;border-radius:12px;background:rgba(224,52,79,.15);border:1px solid #e0344f}
+</style>
+</head>
+<body>
+<main>
+<h1>Glow City Dashboard</h1>
+<p class="hin">Nur für Admin-Konten. Erst im Spiel mit deinem Konto anmelden, dann diese Seite öffnen. Aktualisiert sich alle 30 Sekunden.</p>
+<div id="inhalt"><p class="hin">Lade …</p></div>
+</main>
+<script>
+const T = localStorage.getItem('glowToken'), el = document.getElementById('inhalt');
+const geld = v => v.toLocaleString('de-DE') + ' €', zeit = t => t ? new Date(t).toLocaleString('de-DE', { day: '2-digit', month: '2-digit', hour: '2-digit', minute: '2-digit' }) : '–';
+let filter = '';
+async function laden() {
+  if (!T) { el.innerHTML = '<div class="fehler">Nicht angemeldet. Öffne zuerst <a href="/" style="color:#ff8fc7">das Spiel</a> und melde dich mit deinem Konto an.</div>'; return }
+  const r = await fetch('/api/admin/spieler', { headers: { authorization: 'Bearer ' + T } }); const j = await r.json().catch(() => ({}));
+  if (!r.ok) { el.innerHTML = `<div class="fehler">${r.status === 403 ? 'Dieses Konto hat keinen Admin-Zugang.' : 'Fehler: ' + (j.fehler || r.status)}</div>`; return }
+  const s = j.spieler, jetzt = Date.now(), tag = 864e5;
+  const kopf = [['Konten', s.length], ['Gerade online', s.filter(x => x.online).length], ['Heute aktiv', s.filter(x => jetzt - x.zuletzt < tag).length], ['Neu heute', s.filter(x => jetzt - (x.erstellt || 0) < tag).length], ['Über Einladung', s.filter(x => x.geworben).length]];
+  el.innerHTML = `<div class="kacheln">${kopf.map(([n, v]) => `<div class="kachel"><b>${v}</b><span>${n}</span></div>`).join('')}</div><input id="suche" placeholder="Suchen nach Name" value="${filter}"><div class="tab"><table><thead><tr><th></th><th>Name</th><th>Konto</th><th>Zuletzt</th><th>Angelegt</th><th style="text-align:right">Geld</th><th style="text-align:right">Glow Score</th><th style="text-align:right">Follower</th><th style="text-align:right">Behandelt</th><th>Geworben von</th><th>Passwort</th></tr></thead><tbody></tbody></table></div>`;
+  const tb = el.querySelector('tbody');
+  for (const x of s.filter(x => (x.name + x.handle + x.id).toLowerCase().includes(filter.toLowerCase()))) { const tr = document.createElement('tr');
+    tr.innerHTML = `<td class="${x.online ? 'on' : ''}">${x.online ? '●' : ''}</td><td></td><td></td><td>${zeit(x.zuletzt)}</td><td>${zeit(x.erstellt)}</td><td class="zahl">${geld(x.geld)}</td><td class="zahl">${x.score.toLocaleString('de-DE')}</td><td class="zahl">${x.follower.toLocaleString('de-DE')}</td><td class="zahl">${x.behandelt}</td><td></td><td></td>`;
+    tr.children[1].textContent = x.handle || x.name; tr.children[2].textContent = x.id; tr.children[9].textContent = x.geworben;
+    const b = document.createElement('button'); b.textContent = 'Neu setzen'; b.onclick = async () => { const neu = prompt(`Neues Passwort für ${x.name} (mindestens 4 Zeichen)`); if (!neu) return;
+      const r2 = await fetch('/api/admin/passwort', { method: 'POST', headers: { 'content-type': 'application/json', authorization: 'Bearer ' + T }, body: JSON.stringify({ id: x.id, passwort: neu }) }); const j2 = await r2.json().catch(() => ({})); alert(r2.ok ? `Passwort für ${x.name} ist neu gesetzt. Gib es ihr direkt weiter.` : 'Fehler: ' + (j2.fehler || r2.status)) };
+    tr.children[10].append(b); tb.append(tr) }
+  const su = el.querySelector('#suche'); su.oninput = () => { filter = su.value; laden() }; su.focus(); su.setSelectionRange(filter.length, filter.length) }
+laden(); setInterval(() => { if (!document.activeElement || document.activeElement.id !== 'suche') laden() }, 30000);
+</script>
+</body>
+</html>

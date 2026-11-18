@@ -1,0 +1,60 @@
+<title>Glow City Wirtschaft</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:wght@500&family=Inter:wght@400;600;700&display=swap">
+<style>
+/* Arbeitsblatt zur Balance: oben Stellschrauben und Kurve, darunter Karriere und Preisleiter je Kategorie. */
+:root{--bg:#1c2230;--panel:rgba(255,255,255,.05);--line:rgba(216,195,154,.2);--ink:#f5f1ea;--muted:#a9a6a0;--gold:#d8c39a;--cyan:#8fe3f0;
+--display:"Bodoni Moda",Didot,Georgia,serif;--body:"Inter",system-ui,sans-serif;color-scheme:dark}
+body{background:var(--bg);color:var(--ink);font-family:var(--body)}
+.wrap{max-width:1180px;margin:0 auto;padding-block:28px 48px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));display:flex;flex-direction:column;gap:22px}
+h1{font:500 clamp(28px,4vw,42px)/1.05 var(--display);margin:0}
+h2{font:500 22px var(--display);margin:0 0 10px}
+p{margin:0;color:var(--muted);line-height:1.5;max-width:70ch;font-size:14px}
+.panel{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:16px}
+.ctrl{display:flex;flex-wrap:wrap;gap:18px;align-items:center;margin-bottom:12px;font-size:13px;color:var(--muted)}
+.ctrl input{accent-color:var(--gold);width:180px}
+.ctrl b{color:var(--ink);font-variant-numeric:tabular-nums}
+svg{width:100%;height:auto;display:block}
+.tbl{overflow-x:auto}
+table{border-collapse:collapse;width:100%;font-size:13px;font-variant-numeric:tabular-nums}
+th{text-align:left;font-weight:600;font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);padding:6px 8px;border-bottom:1px solid var(--line)}
+td{padding:7px 8px;border-bottom:1px solid rgba(255,255,255,.05)}
+td.n{text-align:right}
+tr.gap td{color:var(--cyan);font-size:12px;font-style:italic;background:rgba(143,227,240,.05)}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:16px}
+.pill{display:inline-block;font-size:11px;padding:2px 7px;border-radius:6px;background:rgba(216,195,154,.15);color:var(--gold)}
+</style>
+<div class="wrap">
+  <header><h1>Wirtschaft</h1><p>Eine Quelle für das ganze Spiel. Wer jeden Tag eincheckt, steigt in der Karriere auf und verdient mehr. Start mit 10.000 € und mindestens 500 € am Tag, die ersten 14 Tage doppelt. Kleidung kostet zwei bis drei Teile pro Tageslohn, Lamborgia und Teslo brauchen Monate bis Jahre, die teuersten Taschen haben eine Warteliste. Zwischen den Autos ist bewusst Platz für weitere Modelle.</p></header>
+  <section class="panel">
+    <h2>Sparkurve einer aktiven Spielerin</h2>
+    <div class="ctrl"><label for="spar">Sparquote <b id="sparV">60 %</b></label><input id="spar" type="range" min="30" max="90" step="5" value="60"><span>Die Spielerin checkt jeden Tag ein und legt diesen Anteil vom Lohn zurück.</span></div>
+    <svg id="chart" viewBox="0 0 1000 340" role="img" aria-label="Erspartes über Tage mit den Autos als Marken"></svg>
+  </section>
+  <div class="grid">
+    <section class="panel"><h2>Karriere</h2><p>Zählt alle Arbeitstage. Am Stück gibt es zusätzlich 2 % pro Tag, bis 30 %.</p><div class="tbl"><table id="kar"></table></div></section>
+    <section class="panel"><h2>Preisleiter</h2><p>„Erreichbar“ heißt: so viele Tage, bis die Spielerin das Geld bei der gewählten Sparquote zusammen hat.</p><div class="tbl"><table id="kat"></table></div></section>
+  </div>
+</div>
+<script src="src/daten/wirtschaft.js"></script>
+<script>
+const W=window.GLOW_WIRTSCHAFT,euro=v=>v.toLocaleString('de-DE')+' €';
+const tagText=d=>d===Infinity?'nie':d<60?`Tag ${d}`:d<365?`Tag ${d} · ${Math.round(d/30)} Monate`:`Tag ${d} · ${(d/365).toFixed(1).replace('.',',')} Jahre`;
+document.getElementById('kar').innerHTML='<tr><th>ab Tag</th><th>Titel</th><th>Lohn pro Tag</th><th>mit voller Serie</th></tr>'+W.KARRIERE.map(k=>`<tr><td>${k.ab}</td><td>${k.titel}</td><td class="n">${euro(k.lohn)}</td><td class="n">${euro(Math.round(k.lohn*1.3))}</td></tr>`).join('');
+function render(){const spart=+document.getElementById('spar').value/100;document.getElementById('sparV').textContent=Math.round(spart*100)+' %';
+  // Preisleiter mit Lücken: wo zwischen zwei Rängen mehr als 100 Platz ist, ist Raum für neue Modelle
+  let rows='<tr><th>Ding</th><th>Preis</th><th>Stil</th><th>Erreichbar</th></tr>';
+  for(const[kat,label]of Object.entries(W.KATEGORIEN)){const its=W.KATALOG.filter(i=>i.kat===kat).sort((a,b)=>a.rang-b.rang);rows+=`<tr><td colspan="4"><span class="pill">${label}</span></td></tr>`;
+    its.forEach((i,n)=>{rows+=`<tr><td>${i.name}${i.ab?` <small style="color:var(--muted)">ab ${i.ab} Arbeitstagen</small>`:''}</td><td class="n">${euro(i.preis)}</td><td class="n">${i.stilTag?'+'+i.stilTag+'/Tag':'+'+i.stil}</td><td class="n">${tagText(Math.max(W.tageBis(i.preis,spart),i.ab||0))}</td></tr>`;
+      const nx=its[n+1];if(nx&&nx.rang-i.rang>100)rows+=`<tr class="gap"><td colspan="4">Platz für ${Math.round((nx.rang-i.rang)/100)-1} weitere Modelle zwischen ${euro(i.preis)} und ${euro(nx.preis)}</td></tr>`})}
+  document.getElementById('kat').innerHTML=rows;
+  // Kurve
+  const D=1200,pts=[];let g=0;for(let d=1;d<=D;d++){g+=W.tageslohn(d-1,Math.min(d-1,15))*spart;pts.push(g)}
+  const max=5.2e6,X=d=>60+d/D*920,Y=v=>300-Math.min(v,max)/max*270;
+  let s='';for(const v of[0,1e6,2e6,3e6,4e6,5e6]){s+=`<line x1="60" x2="980" y1="${Y(v)}" y2="${Y(v)}" stroke="rgba(255,255,255,.07)"/><text x="52" y="${Y(v)+4}" fill="#a9a6a0" font-size="11" text-anchor="end">${v?(v/1e6).toLocaleString('de-DE')+' Mio.':'0'}</text>`}
+  for(const d of[0,180,365,545,730,910,1095]){s+=`<text x="${X(d)}" y="322" fill="#a9a6a0" font-size="11" text-anchor="middle">${d?Math.round(d/30.4)+' Mon.':'Start'}</text>`}
+  s+=`<path d="M${pts.map((v,i)=>`${X(i+1).toFixed(1)},${Y(v).toFixed(1)}`).join('L')}L${X(D)},300L${X(1)},300Z" fill="rgba(216,195,154,.12)"/><path d="M${pts.map((v,i)=>`${X(i+1).toFixed(1)},${Y(v).toFixed(1)}`).join('L')}" fill="none" stroke="#d8c39a" stroke-width="2"/>`;
+  W.KATALOG.filter(i=>i.kat==='auto').forEach((i,n)=>{const d=Math.max(W.tageBis(i.preis,spart),i.ab||0);if(d>D)return;const y=Y(i.preis);s+=`<circle cx="${X(d)}" cy="${y}" r="5" fill="#8fe3f0"/><text x="${X(d)+(n%2?-8:8)}" y="${y-10}" fill="#f5f1ea" font-size="12" text-anchor="${n%2?'end':'start'}">${i.name}</text>`});
+  document.getElementById('chart').innerHTML=s}
+document.getElementById('spar').oninput=render;render();
+</script>

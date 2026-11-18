@@ -1,0 +1,20 @@
+# Glow City auf Netlify: statische Seite aus dem Ordner, den werkzeug/netlify_paket.sh baut, dazu die Server-Funktion für Konten und Chat
+[build]
+  publish = "FINAL/seite"
+  functions = "netlify/functions"
+[functions]
+  node_bundler = "esbuild"
+
+# Kurze Einladungslinks: glow-city.netlify.app/m/martin führt ins Spiel mit Einladung von martin
+[[redirects]]
+  from = "/m/:name"
+  to = "/?ref=:name"
+  status = 302
+
+# Vorbereitet (19.11.2026), wird mit dem nächsten Netlify-Update aktiv: Das Spiel kommt von GitHub Pages, Netlify reicht es nur durch.
+# Updates laufen dann kostenlos über werkzeug/github_hochladen.sh. /api (Konten, Chat) und /m (Einladungen) bleiben auf Netlify.
+[[redirects]]
+  from = "/*"
+  to = "https://martintamehworkspace.github.io/glow-city/:splat"
+  status = 200
+  force = true

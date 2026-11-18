@@ -1,0 +1,59 @@
+<title>Glow City Figuren</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@500;600;700;800;900&family=Yellowtail&display=swap">
+<style>
+/* Figurenbogen: jede Figur als Setcard, Raster füllt die Breite. Feste Nachtstimmung wie in der Stadt. */
+:root{--bg:#14151b;--ink:#f5f1ea;--muted:#a9a6a0;--pink:#ff4fa3;--body:"Inter",system-ui,sans-serif;color-scheme:dark}
+body{background:radial-gradient(120% 60% at 50% 0%,#3a2547 0%,#14151b 60%);background-color:var(--bg);color:var(--ink);font-family:var(--body)}
+.wrap{max-width:1500px;margin:0 auto;padding-block:26px 44px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+header{display:flex;flex-wrap:wrap;align-items:flex-end;gap:10px 24px;margin-bottom:20px}
+h1{margin:0;font:400 64px/0.9 "Yellowtail",cursive;color:#ff7eb6;text-shadow:0 0 12px rgba(255,79,163,.7)}
+h1 span{display:block;font:900 15px var(--body);letter-spacing:.4em;color:#7ef7ff;margin:-6px 0 0 40px;text-shadow:none}
+header p{margin:0;color:var(--muted);font-size:14px;max-width:62ch;line-height:1.5}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:14px}
+.vk{position:relative;border-radius:16px;overflow:hidden;background:var(--vkbg);border:1px solid var(--vkr);display:flex;flex-direction:column;min-width:0}
+.vk::after{content:"";position:absolute;inset:0;background:linear-gradient(115deg,transparent 30%,rgba(255,255,255,.1) 45%,transparent 60%);pointer-events:none}
+.bild{height:250px;position:relative;background:radial-gradient(70% 60% at 50% 70%,rgba(255,255,255,.12),transparent)}
+.bild canvas{width:100%;height:100%;display:block}
+.stufe{position:absolute;top:10px;right:10px;font:800 9px var(--body);letter-spacing:.14em;text-transform:uppercase;padding:4px 8px;border-radius:6px;background:var(--vkr);color:var(--vkt)}
+.rolle{position:absolute;top:10px;left:10px;font:700 10px var(--body);padding:4px 8px;border-radius:6px;background:rgba(0,0,0,.45)}
+.info{padding:10px 12px 12px;display:flex;flex-direction:column;gap:8px}
+.info h2{margin:0;font:800 16px var(--body)}.info h2 small{display:block;font:600 11.5px var(--body);color:rgba(255,255,255,.7);margin-top:2px}
+.glow{display:flex;align-items:center;gap:8px;font:800 11px var(--body);letter-spacing:.06em}
+.glow .seg{display:flex;gap:2px;flex:1}.glow .seg i{flex:1;height:6px;border-radius:2px;background:rgba(0,0,0,.35)}.glow .seg i.an{background:linear-gradient(90deg,#ffd166,#ff4fa3)}
+.werte{display:grid;grid-template-columns:repeat(3,1fr);gap:4px}
+.werte div{background:rgba(0,0,0,.3);border-radius:8px;padding:5px 7px}
+.werte span{display:block;font:700 8px var(--body);letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.6)}
+.werte b{font:800 13px var(--body);font-variant-numeric:tabular-nums}
+.besitz{display:flex;flex-wrap:wrap;gap:4px;font:600 11px var(--body)}.besitz em{font-style:normal;background:rgba(0,0,0,.3);border-radius:6px;padding:2px 7px}
+</style>
+<div class="wrap">
+  <header><h1>Glow<span>CITY</span></h1><p>Die 20 Gesichter der Stadt. Vierzehn Frauen, sechs Männer, von Starter bis Black Card. Jede Figur hat ihre Setcard mit Glow-Faktor, Gehalt, Vermögen und Followern und lebt in der Stadt, manche arbeiten in den Läden.</p></header>
+  <div class="grid" id="grid"></div>
+</div>
+<script src="src/daten/figuren.js"></script>
+<script>
+const FG=window.GLOW_FIGUREN;
+const STUFEN=[{ab:0,n:'Starter',bg:'linear-gradient(160deg,#2a2c34,#16171c)',r:'#8a8f99',t:'#111'},{ab:100,n:'Bronze',bg:'linear-gradient(160deg,#5a3a24,#1e140d)',r:'#cd8b55',t:'#1a0f08'},
+ {ab:500,n:'Silber',bg:'linear-gradient(160deg,#5d646f,#22262d)',r:'#dfe3e8',t:'#15171b'},{ab:1500,n:'Gold',bg:'linear-gradient(160deg,#7a5a1e,#241a08)',r:'#f2c14e',t:'#1e1606'},
+ {ab:5000,n:'Platin',bg:'linear-gradient(160deg,#6c7a86,#222a31)',r:'#e8f1f8',t:'#10161b'},{ab:15000,n:'Diamant',bg:'linear-gradient(160deg,#2c5f7a,#121a2e)',r:'#8fe3f0',t:'#06141c'},
+ {ab:50000,n:'Black Card',bg:'linear-gradient(160deg,#0b0b0d,#24182a)',r:'#ff4fa3',t:'#fff'}];
+const stufe=st=>STUFEN.reduce((a,x)=>st>=x.ab?x:a,STUFEN[0]);
+const kurz=v=>v>=1e6?(v/1e6).toLocaleString('de-DE',{maximumFractionDigits:1})+' Mio.':v>=1e3?(v/1e3).toLocaleString('de-DE',{maximumFractionDigits:1})+'k':String(v);
+const TASCHEN={birkinn:'Hermez Birkinn',flap:'Shanell Classic Flap',lady:'Dioro Lady',baguetta:'Fendy Baguetta',jodie:'Bottega Venetto Jodie',triomphe:'Celina Triomphe',jackie:'Gucchi Jackie',speedi:'Luis Vuitong Speedi'};
+const SCHMUCK={goldkette:'Goldkette',perlen:'Perlenkette',creolen:'Goldcreolen',sonnenbrille:'Sonnenbrille',uhr:'Golduhr'};
+const grid=document.getElementById('grid');const cvs=[];
+[...FG.CHARS].sort((a,b)=>b.stil-a.stil).forEach((c,i)=>{const st=stufe(c.stil);const d=document.createElement('article');d.className='vk';
+  d.style.setProperty('--vkbg',st.bg);d.style.setProperty('--vkr',st.r);d.style.setProperty('--vkt',st.t);
+  d.innerHTML=`<div class="bild"><canvas></canvas><span class="stufe">${st.n}</span><span class="rolle"></span></div><div class="info"><h2></h2>
+   <div class="glow">GLOW ${c.glow.toLocaleString('de-DE')}<div class="seg">${Array.from({length:10},(_,k)=>`<i class="${k<Math.round(c.glow)?'an':''}"></i>`).join('')}</div></div>
+   <div class="werte"><div><span>Gehalt</span><b>${kurz(c.lohn)}/T</b></div><div><span>Vermögen</span><b>${kurz(c.verm)} €</b></div><div><span>Follower</span><b>${kurz(c.fol)}</b></div><div><span>Stil</span><b>${kurz(c.stil)}</b></div><div><span>Rang</span><b>#${i+1}</b></div><div><span>Auto</span><b style="font-size:10.5px">${c.auto||'–'}</b></div></div>
+   <div class="besitz"></div></div>`;
+  d.querySelector('.rolle').textContent=c.rolle;const h=d.querySelector('h2');h.textContent=c.name;const sm=document.createElement('small');sm.textContent=c.handle;h.append(sm);
+  const bs=d.querySelector('.besitz');[c.tasche&&TASCHEN[c.tasche],...c.acc.map(a=>SCHMUCK[a])].filter(Boolean).forEach(t=>{const e=document.createElement('em');e.textContent=t;bs.append(e)});
+  grid.append(d);cvs.push({cv:d.querySelector('canvas'),c:Object.assign({ph:i*.7},c)})});
+let T=0;function draw(){for(const{cv,c}of cvs){const dpr=devicePixelRatio||1,w=cv.clientWidth,h=cv.clientHeight;if(cv.width!==Math.round(w*dpr)){cv.width=Math.round(w*dpr);cv.height=Math.round(h*dpr)}
+  const g=cv.getContext('2d');g.setTransform(dpr,0,0,dpr,0,0);g.clearRect(0,0,w,h);FG.zeichne(g,w/2,h-12,(h-28)/32,c,T,false)}}
+const still=matchMedia('(prefers-reduced-motion: reduce)').matches;
+(function tick(t){T=t/1000;draw();if(!still)requestAnimationFrame(tick)})(0);addEventListener('resize',draw);
+</script>

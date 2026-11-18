@@ -1,0 +1,5 @@
+const ctx=new Proxy({},{get:(t,k)=>k in t?t[k]:(k==='measureText'?()=>({width:10}):k==='isPointInPath'?()=>false:(k==='createLinearGradient'||k==='createRadialGradient')?()=>({addColorStop(){}}):()=>{}),set:(t,k,v)=>(t[k]=v,true)});
+const el=()=>({getContext:()=>ctx,addEventListener(){},setPointerCapture(){},style:{setProperty(){}},dataset:{},offsetWidth:0,textContent:'',querySelector:()=>el(),querySelectorAll:()=>[],hidden:false,append(){},replaceChildren(){},setAttribute(){},querySelector:()=>el(),onclick:null,insertBefore(){},children:[],firstChild:{remove(){}},classList:{add(){},remove(){},toggle(){},contains(){return false}},scrollHeight:0});
+global.window=global;global.document={getElementById:()=>el(),querySelector:()=>el(),querySelectorAll:()=>[],createElement:()=>el(),fonts:{ready:Promise.resolve()}};
+global.innerWidth=1280;global.innerHeight=800;global.devicePixelRatio=1;global.addEventListener=()=>{};global.matchMedia=()=>({matches:false});
+global.localStorage={getItem:()=>null,setItem(){}};global.Image=class{};global.performance={now:()=>0};let n=0;global.requestAnimationFrame=f=>{if(n++<3)setTimeout(()=>f(16*n),0)};
