@@ -1,9 +1,9 @@
 // Glow City · server.js · Eigene Konten außerhalb von Claude (Netlify): Anmeldefenster mit Name und Passwort, dann Spielstand, Spielerliste und Chat über /api.
 // Stellt dieselbe Schnittstelle bereit wie Claude (claude.use: db, user, room), damit konto.js unverändert bleibt. Auf claude.ai greift das nicht.
 (function () { if (window.claude || typeof location === 'undefined' || !/^https?:$/.test(location.protocol) || /claude\.ai|claudeusercontent/.test(location.host)) return;
-  const TOKEN = 'glowToken'; let token = null, ich = null;
+  const TOKEN = 'berlinToken'; let token = null, ich = null;
   // Einladungslink ?ref=name: merken, bis sich jemand ein Konto anlegt
-  try { const r = new URLSearchParams(location.search).get('ref'); if (r) localStorage.setItem('glowRef', r) } catch (e) {}
+  try { const r = new URLSearchParams(location.search).get('ref'); if (r) localStorage.setItem('berlinRef', r) } catch (e) {}
   try { token = localStorage.getItem(TOKEN) } catch (e) {}
   async function api(methode, pfad, daten, offen) { const r = await fetch(pfad, { method: methode, headers: Object.assign({ 'content-type': 'application/json' }, token && !offen ? { authorization: 'Bearer ' + token } : {}), body: daten == null ? undefined : JSON.stringify(daten) });
     const j = await r.json().catch(() => ({})); if (!r.ok) { const f = new Error(j.fehler || 'Fehler'); f.status = r.status; throw f } return j }
@@ -13,14 +13,14 @@
       <div class="loginfehler" id="lFehler"></div><button class="cta" id="lAn">Anmelden</button><button class="zweit" id="lNeu">Neues Konto anlegen</button><button class="gast" id="lGast">Ohne Konto spielen</button></div>`;
     document.body.append(d); const f = d.querySelector('#lFehler'), feld = () => ({ name: d.querySelector('#lName').value.trim(), passwort: d.querySelector('#lPw').value });
     const los = async neu => { f.textContent = ''; const daten = feld(); if (!daten.name || !daten.passwort) { f.textContent = 'Name und Passwort eingeben'; return }
-      try { let ref = null; try { ref = localStorage.getItem('glowRef') } catch (e) {} const r = await api('POST', neu ? '/api/registrieren' : '/api/anmelden', neu ? Object.assign({ ref }, daten) : daten); token = r.token; ich = r; if (neu) { try { ich = await api('GET', '/api/ich') } catch (e) {} } try { localStorage.setItem(TOKEN, token) } catch (e) {} d.remove(); fertig(true) } catch (e) { f.textContent = e.message } };
+      try { let ref = null; try { ref = localStorage.getItem('berlinRef') } catch (e) {} const r = await api('POST', neu ? '/api/registrieren' : '/api/anmelden', neu ? Object.assign({ ref }, daten) : daten); token = r.token; ich = r; if (neu) { try { ich = await api('GET', '/api/ich') } catch (e) {} } try { localStorage.setItem(TOKEN, token) } catch (e) {} d.remove(); fertig(true) } catch (e) { f.textContent = e.message } };
     d.querySelector('#lAn').onclick = () => los(false); d.querySelector('#lNeu').onclick = () => los(true); d.querySelector('#lPw').onkeydown = e => { if (e.key === 'Enter') los(false) };
     d.querySelector('#lGast').onclick = () => { d.remove(); fertig(false) } }) }
   const angemeldet = (async () => { if (token) { try { ich = await api('GET', '/api/ich'); return true } catch (e) { token = null; try { localStorage.removeItem(TOKEN) } catch (x) {} } } return await fenster() })();
   angemeldet.then(ok => { window.KONTO_ICH = ok ? ich : null; });
   angemeldet.then(ok => { if (ok && ich && typeof ST !== 'undefined' && ST.profil && !ST.profil.handle) { ST.profil.handle = '@' + ich.name.replace(/^@/, ''); const h = document.getElementById('sHandle'); if (h) h.value = ST.profil.handle } });
   // Abmelden-Knopf für geteilte Geräte
-  window.glowAbmelden = () => { try { localStorage.removeItem(TOKEN); localStorage.removeItem('glowcity') } catch (e) {} location.reload() };
+  window.glowAbmelden = () => { try { localStorage.removeItem(TOKEN); localStorage.removeItem('berlin') } catch (e) {} location.reload() };
   // Sparsam mit dem Server: nur sichtbare Tabs fragen nach, eine gemeinsame Spielerliste für Ranking und Anwesenheit
   const sichtbar = () => typeof document === 'undefined' || !document.hidden;
   let liste = null, listeZeit = 0, listeHol = null; const SPIELER_HOER = [];

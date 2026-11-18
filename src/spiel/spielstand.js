@@ -4,7 +4,7 @@ const WS=window.GLOW_WIRTSCHAFT;
 const KONSUM=k=>i=>i.kat==='konsum'&&i.laden===k;
 const VERKAUF={designer:i=>i.laden==='designer',shan:i=>i.laden==='shan',tif:i=>i.laden==='tif',seph:KONSUM('seph'),vic:KONSUM('vic'),lulu:i=>i.laden==='lulu',spa:KONSUM('spa'),salon:KONSUM('salon'),apfel:i=>i.laden==='apfel',nicky:i=>(i.kat==='konsum'||i.kat==='jacht')&&i.laden==='nicky',star:KONSUM('star'),borch:KONSUM('borch'),hug:KONSUM('hug'),riva:KONSUM('riva'),boot:KONSUM('boot'),lid:KONSUM('lid'),ross:KONSUM('ross'),dn:KONSUM('dn'),mehr:KONSUM('mehr'),doug:KONSUM('doug'),mcf:KONSUM('mcf'),hotel:KONSUM('hotel'),zahra:i=>i.laden==='zahra',prado:i=>i.laden==='prado',sac:i=>i.kollektion||(i.laden==='sac'&&i.kat!=='tasche'),motors:i=>i.kat==='auto',arena:KONSUM('arena'),jets:i=>i.kat==='jet',klinik:i=>i.kat==='beauty'};
 const START={energie:80,follower:0,geld:WS.START_GELD,tage:0,serie:0,letzter:null,stil:0,besitz:{},outfit:{},warte:{}};
-let ST=(()=>{try{return Object.assign({},START,JSON.parse(localStorage.getItem('glowcity')||'{}'))}catch(e){return{...START}}})();
+let ST=(()=>{try{return Object.assign({},START,JSON.parse(localStorage.getItem('berlin')||'{}'))}catch(e){return{...START}}})();
 if(!ST.v2){ST.geld=Math.max(ST.geld,WS.START_GELD);ST.v2=1}
 if(!ST.reset1){if(ST.profil)ST.profil.handle='';ST.reset1=1}
 if(!ST.test15){ST.geld+=1500000;ST.test15=1}
@@ -13,8 +13,8 @@ if(!ST.test10){ST.geld+=10000000;ST.besitz.roadster=1;ST.test10=1}
 // Einmalig für Martin am 17.11.2026: weitere 10 Mio. € und 50 Mio. € für den Jet (greift, sobald der Name feststeht)
 setTimeout(function martinBonus(){if(!ST.profil||!ST.profil.handle){setTimeout(martinBonus,3000);return}if(ST.profil.handle==='@MartinTameh'&&!ST.bonus1711){ST.geld+=10000000;ST.bonus1711=1;save();hud();toast('10 Mio. € gutgeschrieben')}if(ST.profil.handle==='@MartinTameh'&&!ST.bonus50m){ST.geld+=50000000;ST.bonus50m=1;save();hud();toast('50 Mio. € gutgeschrieben, für deinen Jet')}},4000);
 // Jeder Speicherstand bekommt einen Zeitstempel. Beim Laden gewinnt immer der neueste (Gerät oder Datenbank).
-const save=()=>{ST.gespeichert=Math.max(Date.now(),(ST.gespeichert||0)+1);try{localStorage.setItem('glowcity',JSON.stringify(ST))}catch(e){}if(typeof kontoSync==='function')kontoSync()};
-addEventListener('pagehide',()=>{try{localStorage.setItem('glowcity',JSON.stringify(ST))}catch(e){}if(typeof kontoSync==='function'){KONTO.zuletzt=0;kontoSync()}});
+const save=()=>{ST.gespeichert=Math.max(Date.now(),(ST.gespeichert||0)+1);try{localStorage.setItem('berlin',JSON.stringify(ST))}catch(e){}if(typeof kontoSync==='function')kontoSync()};
+addEventListener('pagehide',()=>{try{localStorage.setItem('berlin',JSON.stringify(ST))}catch(e){}if(typeof kontoSync==='function'){KONTO.zuletzt=0;kontoSync()}});
 const euro=v=>v.toLocaleString('de-DE')+' €';
 const heute=()=>new Date().toISOString().slice(0,10);
 function hud(){const k=WS.lohnStufe(ST.tage);if(typeof karten==='function'&&document.getElementById('karten').children.length)setTimeout(()=>{karten();document.getElementById('hFol').textContent=(ST.follower||0).toLocaleString('de-DE');document.getElementById('hRang').textContent='#'+rangVon()});document.getElementById('hKonto').textContent=euro(Math.round(ST.geld));document.getElementById('hStil').textContent=(typeof glowScore==='function'?glowScore():ST.stil).toLocaleString('de-DE');
