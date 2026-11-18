@@ -118,7 +118,7 @@ function bank(o){const f={x:o.x,y:o.y,w:.18,d:.6};fL(f,0,.18,2,3,'#7a5236');fR(f
   for(const v of[.08,.5]){const[px,py]=pt(o.x+.09,o.y+v,0);g.fillStyle='#2a2b30';g.fillRect(px-.6*Z,py-2*Z,1.2*Z,2*Z)}}
 const DRAW={tree,palm,fount,yacht,lamp,ampel:ampelZ,schirm,meinejacht:meineJacht,cafe,beet,bank};
 function frame(now){const dt=Math.min(.05,(now-last)/1000);last=now;T+=dt;hdt=dt;if(ZIEL){CX+=(ZIEL.cx-CX)*.08;CY+=(ZIEL.cy-CY)*.08;Z+=(ZIEL.z-Z)*.08;if(Math.abs(ZIEL.z-Z)<.01&&Math.abs(ZIEL.cx-CX)<1)ZIEL=null}
-  for(const p of P){if(p.ctrl){gehen(p,dt)}else if(EVENT&&EVENT.promi===p){p.idle=1}else if(p.prom){p.x+=p.v*dt;if(p.x>X1)p.x=X0;if(p.x<X0)p.x=X1}else{p.s+=p.v*dt;const[a,b]=onLoop(p.lp,p.s);p.x=a;p.y=b}}
+  for(const p of P){if(p.ctrl){gehen(p,dt)}else if(p.live){const k=Math.min(1,dt*8);p.x+=(p.zx-p.x)*k;p.y+=(p.zy-p.y)*k}else if(EVENT&&EVENT.promi===p){p.idle=1}else if(p.prom){p.x+=p.v*dt;if(p.x>X1)p.x=X0;if(p.x<X0)p.x=X1}else{p.s+=p.v*dt;const[a,b]=onLoop(p.lp,p.s);p.x=a;p.y=b}}
   rufFahren(dt); bootWeiter(dt); if((frame.p=(frame.p||0)+dt)>.5){frame.p=0;partyWeiter()}
   // Setcard folgt dem Fahrzustand: aussteigen zeigt wieder "rufen"
   {const z=`${!!ICH.faehrt}|${!!RUF}|${!!INNEN}`;if(z!==frame.z){frame.z=z;karten()}}
