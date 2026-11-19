@@ -2,7 +2,7 @@
 // Antippen: Kamera fliegt hin, du gehst oder fährst los (Auto, Uber oder zu Fuß wie beim Antippen eines Hauses).
 const WOHIN = [
   ['Deine Orte', [['Glow Tower', '🩺', 'Deine Klinik'], ['Deine Boutique', '🛍️', 'Ware und Kasse'], ['@zuhause', '🏠', 'Deine Wohnung']]],
-  ['Ausgehen', [['Nicky Beach Yachtclub', '🏖️', 'Pool-Party'], ['Luba Arena', '🎤', 'Konzerte'], ['Rivva', '🍸', 'Bar am Wasser'], ['Borchert', '🥂', 'Restaurant'], ['Bootshus', '⚓', 'Am Anleger']]],
+  ['Ausgehen', [['Nicky Beach Yachtclub', '🏖️', 'Pool-Party'], ['Luba Arena', '🎤', 'Konzerte'], ['Berghain', '🖤', 'Techno und Fetischnacht'], ['Rivva', '🍸', 'Bar am Wasser'], ['Borchert', '🥂', 'Restaurant'], ['Bootshus', '⚓', 'Am Anleger']]],
   ['Shopping', [['Maison du Sac', '👜', 'Taschen'], ['Tiffanny & Co.', '💎', 'Schmuck'], ['Galerie Royal', '👗', 'Mode'], ['Boulevard Mall', '🛒', 'Mall'], ['Beauty Galerie', '💄', 'Beauty'], ['Glow Motors', '🚗', 'Autos'], ['Marktplatz Ost', '🧺', 'Markt']]],
   ['Wellness', [['Glow Spa', '🧖', 'Spa'], ['Health Hub', '🏋️', 'Fitness'], ['Klinik Dr. Glatt', '✨', 'Beratung']]],
   ['Reisen und Wohnen', [['Glow Airport', '✈️', 'Privatjets'], ['@spaceport', '🚀', 'Mond und Mars'], ['Penthouse Palms', '🌴', 'Wohnen'], ['Residenz Marina', '🏠', 'Wohnen'], ['Loft Tower', '🏢', 'Wohnen'], ['CoWork Tower', '💼', 'Arbeit'], ['McFett Arena', '🍔', 'Snacks']]]
