@@ -16,8 +16,6 @@ const AUFGABEN_POOL = [
   { id: 'arbeit',  text: 'Check bei der Arbeit ein',                     typ: 'arbeit',                                              geld: 500,  stil: 5 },
   { id: 'foto',    text: 'Poste ein Selfie',                             typ: 'foto',                                                geld: 600,  stil: 6 },
   { id: 'behandl', text: 'Behandle 4 Kundinnen in der Klinik im Fernsehturm',        typ: 'behandlung', ziel: 4,                                 geld: 3000, stil: 20 },
-  { id: 'verkauf', text: 'Verkauf 6 Teile in deiner Boutique',           typ: 'verkauf', ziel: 6,                                    geld: 1500, stil: 12 },
-  { id: 'besuch',  text: 'Besuch zwei Boutiquen von Freundinnen',        typ: 'besuch',  ziel: 2,                                    geld: 800,  stil: 8 }
 ];
 // Erfolge: einmalig, prüfen den Spielstand
 const ERFOLGE = [

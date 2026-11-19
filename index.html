@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <style>html,body{margin:0;padding:0}[hidden]:not(#_a):not(#_b){display:none}</style>
 <title>Berlin</title>
-<meta name="berlin-version" content="1795081513">
+<meta name="berlin-version" content="1795081638">
 <script>/* Automatisches Update: jede Minute prüfen, ob eine neue Fassung online ist, und dann selbst neu laden (Spielstand bleibt) */
 setInterval(function(){if(document.hidden)return;fetch('/?nc='+Date.now(),{cache:'no-store'}).then(function(r){return r.text()}).then(function(t){var m=t.match(/name="berlin-version" content="(\d+)"/),ich=document.querySelector('meta[name="berlin-version"]');if(m&&ich&&m[1]!==ich.content&&m[1]!=='0'){if(typeof save==='function')try{save()}catch(e){}location.replace('/?v='+m[1])}}).catch(function(){})},60000);</script>
 </head>
@@ -33,7 +33,7 @@ padding:0 max(16px,env(safe-area-inset-right,0px)) calc(12px + env(safe-area-ins
 /* Menüleiste: jeder Knopf gleich groß, Icon über dem Wort, dunkles Glas mit feinem Goldrand */
 .bar button{flex:0 0 auto;box-sizing:border-box;width:86px;height:60px;padding:6px 4px 5px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;font:400 12px var(--gta);letter-spacing:.08em;text-transform:uppercase;color:#f6f3ee;background:linear-gradient(180deg,rgba(22,23,29,.94),rgba(8,9,12,.94));border:1px solid var(--kante);border-top:2px solid var(--neon);border-radius:3px;box-shadow:0 6px 18px rgba(0,0,0,.35),inset 0 1px 0 rgba(255,255,255,.08);cursor:pointer;white-space:nowrap;overflow:visible;transition:transform .12s,border-color .12s}
 .bar button::before{font-size:19px;line-height:1;filter:grayscale(1) brightness(1.5) contrast(1.2)}#bKlinik::before{filter:none}.bar button:hover{transform:translateY(-3px);border-top-color:var(--amber);background:linear-gradient(180deg,rgba(40,20,30,.96),rgba(12,8,12,.96))}
-#bKlinik::before{content:'🕰️'}#bBout::before{content:'🛍️'}#bAlbum::before{content:'👜'}#bTag::before{content:'📅'}#bChat::before{content:'💬'}#bStadt::before{content:'🗺️'}#bRang::before{content:'🏆'}#bVote::before{content:'🗳️'}#bAufg::before{content:'✨'}#bFoto::before{content:'📸'}#bRadio::before{content:'📻'}
+#bKlinik::before{content:'🕰️'}#bJob::before{content:'💼'}#bBout::before{content:'🛍️'}#bAlbum::before{content:'👜'}#bTag::before{content:'📅'}#bChat::before{content:'💬'}#bStadt::before{content:'🗺️'}#bRang::before{content:'🏆'}#bVote::before{content:'🗳️'}#bAufg::before{content:'✨'}#bFoto::before{content:'📸'}#bRadio::before{content:'📻'}
 button:focus-visible{outline:2px solid var(--cyan)}
 .zoom{position:fixed;right:max(16px,env(safe-area-inset-right,0px));top:calc(110px + env(safe-area-inset-top,0px));display:flex;flex-direction:column;gap:6px}
 .zoom button{width:40px;padding:8px 0;font-size:16px}.zoom{align-items:flex-end}.steuerkreuz{display:grid;grid-template-columns:repeat(3,40px);grid-template-rows:repeat(3,40px);gap:3px}.steuerkreuz button{width:40px;height:40px;padding:0;border-radius:10px;touch-action:none;user-select:none}.sk-o{grid-area:1/2}.sk-l{grid-area:2/1}.sk-m{grid-area:2/2;font-size:11px;font-weight:800;background:#ff4fa3;color:#fff;border-radius:50%}.sk-r{grid-area:2/3}.sk-u{grid-area:3/2}
@@ -328,86 +328,86 @@ body.kino>*:not(canvas):not(.kinohinweis){visibility:hidden}.kinohinweis{positio
 <aside class="chat" id="chat"><header><b>Stadt-Chat</b><span id="online"></span><button id="chatZu" aria-label="Chat schließen">×</button></header><div class="msgs" id="msgs"></div>
 <form id="chatForm"><label for="chatIn">Sagen</label><input id="chatIn" maxlength="140" placeholder="Schreib in die Stadt …" autocomplete="off"><button>Senden</button></form></aside>
 <div class="card" id="card" hidden><button id="cardZu" aria-label="Fenster schließen" style="position:absolute;top:8px;right:10px;background:none;border:0;color:var(--muted);font-size:22px;cursor:pointer">×</button><h3 id="ct" style="padding-right:26px"></h3><div id="cb"></div></div>
-<div class="xpLeiste" id="xpLeiste"><b>LEVEL 1</b><div><i></i></div><span></span></div>
+<div class="xpLeiste" id="xpLeiste" hidden><b>LEVEL 1</b><div><i></i></div><span></span></div>
 <section class="bout" id="bout" hidden aria-label="Deine Boutique"><header><div class="tabs"><button data-tab="laden">Boutique</button><button data-tab="album">Kollektion</button><button data-tab="freunde">Freundinnen</button></div><span class="lv"></span><button class="zu" aria-label="Schließen">×</button></header><div class="bb"></div></section>
 <div class="fund" id="fund" hidden></div>
 <section class="bout klinik" id="klinik" hidden aria-label="Deine Klinik im Alex Tower"><header><div class="tabs"><button data-ktab="praxis">Praxis</button><button data-ktab="geraete">Geräte</button><button data-ktab="team">Team</button><button data-ktab="social">Social</button><button data-ktab="rang">Ranking</button><button data-ktab="ausbau">Ausbau</button><button data-ktab="dich">Für dich</button></div><span class="lv"></span><button class="klappe" aria-label="Fenster einklappen">▾</button><button class="zu" aria-label="Schließen">×</button></header><div class="bb"></div></section>
 <div class="praxishinweis">Boden antippen: hinlaufen · Kundin antippen: behandeln · leuchtende Kugel: abrechnen · goldene Tür: Aufzug · Ziehen dreht</div>
-<div class="bar"><button id="bKlinik" class="hot">Karriere</button><button id="bBout" class="hot">Boutique</button><button id="bAlbum">Kollektion</button><button id="bTag">Mein Tag</button><button id="bChat">Chat</button><button id="bStadt">Wohin?</button><button id="bRang">Ranking</button><button id="bVote">Abstimmung</button><button id="bAufg">Aufgaben</button><button id="bFoto">Foto</button><button id="bRadio">Radio</button></div>
+<div class="bar"><button id="bKlinik" class="hot">Karriere</button><button id="bJob">Job</button><button id="bTag">Mein Tag</button><button id="bChat">Chat</button><button id="bStadt">Wohin?</button><button id="bRang">Ranking</button><button id="bVote">Abstimmung</button><button id="bAufg">Aufgaben</button><button id="bFoto">Foto</button><button id="bRadio">Radio</button></div>
 
-<script src="src/daten/wirtschaft.js?v=1795081513"></script>
-<script src="src/daten/figuren.js?v=1795081513"></script>
-<script src="src/daten/boutique.js?v=1795081513"></script>
-<script src="src/daten/klinik.js?v=1795081513"></script>
-<script src="src/daten/kundinnen.js?v=1795081513"></script>
-<script src="src/daten/partys.js?v=1795081513"></script>
-<script src="src/daten/nachbarn.js?v=1795081513"></script>
-<script src="src/daten/aufklaerung.js?v=1795081513"></script>
-<script src="src/daten/ruhm.js?v=1795081513"></script>
-<script src="src/kern/grundlage.js?v=1795081513"></script>
-<script src="src/daten/marken.js?v=1795081513"></script>
-<script src="src/daten/stadtplan.js?v=1795081513"></script>
-<script src="src/kern/zufall.js?v=1795081513"></script>
-<script src="src/welt/natur.js?v=1795081513"></script>
-<script src="src/welt/bewohner.js?v=1795081513"></script>
-<script src="src/welt/verkehr-daten.js?v=1795081513"></script>
-<script src="src/kern/kamera.js?v=1795081513"></script>
-<script src="src/kern/zeichnen.js?v=1795081513"></script>
-<script src="src/welt/boden.js?v=1795081513"></script>
-<script src="src/welt/gebaeude.js?v=1795081513"></script>
-<script src="src/welt/pflanzen-boote.js?v=1795081513"></script>
-<script src="src/welt/autos.js?v=1795081513"></script>
-<script src="src/welt/menschen.js?v=1795081513"></script>
-<script src="src/kern/ablauf.js?v=1795081513"></script>
-<script src="src/ui/bedienung.js?v=1795081513"></script>
-<script src="src/spiel/stand.js?v=1795081513"></script>
-<script src="src/spiel/eigenes-auto.js?v=1795081513"></script>
-<script src="src/spiel/boot.js?v=1795081513"></script>
-<script src="src/spiel/party.js?v=1795081513"></script>
-<script src="src/spiel/jet.js?v=1795081513"></script>
-<script src="src/spiel/aufgaben.js?v=1795081513"></script>
-<script src="src/spiel/boutique.js?v=1795081513"></script>
-<script src="src/spiel/tagesserie.js?v=1795081513"></script>
-<script src="src/spiel/freundinnen.js?v=1795081513"></script>
-<script src="src/spiel/klinik.js?v=1795081513"></script>
-<script src="src/spiel/stammkundinnen.js?v=1795081513"></script>
-<script src="src/spiel/liga.js?v=1795081513"></script>
-<script src="src/spiel/meisterschaft.js?v=1795081513"></script>
-<script src="src/spiel/liegen.js?v=1795081513"></script>
-<script src="src/spiel/glowscore.js?v=1795081513"></script>
-<script src="src/spiel/influencer.js?v=1795081513"></script>
-<script src="src/spiel/orte.js?v=1795081513"></script>
-<script src="src/spiel/partys.js?v=1795081513"></script>
-<script src="src/spiel/kongresse.js?v=1795081513"></script>
-<script src="src/spiel/kongressspiel.js?v=1795081513"></script>
-<script src="src/spiel/aufklaerung.js?v=1795081513"></script>
-<script src="src/spiel/op.js?v=1795081513"></script>
-<script src="src/spiel/juwelier.js?v=1795081513"></script>
-<script src="src/spiel/nachbarn.js?v=1795081513"></script>
-<script src="src/spiel/events.js?v=1795081513"></script>
-<script src="src/ui/foto.js?v=1795081513"></script>
-<script src="src/ui/radio.js?v=1795081513"></script>
-<script src="src/ui/ranking.js?v=1795081513"></script>
-<script src="src/ui/abstimmung.js?v=1795081513"></script>
-<script src="src/ui/wohin.js?v=1795081513"></script>
-<script src="src/ui/setcard.js?v=1795081513"></script>
-<script src="src/ui/start.js?v=1795081513"></script>
-<script src="src/konto/server.js?v=1795081513"></script>
-<script src="src/konto/konto.js?v=1795081513"></script>
-<script src="src/daten/chat.js?v=1795081513"></script>
-<script src="src/ui/chat.js?v=1795081513"></script>
-<script src="src/welt/innen.js?v=1795081513"></script>
-<script src="src/welt/scorpius.js?v=1795081513"></script>
-<script src="src/spiel/karriere.js?v=1795081513"></script>
-<script src="src/welt/uhr.js?v=1795081513"></script>
-<script src="src/welt/wetter.js?v=1795081513"></script>
-<script src="src/spiel/einladen.js?v=1795081513"></script>
-<script src="src/ui/traum.js?v=1795081513"></script>
-<script src="src/ui/einfuehrung.js?v=1795081513"></script>
-<script src="src/los.js?v=1795081513"></script>
+<script src="src/daten/wirtschaft.js?v=1795081638"></script>
+<script src="src/daten/figuren.js?v=1795081638"></script>
+<script src="src/daten/boutique.js?v=1795081638"></script>
+<script src="src/daten/klinik.js?v=1795081638"></script>
+<script src="src/daten/kundinnen.js?v=1795081638"></script>
+<script src="src/daten/partys.js?v=1795081638"></script>
+<script src="src/daten/nachbarn.js?v=1795081638"></script>
+<script src="src/daten/aufklaerung.js?v=1795081638"></script>
+<script src="src/daten/ruhm.js?v=1795081638"></script>
+<script src="src/kern/grundlage.js?v=1795081638"></script>
+<script src="src/daten/marken.js?v=1795081638"></script>
+<script src="src/daten/stadtplan.js?v=1795081638"></script>
+<script src="src/kern/zufall.js?v=1795081638"></script>
+<script src="src/welt/natur.js?v=1795081638"></script>
+<script src="src/welt/bewohner.js?v=1795081638"></script>
+<script src="src/welt/verkehr-daten.js?v=1795081638"></script>
+<script src="src/kern/kamera.js?v=1795081638"></script>
+<script src="src/kern/zeichnen.js?v=1795081638"></script>
+<script src="src/welt/boden.js?v=1795081638"></script>
+<script src="src/welt/gebaeude.js?v=1795081638"></script>
+<script src="src/welt/pflanzen-boote.js?v=1795081638"></script>
+<script src="src/welt/autos.js?v=1795081638"></script>
+<script src="src/welt/menschen.js?v=1795081638"></script>
+<script src="src/kern/ablauf.js?v=1795081638"></script>
+<script src="src/ui/bedienung.js?v=1795081638"></script>
+<script src="src/spiel/stand.js?v=1795081638"></script>
+<script src="src/spiel/eigenes-auto.js?v=1795081638"></script>
+<script src="src/spiel/boot.js?v=1795081638"></script>
+<script src="src/spiel/party.js?v=1795081638"></script>
+<script src="src/spiel/jet.js?v=1795081638"></script>
+<script src="src/spiel/aufgaben.js?v=1795081638"></script>
+<script src="src/spiel/boutique.js?v=1795081638"></script>
+<script src="src/spiel/tagesserie.js?v=1795081638"></script>
+<script src="src/spiel/freundinnen.js?v=1795081638"></script>
+<script src="src/spiel/klinik.js?v=1795081638"></script>
+<script src="src/spiel/stammkundinnen.js?v=1795081638"></script>
+<script src="src/spiel/liga.js?v=1795081638"></script>
+<script src="src/spiel/meisterschaft.js?v=1795081638"></script>
+<script src="src/spiel/liegen.js?v=1795081638"></script>
+<script src="src/spiel/glowscore.js?v=1795081638"></script>
+<script src="src/spiel/influencer.js?v=1795081638"></script>
+<script src="src/spiel/orte.js?v=1795081638"></script>
+<script src="src/spiel/partys.js?v=1795081638"></script>
+<script src="src/spiel/kongresse.js?v=1795081638"></script>
+<script src="src/spiel/kongressspiel.js?v=1795081638"></script>
+<script src="src/spiel/aufklaerung.js?v=1795081638"></script>
+<script src="src/spiel/op.js?v=1795081638"></script>
+<script src="src/spiel/juwelier.js?v=1795081638"></script>
+<script src="src/spiel/nachbarn.js?v=1795081638"></script>
+<script src="src/spiel/events.js?v=1795081638"></script>
+<script src="src/ui/foto.js?v=1795081638"></script>
+<script src="src/ui/radio.js?v=1795081638"></script>
+<script src="src/ui/ranking.js?v=1795081638"></script>
+<script src="src/ui/abstimmung.js?v=1795081638"></script>
+<script src="src/ui/wohin.js?v=1795081638"></script>
+<script src="src/ui/setcard.js?v=1795081638"></script>
+<script src="src/ui/start.js?v=1795081638"></script>
+<script src="src/konto/server.js?v=1795081638"></script>
+<script src="src/konto/konto.js?v=1795081638"></script>
+<script src="src/daten/chat.js?v=1795081638"></script>
+<script src="src/ui/chat.js?v=1795081638"></script>
+<script src="src/welt/innen.js?v=1795081638"></script>
+<script src="src/welt/scorpius.js?v=1795081638"></script>
+<script src="src/spiel/karriere.js?v=1795081638"></script>
+<script src="src/welt/uhr.js?v=1795081638"></script>
+<script src="src/welt/wetter.js?v=1795081638"></script>
+<script src="src/spiel/einladen.js?v=1795081638"></script>
+<script src="src/ui/traum.js?v=1795081638"></script>
+<script src="src/ui/einfuehrung.js?v=1795081638"></script>
+<script src="src/los.js?v=1795081638"></script>
 <script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"}}</script>
-<script type="module" src="src/drei/stadt.js?v=1795081513"></script>
-<script type="module" src="src/konto/mitspieler.js?v=1795081513"></script>
+<script type="module" src="src/drei/stadt.js?v=1795081638"></script>
+<script type="module" src="src/konto/mitspieler.js?v=1795081638"></script>
 
 </body>
 </html>

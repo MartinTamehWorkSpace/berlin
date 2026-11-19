@@ -1,9 +1,9 @@
 // Berlin 3D · leben.js · Menschen (P), Autos (CARS, dein Auto, Uber), Ampeln, Laternen, Palmen aus S. Alles folgt dem laufenden Spiel.
 import * as THREE from 'three';
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
-import { M, box, std, neon } from './haeuser.js?v=1795081513';
-import { MUSTER } from './texturen.js?v=1795081513';
-import { tasche3d } from './taschen.js?v=1795081513';
+import { M, box, std, neon } from './haeuser.js?v=1795081638';
+import { MUSTER } from './texturen.js?v=1795081638';
+import { tasche3d } from './taschen.js?v=1795081638';
 
 const mat = (c, o = {}) => new THREE.MeshStandardMaterial(Object.assign({ color: c, roughness: .6 }, o));
 

@@ -179,8 +179,8 @@ function boutiqueZaehler() { const b = boutStand(); const n = b.regale.filter(r 
   const k = document.getElementById('bBout'); if (k) k.dataset.n = n || '' }
 function boutiqueWillkommen() { const b = boutStand(); const n = b.regale.filter(r => r && regalRest(r).rest <= 0).length, { wert } = kasseStand();
   if (n || wert > 200) banner('DEINE BOUTIQUE', n ? `${n} ${n === 1 ? 'Regal' : 'Regale'} ausverkauft` : 'Kundinnen waren da', `Kasse: ${euro(wert)}`) }
-document.getElementById('bBout').onclick = () => boutiqueAuf('laden');
-document.getElementById('bAlbum').onclick = () => boutiqueAuf('album');
+{ const bb = document.getElementById('bBout'); if (bb) bb.onclick = () => boutiqueAuf('laden') } /* Berlin: Boutique-Knopf gibt es nicht mehr */
+{ const ba = document.getElementById('bAlbum'); if (ba) ba.onclick = () => boutiqueAuf('album') }
 document.querySelectorAll('#bout [data-tab]').forEach(b => b.onclick = () => { BOUT.tab = b.dataset.tab; BOUT.wahl = null; boutiqueZeichnen() });
 document.querySelector('#bout .zu').onclick = boutiqueZu;
 boutStand(); setInterval(boutiqueZaehler, 2000); setTimeout(() => { boutiqueZaehler(); xpLeiste() }, 2500);

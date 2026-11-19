@@ -2,7 +2,7 @@
 // Antippen: Kamera fliegt hin, du gehst oder fährst los (Auto, Uber oder zu Fuß wie beim Antippen eines Hauses).
 const WOHIN = [
   ['Karriere', [['@uhr', '🕰️', 'Weltzeituhr · Karriere'], ['@ort:goerli', '💊', 'Görli · Deals'], ['@ort:raw', '💊', 'RAW · Deals'], ['@ort:kotti', '💊', 'Kotti · Deals'], ['@ort:tor', '📸', 'Brandenburger Tor'], ['@ort:ufer', '📸', 'East Side Ufer']]],
-  ['Deine Orte', [['Alex Tower', '🩺', 'Fernsehturm · Klinik'], ['Deine Boutique', '🛍️', 'Ware und Kasse'], ['@zuhause', '🏠', 'Deine Wohnung']]],
+  ['Deine Orte', [['Alex Tower', '🩺', 'Fernsehturm · Klinik'], ['@zuhause', '🏠', 'Deine Wohnung']]],
   ['Ausgehen', [['Scorpius Berlin', '🏖️', 'Pool-Party'], ['Spree Arena', '🎤', 'Konzerte'], ['Berghain', '🖤', 'Techno und Fetischnacht'], ['Papillong', '🍸', 'Bar am Wasser'], ['Borchert', '🥂', 'Restaurant'], ['Grill Royale', '⚓', 'Am Anleger']]],
   ['Shopping', [['Maison du Sac', '👜', 'Taschen'], ['Tiffanny & Co.', '💎', 'Schmuck'], ['Galeries Lafayetto', '👗', 'Mode'], ['KaDeVe', '🛒', 'Mall'], ['Beauty Galerie', '💄', 'Beauty'], ['Spree Motors', '🚗', 'Autos'], ['Markthalle Zehn', '🧺', 'Markt']]],
   ['Wellness', [['Spree Spa', '🧖', 'Spa'], ['Health Hub', '🏋️', 'Fitness'], ['Klinik Dr. Glatt', '✨', 'Beratung']]],

@@ -152,3 +152,14 @@ function ubahnFahren(von) { const cb = panel('🚇 U-Bahn · Wohin?'); const p =
     b.onclick = () => { if (ST.geld < 3.8) return toast('Kein Geld fürs Ticket. Schwarzfahren kostet 60 €.'); ST.geld -= 3.8; document.getElementById('card').hidden = true; ICH.path = []; ICH.x = st.x + .6; ICH.y = st.y + .6; const z = document.getElementById('zich'); if (z) z.click(); banner('🚇 U-BAHN', `Ausgestiegen: ${st.n}`, '−3,80 €'); save(); hud() }; cb.append(b) } }
 setInterval(() => { if (typeof ICH === 'undefined' || !window.UBAHN) return; const leiste = aktionsLeiste(); let u = document.getElementById('bUbahn'); if (!u) { u = document.createElement('button'); u.id = 'bUbahn'; u.className = 'anlegen'; leiste.append(u) }
   const st = document.getElementById('start'), nah = window.UBAHN.find(s => Math.hypot(ICH.x - s.x, ICH.y - s.y) < 2); u.hidden = !nah || !!INNEN || (st && !st.hidden); if (nah) { u.textContent = `🚇 U-Bahn · ${nah.n}`; u.onclick = () => ubahnFahren(nah) } }, 500);
+
+/* Knopf „Job“ unten: die passende Schnellansicht zur Karriere (ersetzt Boutique und Kollektion, Martin 19.11.2026) */
+function jobZeigen() { const kar = ST.karriere; if (!kar) return karriereZeigen(); const k = kst(), cb = panel(`💼 Job · ${KARRIEREN[kar].n}`);
+  const p = t => { const e = document.createElement('p'); e.className = 'hin'; e.textContent = t; cb.append(e) }, knopf = (t, f) => { const b = document.createElement('button'); b.className = 'big test'; b.style.marginTop = '5px'; b.textContent = t; b.onclick = f; cb.append(b) };
+  const L = MISSIONEN[kar], i = k.m[kar] || 0; p(i < L.length ? `▶️ Nächste Mission: ${L[i].t} · ${euro(L[i].lohn)}` : '🏆 Alle Missionen geschafft');
+  const geh = o => () => { const q = ORTE[o].p(); if (q) { document.getElementById('card').hidden = true; laufeZu(q.x, q.y, null) } };
+  if (kar === 'dealer') { p(`Ware: ${ST.ware || 0} · Fahndung: ${'★'.repeat(ST.fahndung || 0) || 'keine'}`); for (const o of ['goerli', 'raw', 'kotti']) knopf(`📍 Hin zum ${ORTE[o].n}`, geh(o)) }
+  if (kar === 'gastro') { p(`Einnahmen: ${euro(gastroProMin())} pro Minute`); for (const l of LAEDEN.filter(l => ST.gastro && ST.gastro[l.id])) knopf(`📍 ${l.t} · Kasse leeren`, () => { const q = lokalPos(l.id); if (q) { document.getElementById('card').hidden = true; laufeZu(q.x, q.y, null) } }); knopf('🍽️ Lokale kaufen und ausbauen', karriereZeigen) }
+  if (kar === 'influ') { p(`Follower: ${(ST.follower || 0).toLocaleString('de-DE')} · Viral: ${k.viral}`); knopf('🔴 Jetzt live gehen', () => { liveGehen(); jobZeigen() }); for (const o of ['tor', 'alex', 'ufer', 'berg', 'scorp', 'kadeve']) knopf(`${k.orte[o] ? '✅' : '📍'} Hin zum ${ORTE[o].n}`, geh(o)) }
+  knopf('🕰️ Alle Missionen und Ränge', karriereZeigen) }
+document.getElementById('bJob') && (document.getElementById('bJob').onclick = jobZeigen);
