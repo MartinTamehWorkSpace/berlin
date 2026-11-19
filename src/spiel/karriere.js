@@ -35,7 +35,15 @@ const MISSIONEN = {
     { t: '1 Million Follower', ok: () => (ST.follower || 0) >= 1e6, lohn: 1e6 }] };
 const kst = () => { ST.kar = ST.kar || { deals: 0, serie: 0, umsatz: 0, orte: {}, laeden: 0, kassen: 0, events: 0, viral: 0, posts: 0, m: { dealer: 0, gastro: 0, influ: 0 }, pause: {} }; return ST.kar };
 const nahAn = (o, r = 2.2) => { const p = ORTE[o] && ORTE[o].p(); return p && !INNEN && Math.hypot(ICH.x - p.x, ICH.y - p.y) < r };
-const gastroProMin = () => LAEDEN.filter(l => ST.gastro && ST.gastro[l.id]).reduce((s, l) => s + l.proMin, 0);
+const AUSBAU = [{ id: 'koch', n: '👨‍🍳 Sternekoch einstellen', f: .5 }, { id: 'dj', n: '🎧 Resident-DJ', f: .3 }, { id: 'terr', n: '🌿 Dachterrasse', f: .4 }, { id: 'pr', n: '📰 PR-Agentur aus Mitte', f: .6 }];
+const lokalFaktor = id => 1 + AUSBAU.filter(a => ST.ausbau && ST.ausbau[id + a.id]).reduce((s, a) => s + a.f, 0);
+const lokalProMin = l => Math.round(l.proMin * lokalFaktor(l.id));
+const gastroProMin = () => LAEDEN.filter(l => ST.gastro && ST.gastro[l.id]).reduce((s, l) => s + lokalProMin(l), 0);
+/* Influencer: Kooperationen schalten mit Followern frei und zahlen einmalig */
+const KOOPS = [{ id: 'mate', n: '🧉 Club-Mate-Story', ab: 5000, geld: 25000 }, { id: 'sneak', n: '👟 Sneaker-Drop aus Kreuzberg', ab: 25000, geld: 120000 }, { id: 'parfum', n: '🖤 Parfum-Kampagne', ab: 100000, geld: 600000 },
+  { id: 'auto', n: '🚗 Autohaus-Testfahrt', ab: 300000, geld: 1500000 }, { id: 'mode', n: '🧥 Eigene Modelinie im KaDeVe', ab: 1000000, geld: 8000000 }];
+/* Dealer: Fahndung loswerden gegen Geld */
+function bestechen() { const s = ST.fahndung || 0; if (!s) return toast('Gerade sucht dich niemand'); const preis = 40000 * s * s; if (ST.geld < preis) return toast(`Ein Anwalt kostet ${euro(preis)}`); ST.geld -= preis; ST.fahndung = 0; ST.fahndungUhr = 0; banner('⚖️ ANWALT', 'Akte verschwunden, Sterne weg', `−${euro(preis)}`); save(); hud() }
 function karRang(k) { const m = kst().m[k] || 0, R = KARRIEREN[k].raenge; return R[Math.min(R.length - 1, Math.floor(m * R.length / (MISSIONEN[k].length + 1)))] }
 
 /* ---------- Polizei: 4 Streifenwagen fahren auf den Straßen, bei Fahndung jagt der nächste dich ---------- */
@@ -64,7 +72,7 @@ function content(o) { const k = kst(), t = Date.now(); if ((k.pause['c_' + o] ||
   const viral = Math.random() < .12, fol = Math.round((200 + (k.m.influ || 0) * 400) * (viral ? 25 : 1) * (.7 + Math.random() * .6));
   k.pause['c_' + o] = t + 90000; k.orte[o] = 1; k.posts++; if (viral) k.viral++; ST.follower = (ST.follower || 0) + fol; ST.geld += Math.round(fol * 2.5); ICH.tanzBis = Date.now() + 6000;
   banner(viral ? '🔥 VIRAL' : '📸 CONTENT', `${ORTE[o].n}${viral ? ': Dein Video explodiert' : ''}`, `+${fol.toLocaleString('de-DE')} Follower · +${euro(Math.round(fol * 2.5))}`); missionPruefen(); save(); hud() }
-function gastroKasse(l) { ST.gastroKasse = ST.gastroKasse || {}; const seit = Math.min(240, (Date.now() - (ST.gastroKasse[l.id] || ST.gastro[l.id])) / 60000), geld = Math.round(seit * l.proMin);
+function gastroKasse(l) { ST.gastroKasse = ST.gastroKasse || {}; const seit = Math.min(240, (Date.now() - (ST.gastroKasse[l.id] || ST.gastro[l.id])) / 60000), geld = Math.round(seit * lokalProMin(l));
   if (geld < 1) return toast('Die Kasse ist noch leer'); ST.gastroKasse[l.id] = Date.now(); ST.geld += geld; kst().kassen++; banner('💶 KASSE', `${l.t}: Abend gut gelaufen`, `+${euro(geld)}`); missionPruefen(); save(); hud() }
 function lokalKaufen(l) { if (ST.geld < l.preis) return toast('Dafür reicht dein Geld nicht'); ST.geld -= l.preis; ST.gastro = ST.gastro || {}; ST.gastro[l.id] = Date.now(); kst().laeden = Object.keys(ST.gastro).length;
   banner('🍽️ GEKAUFT', `${l.t} gehört jetzt dir`, `+${euro(l.proMin)} pro Minute`); missionPruefen(); save(); hud() }
@@ -84,10 +92,14 @@ function karriereZeigen() { const kar = ST.karriere, cb = panel(kar ? `${KARRIER
   const L = MISSIONEN[kar], i = k.m[kar] || 0; const h = document.createElement('h4'); h.textContent = 'Missionen'; cb.append(h);
   L.forEach((m, j) => absatz(`${j < i ? '✅' : j === i ? '▶️' : '▫️'} ${m.t} · ${euro(m.lohn)}`));
   const h2 = document.createElement('h4'); cb.append(h2);
+  if (kar === 'dealer' && ST.fahndung) knopf(`⚖️ Anwalt anrufen · Sterne weg · ${euro(40000 * ST.fahndung * ST.fahndung)}`, () => { bestechen(); karriereZeigen() });
   if (kar === 'dealer') { h2.textContent = 'Deine Ecken'; absatz(`Deals: ${k.deals} · Umsatz: ${euro(k.umsatz)} · Fahndung: ${'★'.repeat(ST.fahndung || 0) || 'keine'}`); absatz('Geh zum Görlitzer Park (bei den Lofts Kreuzberg), zum RAW-Gelände (am Berghain) oder zum Kotti (an der Platte). Dort erscheint der Knopf „Deal“. Streifenwagen mit Blaulicht jagen dich, solange du Sterne hast. Tauch ab, bis sie dich verlieren.') }
-  if (kar === 'gastro') { h2.textContent = 'Lokale'; for (const l of LAEDEN) { const meins = ST.gastro && ST.gastro[l.id]; knopf(meins ? `✓ ${l.t} · ${euro(l.proMin)}/Min · Kasse vor Ort leeren` : `${l.t} kaufen · ${euro(l.preis)} · ${euro(l.proMin)}/Min`, () => { if (!meins) { lokalKaufen(l); karriereZeigen() } }, meins) }
+  if (kar === 'gastro') { h2.textContent = 'Lokale'; for (const l of LAEDEN) { const meins = ST.gastro && ST.gastro[l.id]; knopf(meins ? `✓ ${l.t} · ${euro(lokalProMin(l))}/Min · Kasse vor Ort leeren` : `${l.t} kaufen · ${euro(l.preis)} · ${euro(l.proMin)}/Min`, () => { if (!meins) { lokalKaufen(l); karriereZeigen() } }, meins);
+      if (meins) for (const a of AUSBAU) { const hat = ST.ausbau && ST.ausbau[l.id + a.id], preis = Math.round(l.preis * a.f); if (!hat) knopf(`   ${a.n} · ${euro(preis)} · +${Math.round(a.f * 100)} %`, () => { if (ST.geld < preis) return toast('Dafür reicht dein Geld nicht'); ST.geld -= preis; ST.ausbau = ST.ausbau || {}; ST.ausbau[l.id + a.id] = 1; banner('🔨 AUSBAU', `${l.t}: ${a.n.slice(2).trim()}`, `+${Math.round(a.f * 100)} % Einnahmen`); save(); hud(); karriereZeigen() }) } }
     absatz(`Einnahmen gesamt: ${euro(gastroProMin())} pro Minute. Die Kasse füllt sich bis zu 4 Stunden, dann ist sie voll.`) }
-  if (kar === 'influ') { h2.textContent = 'Hotspots'; for (const o of ['tor', 'alex', 'ufer', 'berg', 'scorp', 'kadeve']) absatz(`${k.orte[o] ? '✅' : '📍'} ${ORTE[o].n}`); absatz(`Posts: ${k.posts} · Viral: ${k.viral}. Am Hotspot erscheint der Knopf „Content drehen“.`) }
+  if (kar === 'influ') { h2.textContent = 'Kooperationen'; for (const c of KOOPS) { const fertig = ST.koops && ST.koops[c.id], frei = (ST.follower || 0) >= c.ab;
+      knopf(fertig ? `✓ ${c.n}` : frei ? `${c.n} · ${euro(c.geld)} annehmen` : `🔒 ${c.n} · ab ${c.ab.toLocaleString('de-DE')} Followern`, () => { ST.koops = ST.koops || {}; ST.koops[c.id] = 1; ST.geld += c.geld; banner('🤝 KOOPERATION', c.n.slice(2).trim(), `+${euro(c.geld)}`); save(); hud(); karriereZeigen() }, fertig || !frei) } }
+  if (kar === 'influ') { const hh = document.createElement('h4'); hh.textContent = 'Hotspots'; cb.append(hh); for (const o of ['tor', 'alex', 'ufer', 'berg', 'scorp', 'kadeve']) absatz(`${k.orte[o] ? '✅' : '📍'} ${ORTE[o].n}`); absatz(`Posts: ${k.posts} · Viral: ${k.viral}. Am Hotspot erscheint der Knopf „Content drehen“.`) }
   const h3 = document.createElement('h4'); h3.textContent = 'Karriere wechseln'; cb.append(h3);
   for (const [id, K] of Object.entries(KARRIEREN)) if (id !== kar) knopf(`${K.ic} ${K.n}`, () => { ST.karriere = id; save(); karriereZeigen() }) }
 window.karriereZeigen = karriereZeigen;
