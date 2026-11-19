@@ -1,7 +1,7 @@
 // Berlin City 3D · haeuser.js · Häuser aus dem Stadtplan (B): Art déco, Glas mit Solardach, Alex Tower. Schilder kommen aus brand() des Spiels.
 // Ein Feld des Spiels = 3 Meter. Spiel-x wird 3D-X, Spiel-y wird 3D-Z.
 import * as THREE from 'three';
-import { markise, glasfassade } from './texturen.js?v=1795050481';
+import { glasfassade } from './texturen.js?v=1795050503';
 
 export const M = 3;
 export const NEON = [], FENSTER = [], GLAS = []; // GLAS: Hochhausglas, nachts chromartig spiegelnd
@@ -31,18 +31,19 @@ function solardach(eltern, w, d, y) { box(w, .2, d, KIES, 0, y, 0, eltern); for 
 function schildAn(eltern, k, seite, u0, u1, y, hoehe, abstand) { const breite = (u1 - u0) * M * .86; const s = new THREE.Mesh(new THREE.PlaneGeometry(breite, Math.min(hoehe, breite * .24)), markenSchild(k));
   const um = ((u0 + u1) / 2 - 2) * M; if (seite === 'L') s.position.set(um, y, abstand); else { s.position.set(abstand, y, -um); s.rotation.y = Math.PI / 2 } eltern.add(s); return s }
 
-// Art déco: Pastell, weiße Bänder, runde Ecken vorn, Neonfinne, Markise, flaches Solardach
-function deko(b, gr) { const p = b.pod, w = 4 * M - .8, d = w, stock = p.fl, h = 4.4 + (stock - 1) * 3.6 + .8, m = std(p.farbe, { roughness: .55 }), weiss = std('#fbf7f2', { roughness: .5 });
-  box(w, h, d, m, 0, 0, 0, gr);
-  for (const [sx, sz] of [[1, 1], [-1, 1], [1, -1]]) { const e = schatten(new THREE.Mesh(new THREE.CylinderGeometry(1.4, 1.4, h + 1.2, 20), m)); e.position.set(sx * (w / 2 - .7), (h + 1.2) / 2, sz * (d / 2 - .7)); gr.add(e);
-    const k = new THREE.Mesh(new THREE.CylinderGeometry(1.5, 1.5, .35, 20), weiss); k.position.set(sx * (w / 2 - .7), h + 1.35, sz * (d / 2 - .7)); gr.add(k) }
-  for (let i = 1; i <= stock; i++) box(w + .2, .3, d + .2, weiss, 0, 4.4 + (i - 1) * 3.6 - .15, 0, gr);
-  const glas = new THREE.MeshStandardMaterial({ color: '#2a3b4c', roughness: .12, metalness: .5, emissive: '#ffcf8a', emissiveIntensity: 0 }); glas.userData.basis = .45; FENSTER.push(glas);
-  for (let i = 1; i < stock; i++) { box(w - 3.6, 1.8, .2, glas, 0, 4.4 + (i - 1) * 3.6 + .9, d / 2 + .05, gr); const q = box(.2, 1.8, d - 3.6, glas, w / 2 + .05, 4.4 + (i - 1) * 3.6 + .9, 0, gr) }
-  const schau = new THREE.MeshStandardMaterial({ color: '#fff3e0', emissive: '#ffd9a8', emissiveIntensity: .3, roughness: .1 }); schau.userData.basis = .7; schau.userData.tag = .15; FENSTER.push(schau);
-  box(w - 3.4, 2.6, .2, schau, 0, .2, d / 2 + .05, gr); box(.2, 2.6, d - 3.4, schau, w / 2 + .05, .2, 0, gr);
-  const nf = neon(p.neon, 5); box(.45, h + 4, .45, nf, w / 2 + .1, 0, d / 2 + .1, gr); box(w + .3, .22, d + .3, nf, 0, h - .2, 0, gr);
-  const mk = new THREE.Mesh(new THREE.BoxGeometry(w - 4, .2, 1.6), std('#fff', { map: markise(p.neon, '#ffffff') })); mk.position.set(0, 3.3, d / 2 + .8); mk.rotation.x = .2; mk.castShadow = true; gr.add(mk);
+// Berliner Ladenhaus (Martin 19.11.2026: weg von Miami): Putz in Berliner Tönen statt Pastell, dunkle Gesimse, kantige Pfeiler,
+// Rauchglas im Erdgeschoss mit warmem Licht, keine Markise, kein Neonmast. Jedes Haus bekommt seinen eigenen Ton, damit kein Laden wie der andere aussieht.
+const BERLIN_TOENE = ['#7b4a3c', '#5b5f63', '#a58d6a', '#3f4a3f', '#8a7f72', '#6e3b34', '#2f3237', '#9a8f80', '#5a4636', '#46505a'];
+function deko(b, gr) { const p = b.pod, w = 4 * M - .8, d = w, stock = p.fl, h = 4.4 + (stock - 1) * 3.6 + .8;
+  const ton = p.farbe && /^#1[0-9a-f]/i.test(p.farbe) ? p.farbe : BERLIN_TOENE[Math.abs(Math.round(b.x * 7 + b.y * 13)) % BERLIN_TOENE.length];
+  const m = std(ton, { roughness: .9 }), gesims = std('#26282c', { roughness: .8 }), sockel = std('#3a3b3e', { roughness: .95 });
+  box(w, h, d, m, 0, 0, 0, gr); box(w + .15, 1, d + .15, sockel, 0, 0, 0, gr);
+  for (const [sx, sz] of [[1, 1], [-1, 1], [1, -1]]) box(.9, h + .6, .9, m, sx * (w / 2 - .45), 0, sz * (d / 2 - .45), gr);
+  for (let i = 1; i <= stock; i++) box(w + .25, .35, d + .25, gesims, 0, 4.4 + (i - 1) * 3.6 - .17, 0, gr); box(w + .4, .6, d + .4, gesims, 0, h - .3, 0, gr);
+  const glas = new THREE.MeshStandardMaterial({ color: '#1f2428', roughness: .25, metalness: .3, emissive: '#ffcf8a', emissiveIntensity: 0 }); glas.userData.basis = .45; FENSTER.push(glas);
+  for (let i = 1; i < stock; i++) for (let f = -1; f <= 1; f++) { box(1.5, 2, .2, glas, f * 3, 4.4 + (i - 1) * 3.6 + .8, d / 2 + .05, gr); box(.2, 2, 1.5, glas, w / 2 + .05, 4.4 + (i - 1) * 3.6 + .8, f * 3, gr) }
+  const schau = new THREE.MeshStandardMaterial({ color: '#15181b', emissive: '#ffb066', emissiveIntensity: .18, roughness: .08, metalness: .6 }); schau.userData.basis = .55; schau.userData.tag = .12; FENSTER.push(schau);
+  box(w - 3, 2.8, .2, schau, 0, .9, d / 2 + .05, gr); box(.2, 2.8, d - 3, schau, w / 2 + .05, .9, 0, gr);
   const k = (p.shops[0] || [])[3]; if (k) { schildAn(gr, k, 'L', .4, 3.6, 3.95 + .6, 1.4, d / 2 + .12); schildAn(gr, k, 'R', .4, 3.6, 3.95 + .6, 1.4, w / 2 + .12) }
   solardach(gr, w - 1.2, d - 1.2, h); return h }
 

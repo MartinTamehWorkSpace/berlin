@@ -11,7 +11,7 @@ function figurFuer(id, d) { let p = ECHT.get(id);
   if (d.look) { const l = d.look; Object.assign(p, { skin: l.skin || p.skin, frisur: l.frisur, hair: l.hair || p.hair,
     c1: l.c1, c2: l.c2 != null ? l.c2 : p.c2, top: l.top || l.c1 || p.top, leg: l.leg || l.c2 || p.leg,
     dress: l.dress ? 1 : 0, outfit: l.outfit || null, muster: l.muster || null, acc: l.acc || [], bagK: l.bagK || null,
-    w: l.frisur === 'kurz' ? 0 : 1 }) }
+    w: l.frisur === 'kurz' ? 0 : 1 }); const k = JSON.stringify(l); if (k !== p.lookKey) { p.lookKey = k; p.neuKleiden = 1 } }
   if (!p.prof || !p.prof.name) p.prof = Object.assign({ handle: 'Echter Spieler', titel: 'Live in Berlin', lohn: 0, stil: 0, fol: 0, verm: 0, glow: 0 }, p.prof || {}, { name: p.name, p });
   return p }
 

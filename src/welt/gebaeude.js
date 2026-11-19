@@ -104,7 +104,7 @@ const WERBUNG=[
  {bg:['#f4f6f7','#dfe6ea'],rand:'#9fb6bf',marke:'DR. GLATT',titel:'Dein bester Glow',zeile:'Botox ab 390 € · fast ausgebucht',f:'#1d2b33',bild:'flakon'},
  {bg:['#140c12','#2a0f1d'],rand:'#ff7eb6',marke:'LAMBORGIA',titel:'Furioso in Rosa',zeile:'Jetzt bei Spree Motors',f:'#ffffff',bild:'auto4'},
  {bg:['#0a2a2c','#064046'],rand:'#2fe0d2',marke:'SCORPIUS',titel:'Sunset Club',zeile:'Jacht-Charter ab 2.500 €',f:'#ffffff',bild:'sonne'}];
-const TAFELN=new Set(['Scorpius Berlin','Villa Palms','Borchert',"Huggo's",'Papillong','Grill Royale','Kiez Gym','Health Hub','Markthalle Zehn']);
+const TAFELN=new Set(['Scorpius Berlin','Villa Palms','Borchert',"Ryotei 398",'Papillong','Grill Royale','Kiez Gym','Health Hub','Markthalle Zehn']);
 function werbeBild(w,x0,y0,bw,bh){g.save();g.beginPath();g.rect(x0,y0,bw,bh);g.clip();
   const sp=SPR;const cx=x0+bw/2,cy=y0+bh/2;
   if(w.bild==='auto5'||w.bild==='auto4'){const im=sp[w.bild==='auto5'?'5':'4']&&sp[w.bild==='auto5'?'5':'4']['90'];
@@ -172,7 +172,7 @@ function brand(k,w,h){g.textAlign='center';g.textBaseline='middle';
    case'dn':plate('#fff','#f2a900');txt('dn markt','800 S Inter','#1f3f8a');break;
    case'lid':plate('#1f4fa0','#ffd400');txt('Liddl','800 S Inter','#ffd400');break;
    case'borch':plate('#22392d','#c9b48a');txt('Borchert','italic 500 S Bodoni Moda','#d8c39a');break;
-   case'hug':plate('#5b2333');txt("Huggo's",'italic 500 S Bodoni Moda','#f1e4d0');break;
+   case'hug':plate('#141416');g.shadowColor='#ff2a2a';g.shadowBlur=8;txt('398','700 S Inter','#ff2a2a');break;
    case'riva':plate('#1d3557','#cfe0ee');txt('PAPILLONG','500 S Bodoni Moda','#fff',5);break;
    case'boot':plate('#15161a');g.shadowColor='#b9a6ff';g.shadowBlur=6;txt('GRILL ROYALE','700 S Inter','#cbbcff',3);g.shadowBlur=0;break;
    case'work':plate('#0b1016','#8fe3f0');txt('FABRIK COWORKING','600 S Inter','#8fe3f0',2);break;

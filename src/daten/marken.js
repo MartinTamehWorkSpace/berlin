@@ -14,7 +14,7 @@ const BR={
  dn:{n:'dn markt',t:'Drogerie Nummer zwei. Eigenmarke billiger.',fx:[['Pflege','Haut +3 · 11 €']]},
  lid:{n:'Liddl',t:'Supermarkt. Kochen statt Lieferdienst.',fx:[['Wocheneinkauf','Ernährung +6 · 54 €']]},
  borch:{n:'Borchert',t:'Berlin-Mitte-Klassiker. Wer hier gesehen wird, ist wer.',fx:[['Schnitzel','Laune +10 · 38 €'],['Tisch am Fenster','Follower +60 · Stil +5']]},
- hug:{n:"Huggo's",t:'München. Pizza, Sehen und Gesehenwerden.',fx:[['Pizza Bianca','Laune +8 · 24 €'],['Aperitivo','Follower +30 · Schlaf −5']]},
+ hug:{n:'Ryotei 398',t:'Kein Schild, nur Spiegelglas voller Tags. Drinnen Sushi, Gyoza und die halbe Szene von Charlottenburg.',fx:[['Sashimi und Sake','Laune +10 · 58 €'],['Tisch an der Bar','Follower +60 · Stil +6']]},
  riva:{n:'Papillong',t:'Französisch, Kronleuchter, Fensterplatz an der Spree. Wer hier isst, wird fotografiert.',fx:[['Spritz am Wasser','Follower +45 · 16 €']]},
  boot:{n:'Grill Royale',t:'Steaks, Kunst, Kronleuchter an der Weidendammer Brücke. Hier sitzt halb Berlin Mitte.',fx:[['Durchfeiern','Follower +120 · Schlaf −30 · Stil −5']]},
  work:{n:'Fabrik Coworking',t:'Startup-Fabrik in der alten Brauerei. Mate, Laptops, Pitch um 10.',fx:[['Arbeiten','Konto +140 € · Stress +10']]},

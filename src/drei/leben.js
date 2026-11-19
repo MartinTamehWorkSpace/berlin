@@ -1,9 +1,9 @@
 // Berlin City 3D · leben.js · Menschen (P), Autos (CARS, dein Auto, Uber), Ampeln, Laternen, Palmen aus S. Alles folgt dem laufenden Spiel.
 import * as THREE from 'three';
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
-import { M, box, std, neon } from './haeuser.js?v=1795050481';
-import { MUSTER } from './texturen.js?v=1795050481';
-import { tasche3d } from './taschen.js?v=1795050481';
+import { M, box, std, neon } from './haeuser.js?v=1795050503';
+import { MUSTER } from './texturen.js?v=1795050503';
+import { tasche3d } from './taschen.js?v=1795050503';
 
 const mat = (c, o = {}) => new THREE.MeshStandardMaterial(Object.assign({ color: c, roughness: .6 }, o));
 
@@ -72,7 +72,7 @@ export function menschen(szene) { const POOL = []; for (let i = 0; i < (innerWid
     const frei = POOL.filter(f => !f.userData.p || !nah.includes(f.userData.p)); const vergeben = new Set(POOL.map(f => f.userData.p).filter(Boolean));
     for (const f of POOL) if (f.userData.p && !nah.includes(f.userData.p)) { f.userData.p = null; f.visible = false }
     for (const p of nah) { if (vergeben.has(p)) continue; const f = frei.pop(); if (!f) break; f.userData.p = p; einkleiden(f, p); f.visible = true; f.scale.setScalar(1.2 * (p.sz || 1)) }
-    for (const f of POOL) { const p = f.userData.p; if (!p) continue; const alt = vorher.get(p); const nx = p.x * M, nz = p.y * M; const dx = alt ? nx - alt[0] : 0, dz = alt ? nz - alt[1] : 0; vorher.set(p, [nx, nz]);
+    for (const f of POOL) { const p = f.userData.p; if (!p) continue; if (p.neuKleiden) { p.neuKleiden = 0; einkleiden(f, p) } const alt = vorher.get(p); const nx = p.x * M, nz = p.y * M; const dx = alt ? nx - alt[0] : 0, dz = alt ? nz - alt[1] : 0; vorher.set(p, [nx, nz]);
       f.position.set(nx, 0, nz); if (Math.abs(dx) + Math.abs(dz) > .001) f.rotation.y = Math.atan2(dx, dz); if ((p.tanzBis || 0) > Date.now()) f.position.y = tanzen(f, t, p.ph || 0); else gehen(f, t, Math.abs(dx) + Math.abs(dz) > .001);
       if (((p.star && p.name) || (p.nachbar && typeof AFFAERE !== 'undefined' && AFFAERE.an)) && p !== ICH) { let s = NAMEN.get(p); if (!s) { s = p.echt ? namensSchild('● LIVE · ' + p.name, 'rgba(24,160,96,.95)', '#ffffff') : p.nachbar ? namensSchild('💋 ' + p.nachbar, 'rgba(255,79,163,.92)', '#ffffff') : namensSchild(p.name); if (p.echt) s.scale.multiplyScalar(1.25); NAMEN.set(p, s); szene.add(s) } s.visible = true; s.position.set(nx, p.echt ? 3 : 2.7, nz) }
       // Echte Spielerinnen: grüner, pulsierender Ring am Boden, damit man sie unter den Bewohnern sofort erkennt

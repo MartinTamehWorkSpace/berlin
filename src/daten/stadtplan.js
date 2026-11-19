@@ -19,7 +19,8 @@ mk(1,2,{title:'Health Hub',pod:{fl:2,shops:[['L',0,2,'lab'],['L',2,4,'mehr']]},t
 mk(2,2,{title:'Kiez Gym',pod:{fl:3,frame:'#26272b',shops:[['L',0,4,'mcf']]}});
 mk(3,2,{title:'Spree Motors',pod:{fl:2,shops:[['L',0,4,'motors'],['R',0,4,'motors']]},tow:{ox:.8,oy:.8,w:2.4,d:2.4,fl:7,kind:'res',crown:'#8fe3f0',tier:{ins:.3,fl:1}}});
 mk(0,4,{title:'Borchert',pod:{fl:3,style:'deko',farbe:'#ffd1dc',neon:'#ff4fa3',shops:[['L',0,4,'borch']]}});
-mk(1,4,{title:"Huggo's",pod:{fl:2,style:'deko',farbe:'#bfe9e3',neon:'#2fe0d2',shops:[['L',0,4,'hug']]}});
+// Ryotei 398: angelehnt an das 893 in der Kantstraße, schwarzes Haus, Spiegelglas voller Tags, nur ein kleines Neonschild auf rohem Holz
+mk(1,4,{title:'Ryotei 398',pod:{fl:2,style:'deko',farbe:'#141416',neon:'#ff2a2a',shops:[['L',0,4,'hug']]}});
 mk(2,4,{title:'Papillong',pod:{fl:2,style:'deko',farbe:'#fff0c2',neon:'#ff7eb6',shops:[['L',0,4,'riva']]}});
 mk(3,4,{title:'Grill Royale',pod:{fl:2,style:'deko',farbe:'#d9c8f4',neon:'#8f6bff',shops:[['L',0,4,'boot']]}});
 // Neue Viertel: Beauty-Meile (Reihe 3), Wohnen am Park (Spalte 4), Beach Club am Wasser
