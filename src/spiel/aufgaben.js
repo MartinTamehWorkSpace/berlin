@@ -1,21 +1,22 @@
 // Berlin · aufgaben.js · Tagesaufgaben, Erfolge und das große Belohnungsbanner
 // Andere Module melden, was passiert ist: ereignis('kauf', {it}) usw. Neue Aufgaben sind nur ein Eintrag in AUFGABEN_POOL.
 const AUFGABEN_POOL = [
-  { id: 'latte',   text: 'Hol dir eine Melange im Café Zweistein',         typ: 'kauf',    wenn: d => d.it.id === 'latte',             geld: 300,  stil: 3 },
-  { id: 'zahra',   text: 'Kauf ein Teil bei Zahra',                      typ: 'kauf',    wenn: d => d.it.laden === 'zahra',          geld: 500,  stil: 5 },
-  { id: 'spa',     text: 'Gönn dir eine Massage im Spree Spa',            typ: 'kauf',    wenn: d => d.it.id === 'massage',           geld: 600,  stil: 6 },
-  { id: 'schmuck', text: 'Kauf ein Schmuckstück',                        typ: 'kauf',    wenn: d => d.it.kat === 'schmuck',          geld: 1500, stil: 12 },
-  { id: 'tasche',  text: 'Hol dir eine neue Tasche',                     typ: 'kauf',    wenn: d => d.it.kat === 'tasche',           geld: 2500, stil: 20 },
-  { id: 'rivva',   text: 'Geh ins Papillong am Wasser',                      typ: 'betreten', wenn: d => d.b.title === 'Papillong',          geld: 400,  stil: 4 },
-  { id: 'borch',   text: 'Lass dich im Borchert sehen',                  typ: 'betreten', wenn: d => d.b.title === 'Borchert',       geld: 400,  stil: 4 },
-  { id: 'nicky',   text: 'Besuch den Scorpius Berlin',             typ: 'betreten', wenn: d => /Scorpius/.test(d.b.title),        geld: 800,  stil: 8 },
-  { id: 'berg',    text: 'Komm am Türsteher vom Berghain vorbei',              typ: 'betreten', wenn: d => d.b.title === 'Berghain',        geld: 400,  stil: 4 },
-  { id: 'fahren',  text: 'Fahr 40 Straßen weit mit deinem Auto',          typ: 'fahren',  ziel: 40,                                   geld: 1000, stil: 10 },
-  { id: 'vote',    text: 'Stimm ab, was in die Stadt kommt',             typ: 'vote',                                                geld: 300,  stil: 3 },
-  { id: 'chat',    text: 'Schreib etwas in den Stadt-Chat',              typ: 'chat',                                                geld: 200,  stil: 2 },
-  { id: 'arbeit',  text: 'Check bei der Arbeit ein',                     typ: 'arbeit',                                              geld: 500,  stil: 5 },
-  { id: 'foto',    text: 'Poste ein Selfie',                             typ: 'foto',                                                geld: 600,  stil: 6 },
-  { id: 'behandl', text: 'Behandle 4 Kundinnen in der Klinik im Fernsehturm',        typ: 'behandlung', ziel: 4,                                 geld: 3000, stil: 20 },
+  /* Berlin (Martin 19.11.2026): Tagesjobs nach Karriere. kar leer = für alle */
+  { id: 'doener',  text: 'Hol dir einen Gemüsekebap bei Mostafas',          typ: 'doener',                    geld: 300,   stil: 3 },
+  { id: 'ubahn',   text: 'Fahr zweimal mit der U-Bahn',                     typ: 'ubahn',   ziel: 2,          geld: 500,   stil: 4 },
+  { id: 'berg',    text: 'Komm am Türsteher vom Berghain vorbei',           typ: 'betreten', wenn: d => d.b.title === 'Berghain', geld: 600, stil: 8 },
+  { id: 'scorp',   text: 'Sunset im Scorpius Berlin',                       typ: 'betreten', wenn: d => /Scorpius/.test(d.b.title), geld: 800, stil: 8 },
+  { id: 'chat',    text: 'Schreib etwas in den Stadt-Chat',                 typ: 'chat',                      geld: 200,   stil: 2 },
+  { id: 'foto',    text: 'Mach ein Selfie in der Stadt',                    typ: 'foto',                      geld: 600,   stil: 5 },
+  { id: 'deal3',   text: 'Mach heute 3 Deals',            kar: 'dealer',    typ: 'deal',    ziel: 3,          geld: 15000, stil: 10 },
+  { id: 'ware',    text: 'Hol Nachschub beim Kontakt am Kotti', kar: 'dealer', typ: 'nachschub',              geld: 5000,  stil: 4 },
+  { id: 'flucht',  text: 'Häng die Polizei ab',           kar: 'dealer',    typ: 'entkommen',                 geld: 25000, stil: 12 },
+  { id: 'kasse2',  text: 'Leer zweimal eine Kasse',       kar: 'gastro',    typ: 'kasse',   ziel: 2,          geld: 20000, stil: 8 },
+  { id: 'promi',   text: 'Gib einen Promi-Abend',         kar: 'gastro',    typ: 'promi',                     geld: 50000, stil: 15 },
+  { id: 'ausbau',  text: 'Bau eins deiner Lokale aus',    kar: 'gastro',    typ: 'ausbau',                    geld: 30000, stil: 10 },
+  { id: 'cont3',   text: 'Dreh 3 Mal Content an Hotspots', kar: 'influ',    typ: 'content', ziel: 3,          geld: 12000, stil: 10 },
+  { id: 'live',    text: 'Geh einmal live',               kar: 'influ',     typ: 'live',                      geld: 6000,  stil: 6 },
+  { id: 'koop',    text: 'Nimm eine Kooperation an',      kar: 'influ',     typ: 'koop',                      geld: 20000, stil: 10 }
 ];
 // Erfolge: einmalig, prüfen den Spielstand
 const ERFOLGE = [
@@ -31,14 +32,12 @@ const ERFOLGE = [
   { id: 'million',  name: 'Millionärin',         wenn: () => meinVermoegen() >= 1e6, stil: 50 },
   { id: 'aufg10',   name: '10 Aufgaben geschafft', wenn: () => (ST.aufgZahl || 0) >= 10, stil: 50 },
   { id: 'flug',     name: 'Abgehoben',           wenn: () => (ST.fluege || 0) >= 1, stil: 30 },
-  { id: 'set1',     name: 'Erstes Set komplett', wenn: () => typeof setKomplett === 'function' && BQ.SETS.some(setKomplett), stil: 80 },
-  { id: 'woche',    name: 'Sieben Tage Glow',    wenn: () => (ST.kal && ST.kal.n) >= 7, stil: 70 },
-  { id: 'album20',  name: 'Halbe Kollektion',        wenn: () => Object.keys(ST.album || {}).length >= 20, stil: 100 }
+    { id: 'woche',    name: 'Sieben Tage Berlin',    wenn: () => (ST.kal && ST.kal.n) >= 7, stil: 70 }
 ];
-function tagesAufgaben() { const h = heute(); if (ST.aufg && ST.aufg.tag === h) return ST.aufg.liste;
-  let z = [...h].reduce((a, c) => a * 31 + c.charCodeAt(0) >>> 0, 7); const pool = [...AUFGABEN_POOL], liste = [];
+function tagesAufgaben() { const h = heute(); if (ST.aufg && ST.aufg.tag === h && ST.aufg.kar === (ST.karriere || '')) return ST.aufg.liste;
+  let z = [...h].reduce((a, c) => a * 31 + c.charCodeAt(0) >>> 0, 7); const pool = AUFGABEN_POOL.filter(a => !a.kar || a.kar === ST.karriere), liste = [];
   while (liste.length < 4) { z = (z * 1103515245 + 12345) >>> 0; liste.push({ id: pool.splice(z % pool.length, 1)[0].id, fort: 0, fertig: false }) }
-  ST.aufg = { tag: h, liste }; save(); return liste }
+  ST.aufg = { tag: h, kar: ST.karriere || '', liste }; save(); return liste }
 function ereignis(typ, d = {}) { const liste = tagesAufgaben(); let neu = false;
   for (const a of liste) { if (a.fertig) continue; const def = AUFGABEN_POOL.find(x => x.id === a.id); if (!def || def.typ !== typ) continue;
     if (def.ziel) { a.fort += d.menge || 1; if (a.fort < def.ziel) { neu = true; continue } } else if (def.wenn && !def.wenn(d)) continue;
