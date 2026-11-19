@@ -132,7 +132,8 @@ setInterval(() => { if (typeof ICH === 'undefined' || typeof ST === 'undefined')
 function tagTitel() { const k = ST.karriere; return k ? `${KARRIEREN[k].n} · ${karRang(k)}` : 'Neu in Berlin' }
 
 /* Wer noch keine Karriere hat, bekommt sie nach dem Betreten der Stadt einmal angeboten */
-setTimeout(function frage() { if (typeof ST === 'undefined' || !document.getElementById('start') || !document.getElementById('start').hidden) return setTimeout(frage, 3000); if (!ST.karriere && !ST.karriereGefragt) { ST.karriereGefragt = 1; save(); karriereZeigen() } }, 8000);
+setTimeout(function frage() { if (typeof ST === 'undefined' || !document.getElementById('start') || !document.getElementById('start').hidden) return setTimeout(frage, 3000); if (ST.intro !== 'fertig' && ST.intro != null) return setTimeout(frage, 5000); /* erst nach der Einführung, sonst liegen Fenster übereinander */ const k0 = document.getElementById('card'); if (k0 && !k0.hidden) return setTimeout(frage, 4000);
+  if (!ST.karriere && !ST.karriereGefragt) { ST.karriereGefragt = 1; save(); karriereZeigen() } }, 8000);
 /* Influencer: überall live gehen, kostet Energie, bringt Follower je nach Uhrzeit (abends am meisten) */
 function liveGehen() { const k = kst(), t = Date.now(); if ((k.pause.live || 0) > t) return toast(`Wieder live in ${dauer(Math.ceil((k.pause.live - t) / 1000))}`); if ((ST.energie ?? 70) < 15) return toast('Zu müde zum Streamen. Schlaf erst.');
   const h = typeof stunde === 'function' ? stunde() : 20, faktor = h >= 19 || h < 2 ? 2 : h >= 12 ? 1.2 : .6, fol = Math.round((150 + (k.m.influ || 0) * 300) * faktor * (.7 + Math.random() * .6));
