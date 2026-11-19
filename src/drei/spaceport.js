@@ -2,8 +2,8 @@
 // Kugeltanks, Wasserturm, Schild. Nachts angestrahlt (nur leuchtende Flächen, keine echten Lichter). Zur Viertelstunde nach jeder vollen Stunde startet die Rakete
 // mit Feuer und Rauch und steht danach wieder auf der Rampe. Antippen zeigt den Ausblick: Mond und Mars, für Milliardäre, noch gesperrt.
 import * as THREE from 'three';
-import { M } from './haeuser.js?v=1795049573';
-import { namensSchild } from './leben.js?v=1795049573';
+import { M } from './haeuser.js?v=1795049639';
+import { namensSchild } from './leben.js?v=1795049639';
 const std = (c, o = {}) => new THREE.MeshStandardMaterial(Object.assign({ color: c, roughness: .5 }, o));
 export function spaceport(szene) { const g = new THREE.Group(), x0 = 87 * M, z0 = 6 * M; g.position.set(x0, 0, z0); szene.add(g);
   const BETON = std('#bdb9b2', { roughness: .95 }), STAHL = std('#3a3f47', { metalness: .7, roughness: .4 }), EDEL = std('#d7dbe0', { metalness: 1, roughness: .18 }), SCHWARZ = std('#16171a', { roughness: .6 });
@@ -31,7 +31,7 @@ export function spaceport(szene) { const g = new THREE.Group(), x0 = 87 * M, z0 
   // Kugeltanks, Wasserturm, Hangar, Schild
   for (const [x, z, r] of [[22, -14, 5], [32, -14, 5], [27, -24, 6]]) { const k = new THREE.Mesh(new THREE.SphereGeometry(r, 24, 18), std('#f2f2f0', { roughness: .4 })); k.position.set(x, r + 1.5, z); k.castShadow = true; g.add(k); zyl(.4, .4, 2, STAHL, x, 0, z) }
   zyl(4, 4, 6, std('#e8e8e6'), -26, 22, -20); zyl(.6, .6, 22, STAHL, -26, 0, -20); box(26, 16, 18, std('#e4e6ea', { metalness: .3, roughness: .35 }), 22, 0, 22); box(26.2, 2, 18.2, LICHT, 22, 16, 22);
-  const sch = namensSchild('🚀 GLOW SPACEPORT · Mond · Mars', '#0b1020', '#ffffff'); sch.scale.set(18, 4.5, 1); sch.position.set(22, 22, 22); g.add(sch);
+  const sch = namensSchild('🚀 SPACEPORT BERLIN · Mond · Mars', '#0b1020', '#ffffff'); sch.scale.set(18, 4.5, 1); sch.position.set(22, 22, 22); g.add(sch);
   for (let i = 0; i < 6; i++) { const a = i / 6 * Math.PI * 2; box(.3, 10, .3, STAHL, Math.cos(a) * 28, 0, Math.sin(a) * 28); box(1.4, .6, .8, LICHT, Math.cos(a) * 28, 10, Math.sin(a) * 28) }
   g.traverse(o => { o.userData.spaceport = true });
   // Start zur Viertelstunde nach jeder vollen Stunde (echte Zeit, für alle gleich), 40 Sekunden

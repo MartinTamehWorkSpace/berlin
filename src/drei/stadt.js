@@ -8,18 +8,18 @@ import { EffectComposer } from 'three/addons/postprocessing/EffectComposer.js';
 import { RenderPass } from 'three/addons/postprocessing/RenderPass.js';
 import { UnrealBloomPass } from 'three/addons/postprocessing/UnrealBloomPass.js';
 import { OutputPass } from 'three/addons/postprocessing/OutputPass.js';
-import { graffiti } from './graffiti.js?v=1795049573';
-import { M, NEON, FENSTER, GLAS, baueHaeuser, box, std, durchsicht } from './haeuser.js?v=1795049573';
-import { menschen, verkehr, stadtmoebel, autosLaden } from './leben.js?v=1795049573';
-import { fahrbahn, pflaster, sand, blase, rasen } from './texturen.js?v=1795049573';
-import { praxis } from './praxis.js?v=1795049573';
-import { wohnung } from './wohnung.js?v=1795049573';
-import { boote, helis } from './wasser.js?v=1795049573';
-import { feuerwerk } from './feuerwerk.js?v=1795049573';
-import { strand } from './strand.js?v=1795049573';
-import { flughafen } from './flughafen.js?v=1795049573';
-import { arena } from './arena.js?v=1795049573';
-import { spaceport } from './spaceport.js?v=1795049573';
+import { graffiti } from './graffiti.js?v=1795049639';
+import { M, NEON, FENSTER, GLAS, baueHaeuser, box, std, durchsicht } from './haeuser.js?v=1795049639';
+import { menschen, verkehr, stadtmoebel, autosLaden } from './leben.js?v=1795049639';
+import { fahrbahn, pflaster, sand, blase, rasen } from './texturen.js?v=1795049639';
+import { praxis } from './praxis.js?v=1795049639';
+import { wohnung } from './wohnung.js?v=1795049639';
+import { boote, helis } from './wasser.js?v=1795049639';
+import { feuerwerk } from './feuerwerk.js?v=1795049639';
+import { strand } from './strand.js?v=1795049639';
+import { flughafen } from './flughafen.js?v=1795049639';
+import { arena } from './arena.js?v=1795049639';
+import { spaceport } from './spaceport.js?v=1795049639';
 let PRAXIS = null, WOHNUNG = null, inWohnungJetzt = false;
 
 const handy = innerWidth < 760;
@@ -123,7 +123,7 @@ if (tower) { const pg = new THREE.Group(), px = (tower.x + 2) * M - 2.5, pz = (t
 const zuhause = B.find(b => b.top === 'home'), heimRing = new THREE.Group(); if (zuhause) { heimRing.position.set((zuhause.x + 2) * M, 0, (zuhause.y + 2) * M); szene.add(heimRing);
   for (let w = 0; w < 2; w++) { const r = new THREE.Mesh(new THREE.RingGeometry(2.4 * M, 2.5 * M, 80), new THREE.MeshBasicMaterial({ color: '#4fa8ff', transparent: true, opacity: 0, depthWrite: false, blending: THREE.AdditiveBlending })); r.rotation.x = -Math.PI / 2; r.position.y = .2; r.userData.welle = w; heimRing.add(r) }
   const hs = new THREE.Sprite(new THREE.SpriteMaterial({ map: blase('🏠 DEIN ZUHAUSE', '#2f6fd6'), depthTest: false, transparent: true })); hs.scale.set(10, 2.5, 1); hs.renderOrder = 41; hs.position.y = ((zuhause.drei && zuhause.drei.userData.hoehe) || 30) + 5; heimRing.add(hs) }
-const turmSchild = new THREE.Sprite(new THREE.SpriteMaterial({ map: blase('🩺 GLOW TOWER', '#16171a'), depthTest: false, transparent: true })); turmSchild.scale.set(11, 2.75, 1); turmSchild.renderOrder = 41; if (tower) szene.add(turmSchild);
+const turmSchild = new THREE.Sprite(new THREE.SpriteMaterial({ map: blase('🩺 ALEX TOWER', '#16171a'), depthTest: false, transparent: true })); turmSchild.scale.set(11, 2.75, 1); turmSchild.renderOrder = 41; if (tower) szene.add(turmSchild);
 const towerSprite = new THREE.Sprite(new THREE.SpriteMaterial({ depthTest: false, transparent: true })); towerSprite.scale.set(10, 2.5, 1); towerSprite.renderOrder = 40; szene.add(towerSprite); let towerText = '';
 const blasenSprite = new THREE.Sprite(new THREE.SpriteMaterial({ depthTest: false, transparent: true })); blasenSprite.scale.set(9, 2.25, 1); blasenSprite.renderOrder = 40; szene.add(blasenSprite); let blasenText = '';
 

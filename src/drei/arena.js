@@ -2,11 +2,11 @@
 // Ränge in Stufen rundherum, offenes Dach mit weißem Ring, Bühne mit LED-Wand und Lichtrigg, Fans im Innenraum und auf den Rängen.
 // Nachts Lichtkegel in den Himmel, zur halben Stunde Konzertfinale mit Feuerwerk über der Arena (feuerwerk.js).
 import * as THREE from 'three';
-import { M } from './haeuser.js?v=1795049573';
-import { namensSchild } from './leben.js?v=1795049573';
-import { parkplatz } from './parkplatz.js?v=1795049573';
-import { feuerwerk } from './feuerwerk.js?v=1795049573';
-import { fahrbahn } from './texturen.js?v=1795049573';
+import { M } from './haeuser.js?v=1795049639';
+import { namensSchild } from './leben.js?v=1795049639';
+import { parkplatz } from './parkplatz.js?v=1795049639';
+import { feuerwerk } from './feuerwerk.js?v=1795049639';
+import { fahrbahn } from './texturen.js?v=1795049639';
 const std = (c, o = {}) => new THREE.MeshStandardMaterial(Object.assign({ color: c, roughness: .55 }, o));
 // Ellipsenring als flache Platte (für Ränge und Dachring)
 function ring(rx, rz, breite, dicke, mat) { const s = new THREE.Shape(); s.absellipse(0, 0, rx + breite, rz + breite, 0, Math.PI * 2); const loch = new THREE.Path(); loch.absellipse(0, 0, rx, rz, 0, Math.PI * 2, true); s.holes.push(loch);
@@ -49,7 +49,7 @@ export function arena(szene) { const g = new THREE.Group(), cx = -36 * M, cz = 6
   // Lichtrigg und Himmelsstrahler
   const kegel = ['#ffd36b', '#ff8fc7', '#ffffff', '#9fd8ff', '#ffd36b', '#ff8fc7'].map((f, i) => { const h = new THREE.Group(); h.position.set(bx, 12, -7.5 + i * 3); const k = new THREE.Mesh(new THREE.ConeGeometry(3, 30, 16, 1, true), new THREE.MeshBasicMaterial({ color: f, transparent: true, opacity: .06, blending: THREE.AdditiveBlending, depthWrite: false, side: THREE.DoubleSide })); k.position.x = 15; k.rotation.z = Math.PI / 2; h.add(k); g.add(h); return { h, k, ph: i } });
   const himmel = [0, 1, 2, 3].map(i => { const h = new THREE.Group(), a = i / 4 * Math.PI * 2; h.position.set(Math.cos(a) * (RX + 10), STUFEN * HOCH + 3, Math.sin(a) * (RZ + 10)); const k = new THREE.Mesh(new THREE.ConeGeometry(5, 120, 16, 1, true), new THREE.MeshBasicMaterial({ color: '#ffe2b8', transparent: true, opacity: 0, blending: THREE.AdditiveBlending, depthWrite: false, side: THREE.DoubleSide })); k.position.y = 60; k.rotation.x = Math.PI; h.add(k); g.add(h); return { h, k, ph: i } });
-  const sch = namensSchild('LUBA ARENA', '#0d0e12', '#ff8fc7'); sch.scale.set(22, 5.5, 1); sch.position.y = dachH + 10; g.add(sch);
+  const sch = namensSchild('SPREE ARENA', '#0d0e12', '#ff8fc7'); sch.scale.set(22, 5.5, 1); sch.position.y = dachH + 10; g.add(sch);
   // Feuerwerk über der Arena: zur halben Stunde das Konzertfinale
   const FW = feuerwerk(szene, { x: cx, z: cz }, innerWidth < 760); let finale = -1, t = 0, bild = 0, letzteShow = 0;
   // Parkplätze rund um die Arena: an der Zufahrt, im Süden und im Westen
