@@ -46,7 +46,7 @@ function beton(b){const p=b.pod,f=b,top=b.ph,c=p.farbe||'#8a8781',neon=p.neon||'
   for(const side of['L','R']){const F=side==='L'?fL:fR;
     F(f,0,4,0,top,grad(f,side,0,top,sh(c,side==='L'?1.04:.88),sh(c,side==='L'?.84:.70)));
     for(let i=1;i<8;i++)F(f,i*.5-.03,i*.5+.03,2.4,top-PAR,'rgba(0,0,0,.16)');
-    for(let i=1;i<7;i+=2)F(f,i*.5+.14,i*.5+.36,top*.5,top-PAR-2,'rgba(255,198,126,.26)');
+    for(let i=1;i<7;i+=2)F(f,i*.5+.14,i*.5+.36,top*.5,top-PAR-2,i%4===1?`rgba(255,70,45,${.3+.14*Math.sin(T*2+i)})`:`rgba(255,186,104,${.44+.12*Math.sin(T*1.6+i)})`);
     F(f,0,4,0,2.4,sh(c,.6));F(f,0,4,top-PAR,top,sh(c,.76));F(f,0,4,top-1.1,top,sh(c,1.1))}
   fL(f,1.4,2.4,0,9,'#15141a');fL(f,1.4,2.4,8.6,9,neon);
   const tt={x:f.x+.2,y:f.y+.2,w:1.1,d:1.1};fL(tt,0,1.1,0,top+16,sh(c,.98));fR(tt,0,1.1,0,top+16,sh(c,.78));top4(tt.x,tt.y,1.1,1.1,top+16,sh(c,1.06));

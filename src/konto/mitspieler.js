@@ -8,7 +8,10 @@ let raum = null, senden = null;
 function figurFuer(id, d) { let p = ECHT.get(id);
   if (!p) { p = Object.assign(human({}), { star: 1, echt: 1, s: 0, v: 0, ph: Math.random() * 6, sz: 1.08, lp: loop(PLAZA, .1) }); ECHT.set(id, p); P.push(p) }
   if (d.name) p.name = String(d.name).slice(0, 24);
-  if (d.look) Object.assign(p, { skin: d.look.skin || p.skin, frisur: d.look.frisur, hair: d.look.hair || p.hair, c1: d.look.c1, top: d.look.c1 || p.top, w: d.look.frisur === 'kurz' ? 0 : 1 });
+  if (d.look) { const l = d.look; Object.assign(p, { skin: l.skin || p.skin, frisur: l.frisur, hair: l.hair || p.hair,
+    c1: l.c1, c2: l.c2 != null ? l.c2 : p.c2, top: l.top || l.c1 || p.top, leg: l.leg || l.c2 || p.leg,
+    dress: l.dress ? 1 : 0, outfit: l.outfit || null, muster: l.muster || null, acc: l.acc || [], bagK: l.bagK || null,
+    w: l.frisur === 'kurz' ? 0 : 1 }) }
   if (!p.prof || !p.prof.name) p.prof = Object.assign({ handle: 'Echter Spieler', titel: 'Live in Berlin', lohn: 0, stil: 0, fol: 0, verm: 0, glow: 0 }, p.prof || {}, { name: p.name, p });
   return p }
 
@@ -24,7 +27,11 @@ function starten() { const ich = window.KONTO_ICH; if (!ich || raum) return;
 let letzte = 0, look = '';
 function senden_() { if (!senden || typeof ICH === 'undefined') return; const ich = window.KONTO_ICH; if (!ich) return;
   const pr = (typeof ST !== 'undefined' && ST.profil) || {}; const d = { id: ich.id, name: pr.handle || ich.name, x: +ICH.x.toFixed(2), y: +ICH.y.toFixed(2), idle: ICH.idle ? 1 : 0, drin: raumName(), tanz: (ICH.tanzBis || 0) > Date.now() ? 1 : 0 };
-  const l = JSON.stringify(pr); if (l !== look || Date.now() - letzte > 5000) { d.look = pr; look = l; letzte = Date.now() }
+  // Outfit kommt aus der eigenen Figur, damit jeder Kleiderwechsel sofort bei den anderen ankommt
+  const jetzt = Object.assign({}, pr, { skin: ICH.skin || pr.skin, hair: ICH.hair || pr.hair, frisur: ICH.frisur || pr.frisur,
+    c1: ICH.c1 || ICH.top || pr.c1, c2: ICH.c2 || ICH.leg, top: ICH.top, leg: ICH.leg, dress: ICH.dress ? 1 : 0,
+    outfit: ICH.outfit || null, muster: ICH.muster || null, acc: ICH.acc || [], bagK: ICH.bagK || null });
+  const l = JSON.stringify(jetzt); if (l !== look || Date.now() - letzte > 5000) { d.look = jetzt; look = l; letzte = Date.now() }
   senden(d) }
 
 /* Figuren ohne Lebenszeichen seit 8 Sekunden gehen zurück in den normalen Rundgang */

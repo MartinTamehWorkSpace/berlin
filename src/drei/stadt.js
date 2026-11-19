@@ -8,18 +8,18 @@ import { EffectComposer } from 'three/addons/postprocessing/EffectComposer.js';
 import { RenderPass } from 'three/addons/postprocessing/RenderPass.js';
 import { UnrealBloomPass } from 'three/addons/postprocessing/UnrealBloomPass.js';
 import { OutputPass } from 'three/addons/postprocessing/OutputPass.js';
-import { graffiti } from './graffiti.js?v=1795050331';
-import { M, NEON, FENSTER, GLAS, baueHaeuser, box, std, durchsicht } from './haeuser.js?v=1795050331';
-import { menschen, verkehr, stadtmoebel, autosLaden } from './leben.js?v=1795050331';
-import { fahrbahn, pflaster, sand, blase, rasen } from './texturen.js?v=1795050331';
-import { praxis } from './praxis.js?v=1795050331';
-import { wohnung } from './wohnung.js?v=1795050331';
-import { boote, helis } from './wasser.js?v=1795050331';
-import { feuerwerk } from './feuerwerk.js?v=1795050331';
-import { strand } from './strand.js?v=1795050331';
-import { flughafen } from './flughafen.js?v=1795050331';
-import { arena } from './arena.js?v=1795050331';
-import { spaceport } from './spaceport.js?v=1795050331';
+import { graffiti } from './graffiti.js?v=1795050481';
+import { M, NEON, FENSTER, GLAS, baueHaeuser, box, std, durchsicht } from './haeuser.js?v=1795050481';
+import { menschen, verkehr, stadtmoebel, autosLaden } from './leben.js?v=1795050481';
+import { fahrbahn, pflaster, sand, blase, rasen } from './texturen.js?v=1795050481';
+import { praxis } from './praxis.js?v=1795050481';
+import { wohnung } from './wohnung.js?v=1795050481';
+import { boote, helis } from './wasser.js?v=1795050481';
+import { feuerwerk } from './feuerwerk.js?v=1795050481';
+import { strand } from './strand.js?v=1795050481';
+import { flughafen } from './flughafen.js?v=1795050481';
+import { arena } from './arena.js?v=1795050481';
+import { spaceport } from './spaceport.js?v=1795050481';
 let PRAXIS = null, WOHNUNG = null, inWohnungJetzt = false;
 
 const handy = innerWidth < 760;
@@ -140,7 +140,7 @@ function licht(mitte) { const h = Math.round(stunde() * 4) / 4, /* Sonne wandert
   const raster = new THREE.Vector3(Math.round(mitte.x / 6) * 6, 0, Math.round(mitte.z / 6) * 6); /* Schatten springt in 6-m-Schritten statt bei jeder Bewegung zu zittern */ sonne.position.copy(sp).multiplyScalar(300).add(raster); sonne.target.position.copy(raster); sonne.intensity = 3.6 * glatt(-2, 6, hoehe); sonne.color.copy(farbe('#ffe6c8', '#ff9a6a', gold));
   halb.intensity = .28 + .27 * (1 - nacht); halb.color.copy(farbe('#b9d4ff', '#4a4f9e', nacht)); halb.groundColor.copy(farbe('#f0c9b8', '#2a1f3a', nacht));
   renderer.toneMappingExposure = .41 - nacht * .07; sterne.material.opacity = nacht * .9; szene.fog.color.copy(farbe(farbe('#a7abb0', '#b9a99a', gold * .5).getStyle(), '#14161c', nacht));
-  for (const m of NEON) m.emissiveIntensity = m.userData.basis * (.12 + nacht * .5); for (const m of FENSTER) m.emissiveIntensity = (m.userData.tag || 0) + m.userData.basis * nacht;
+  for (const m of NEON) m.emissiveIntensity = m.userData.basis * (.12 + nacht * .5); for (const m of FENSTER) { const pu = m.userData.puls; m.emissiveIntensity = (m.userData.tag || 0) + m.userData.basis * nacht * (pu ? 1 + pu * Math.sin(performance.now() / 1000 * 13.4 + (m.userData.ph || 0)) : 1) }
   bloom.strength = .18 + nacht * .28;
   // Laternenlicht: die nächsten Laternen leuchten wirklich
   const nah = moebel.LAMPEN.map(p => [p, p.distanceToSquared(mitte)]).sort((a, b) => a[1] - b[1]); LAMPENLICHT.forEach((l, i) => { const e = nah[i]; if (e) l.position.copy(e[0]); l.intensity = nacht * 55 });
@@ -166,7 +166,7 @@ document.getElementById('zin').onclick = () => zoom(.75); document.getElementByI
 // ---------- Antippen: wie im 2D-Spiel (Haus = hingehen, Figur = Setcard, eigenes Auto = ein- und aussteigen) ----------
 const ray = new THREE.Raycaster(), maus = new THREE.Vector2(), bodenEbene = new THREE.Plane(new THREE.Vector3(0, 1, 0), 0); let runter = null;
 /* Gehen in Gebäuden: Boden antippen, die Figur läuft hin (wird auch von der 2D-Fläche aus bedienung.js gerufen, die drinnen obenauf liegt) */
-window.innenTippen = (cx, cy) => { if (!INNEN) return; maus.set(cx / innerWidth * 2 - 1, -cy / innerHeight * 2 + 1); ray.setFromCamera(maus, kamera); const boden = new THREE.Vector3(); if (ray.ray.intersectPlane(new THREE.Plane(new THREE.Vector3(0, 1, 0), 0), boden)) { const b = INNEN; ICH.innenZiel = [Math.min(b.x + 3.75, Math.max(b.x + .25, boden.x / M)), Math.min(b.y + 3.75, Math.max(b.y + .25, boden.z / M))] } };
+window.innenTippen = (cx, cy) => { if (!INNEN) return; maus.set(cx / innerWidth * 2 - 1, -cy / innerHeight * 2 + 1); ray.setFromCamera(maus, kamera); const boden = new THREE.Vector3(); if (ray.ray.intersectPlane(new THREE.Plane(new THREE.Vector3(0, 1, 0), 0), boden)) { const b = INNEN; const wx2 = boden.x / M, wy2 = boden.z / M; if (typeof window.klubAntippen === 'function' && window.klubAntippen(wx2, wy2)) return; ICH.innenZiel = [Math.min(b.x + 3.75, Math.max(b.x + .25, wx2)), Math.min(b.y + 3.75, Math.max(b.y + .25, wy2))] } };
 leinwand.addEventListener('pointerdown', e => { runter = [e.clientX, e.clientY]; zieh = [e.clientX, e.clientY] });
 // In der Praxis: Ziehen dreht die Kamera um dich, Scrollen zoomt, Tippen läuft oder handelt
 let zieh = null; leinwand.addEventListener('pointermove', e => { if (!zieh) return; if (inWohnungJetzt && WOHNUNG) { WOHNUNG.drehen(e.clientX - zieh[0]); zieh = [e.clientX, e.clientY]; return } if (typeof KLINIK === 'undefined' || !KLINIK.offen || !PRAXIS) return; PRAXIS.drehen(e.clientX - zieh[0]); zieh = [e.clientX, e.clientY] });

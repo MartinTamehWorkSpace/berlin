@@ -2,7 +2,9 @@
 // ---------- Innenansicht: Haus wird bis aufs Erdgeschoss aufgeschnitten ----------
 function etagen(b){const E=[{n:'Erdgeschoss',a:art(b),k:(b.pod.shops.map(s=>s[3]))}];
   // Berghain: zwei Raeume, Haupthalle und Darkroom hinter dem Vorhang
-  if(E[0].a==='berghain'){E[0].n='Haupthalle';E[0].t='Tanzfläche, Theke, Dealer';E.push({n:'Darkroom',a:'darkroom',k:E[0].k,t:'Hinter dem Vorhang'});return E}
+  if(E[0].a==='berghain'){E[0].n='Haupthalle';E[0].t='Tanzfläche, Theke, Dealer';
+    E.push({n:'Darkroom',a:'darkroom',k:E[0].k,t:'Hinter dem Vorhang'});
+    E.push({n:'Panorama Bar',a:'panorama',k:E[0].k,t:'Treppe hoch, Fenster nach Osten'});return E}
   if(!b.tow)return E;
   const hoch=b.tow.fl+1;if(b.top==='home')E.push({n:`${hoch}. Stock`,a:'home',k:['home'],t:'Deine Wohnung'});
   else if(b.top==='work')E.push({n:'5. Stock',a:'buero',k:['work'],t:'Dein Büro'});
@@ -15,7 +17,7 @@ function zeigeEtage(b){const E=etagen(b),e=E[b.stock||0];offen=b;const cb=docume
   document.getElementById('ct').textContent=`${b.title} · ${e.n}${e.t?' · '+e.t:''}`;
   if(e.k.includes('hotel')){const h=document.createElement('h4');h.textContent='Rooftop-Bar';const box=document.createElement('div');box.style.cssText='display:flex;flex-direction:column;gap:5px;margin-top:6px';box.append(...WS.KATALOG.filter(VERKAUF.hotel).map(zeile));cb.append(h,box)}
   if(e.a==='home'&&b.top==='home'){const hw=document.createElement('h4');hw.textContent='Einrichten';const bx=document.createElement('div');bx.style.cssText='display:flex;flex-direction:column;gap:5px;margin-top:6px';bx.append(...WS.KATALOG.filter(i=>i.kat==='wohnen').sort((a,c)=>a.rang-c.rang).map(zeile));cb.append(hw,bx);const sl=document.createElement('button');sl.className='big';sl.textContent='Schlafen: Energie auf 100';sl.onclick=()=>{ST.energie=100;save();toast('Ausgeschlafen. Energie 100');};cb.append(sl)}
-  if(e.nachbar&&typeof nachbarZuHause==='function')nachbarZuHause(cb,e.nachbar);if(typeof partyBereich==='function')partyBereich(cb,b);
+  if(e.nachbar&&typeof nachbarZuHause==='function')nachbarZuHause(cb,e.nachbar);if(typeof partyBereich==='function')partyBereich(cb,b);if(typeof klubBereich==='function')klubBereich(cb,b);
   if(E.length>1){const h=document.createElement('h4');h.textContent=E[0].a==='berghain'?'Wohin im Club':'Aufzug';cb.append(h);E.forEach((x,i)=>{const bt=document.createElement('button');bt.className='big test';bt.style.marginTop='5px';bt.textContent=`${i===(b.stock||0)?'● ':''}${x.n}${x.t?' · '+x.t:''}`;bt.disabled=i===(b.stock||0);bt.onclick=()=>aufzug(b,i);cb.append(bt)})}
   const raus=document.createElement('button');raus.className='big test';raus.textContent='Haus verlassen';raus.onclick=verlassen;cb.append(raus)}
 let AUFZUG=0;
@@ -27,18 +29,25 @@ function verlassen(){const b=INNEN;if(!b)return;INNEN=null;const[tx,ty]=tuer(b);
 const art=b=>{const k=b.top==='home'?'home':(b.pod.shops[0]||[])[3]||'res';return{prado:'mode',shan:'mode',zahra:'mode',doug:'beauty',star:'cafe',ross:'markt',dn:'markt',lid:'markt',mehr:'markt',sac:'taschen',motors:'autos',klinik:'klinik',lab:'klinik',mcf:'gym',borch:'resto',hug:'resto',riva:'resto',boot:'club',work:'buero',home:'home',tif:'juwel',seph:'mode',vic:'mode',lulu:'mode',spa:'klinik',salon:'klinik',apfel:'buero',nicky:'club',berg:'berghain',bout:'mode',jets:'buero',arena:'club'}[k]||'home'};
 function innenLeute(b){const a=etagen(b)[b.stock||0].a,L=[];const e0=etagen(b)[b.stock||0];
   const team=CHAR_P.filter(p=>p.ort&&e0.k.includes(p.ort));team.forEach((p,i)=>{p.x=b.x+3.1-i*.7;p.y=b.y+.9+i*.25;p.idle=1;L.push(p)});const rolle={klinik:['Dr. Glatt','#ffffff',1],gym:['Trainer','#16171a',0],autos:['Verkäufer','#1d1e24',0],buero:['Kollegin','#3d405b',0],home:['',null,0],berg:['Türsteher','#0d0d0f',0],darkroom:['',null,0]}[a==='darkroom'?'darkroom':e0.k.includes('berg')?'berg':a]||['Verkäuferin','#16171a',0];
-  if(rolle[0]&&!team.length){const st=human({});Object.assign(st,{x:b.x+3.1,y:b.y+.9,idle:1,top:rolle[1],leg:'#16171a',coat:rolle[2],star:1,name:rolle[0],sz:1.05});if(rolle[0]==='Dr. Glatt'){st.hair='#cfc9c0';st.hs=3}L.push(st)}
+  if(rolle[0]&&!team.length){const st=human({});Object.assign(st,{x:b.x+3.1,y:b.y+.9,idle:1,top:rolle[1],leg:'#16171a',coat:rolle[2],star:1,name:rolle[0],sz:1.05});if(rolle[0]==='Türsteher'){st.klub=0;st.liste='club'}if(rolle[0]==='Dr. Glatt'){st.hair='#cfc9c0';st.hs=3}L.push(st)}
   // Bei Nachbarn zu Hause: die Person selbst und zwei Gäste, je nach Tag eine andere Szene
   if(e0.nachbar){const echt=P.find(p=>p.nachbarId===e0.nachbar);if(echt){const n=human({});Object.assign(n,{x:b.x+2.4,y:b.y+1.6,idle:1,skin:echt.skin,hair:echt.hair,top:echt.top,leg:echt.leg,c1:echt.c1,w:echt.w,dress:echt.dress,frisur:echt.frisur,name:echt.name,sz:1.05});L.push(n)}
     for(let i=0;i<2;i++){const k=human({});Object.assign(k,{x:b.x+1+i*1.3,y:b.y+2.6,idle:1,ph:i+3});L.push(k)}}
   if(a==='home'&&typeof partyGaeste==='function')partyGaeste(b,b.stock||0,L);
   if(a==='darkroom'){const platz=[[.55,.75],[.6,1.95],[.5,3.05],[1.75,.6],[2.0,3.3],[3.3,3.3],[2.55,1.75],[2.75,1.95],[1.5,2.5],[1.68,2.62]];
-    platz.forEach(([u,v],i)=>{const k=human({});Object.assign(k,{x:b.x+u,y:b.y+v,idle:1,ph:i*2.1,top:'#1b1b22',leg:'#15151b',skin:'#6b5b50',hair:'#14141a',dress:0,w:i%3?1:0,sz:.96});L.push(k)});return L}
+    platz.forEach(([u,v],i)=>{const k=human({});Object.assign(k,{x:b.x+u,y:b.y+v,idle:1,ph:i*2.1,top:'#1b1b22',leg:'#15151b',skin:'#6b5b50',hair:'#14141a',dress:0,w:i%3?1:0,sz:.96,klub:i%KLUB_DARK.length,liste:'dark',paar:i>=6?1:0});L.push(k)});return L}
+  if(a==='panorama'){const sitz=[[.6,1.2],[.6,1.9],[.65,2.6],[1.5,3.3],[2.3,3.35],[3.1,3.3],[2.6,.7],[3.2,1.5],[1.3,.8],[2.0,1.6],[1.0,2.4],[2.9,2.5]];
+    sitz.forEach(([u,v],i)=>{const k=human({});Object.assign(k,{x:b.x+u,y:b.y+v,idle:1,ph:i*1.3,top:['#15151b','#2a2a32','#3a2a2a','#1d2430'][i%4],leg:'#15151b',dress:i%4===0?1:0,w:i%3?1:0,hs:i%4,sz:.95+Math.random()*.12,klub:i%KLUB_PANO.length,liste:'pano'});L.push(k)});
+    const bk=human({});Object.assign(bk,{x:b.x+3.4,y:b.y+.8,idle:1,ph:2,top:'#0f0f12',leg:'#0f0f12',w:1,star:1,name:'Barfrau',sz:1.04,klub:0,liste:'pano'});L.push(bk);return L}
   const berg=e0.k.includes('berg');
-  if(berg){// volle Tanzflaeche: 26 Leute, die meisten Frauen, alle in Schwarz
-    for(let i=0;i<26;i++){const k=human({});Object.assign(k,{x:b.x+.35+(i%6)*.62+Math.random()*.22,y:b.y+.55+Math.floor(i/6)*.62+Math.random()*.22,idle:1,ph:i*1.7,
-      top:['#0d0d0f','#1b1b1f','#2a2a2e','#3a0c0c'][i%4],leg:'#0d0d0f',dress:i%5===0?1:0,w:i%4?1:0,hs:i%4,tanzt:1,sz:.9+Math.random()*.2});L.push(k)}
-    const dl=human({});Object.assign(dl,{x:b.x+3.45,y:b.y+3.6,idle:1,ph:3,top:'#171a1f',leg:'#15151a',coat:1,dress:0,w:0,star:1,name:'Dealer',sz:1.05});L.push(dl);return L}
+  if(berg){// 44 Leute auf der Tanzflaeche, die meisten Frauen, alle in Schwarz
+    for(let i=0;i<44;i++){const k=human({});Object.assign(k,{x:b.x+.3+(i%8)*.46+Math.random()*.16,y:b.y+.5+Math.floor(i/8)*.42+Math.random()*.16,idle:1,ph:i*1.7,
+      top:['#0d0d0f','#1b1b1f','#2a2a2e','#3a0c0c'][i%4],leg:'#0d0d0f',dress:i%5===0?1:0,w:i%4?1:0,hs:i%4,tanzt:1,sz:.88+Math.random()*.2,
+      klub:2+(i%(KLUB_LEUTE.length-2)),liste:'club'});L.push(k)}
+    // Swinger-Ecke vorne links: drei Paare auf dem Podest, dicht beieinander
+    [[.85,3.05],[1.25,3.4],[1.62,3.12]].forEach(([u,v],i)=>{for(let j=0;j<2;j++){const k=human({});Object.assign(k,{x:b.x+u+j*.16,y:b.y+v+j*.12,idle:1,ph:i*2+j,
+      top:'#0b0b0d',leg:'#0b0b0d',skin:j?'#8a6e5c':'#c69a7c',hair:'#0b0b0d',dress:0,w:j,sz:.97,paar:1,takt:i,klub:2+((i+5)%(KLUB_LEUTE.length-2)),liste:'club'});L.push(k)}});
+    const dl=human({});Object.assign(dl,{x:b.x+3.45,y:b.y+3.6,idle:1,ph:3,top:'#171a1f',leg:'#15151a',coat:1,dress:0,w:0,star:1,name:'Dealer',sz:1.05,klub:1,liste:'club'});L.push(dl);return L}
   for(let i=0;i<(a==='home'?0:3);i++){const k=human({});Object.assign(k,{x:b.x+.8+i*1.1,y:b.y+2+(i%2)*.8,idle:1,ph:i});if(i===1)k.bagK=['lady','speedi','birkinn'][Math.floor(Math.random()*3)];L.push(k)}
   return L}
 function kiste(x,y,w,d,h,c,z0=0){const f={x,y,w,d};fL(f,0,w,z0,z0+h,sh(c,.92));fR(f,0,d,z0,z0+h,sh(c,.72));top4(x,y,w,d,z0+h,sh(c,1.08))}
@@ -81,8 +90,10 @@ function einrichtung(b){const a=etagen(b)[b.stock||0].a,x=b.x,y=b.y,O=[];const a
     // Andreaskreuz an der linken Wand, Fesseln an den vier Enden
     add('g',.04,2.6,()=>{poly([pt(x,y+2.4,6),pt(x,y+2.54,6),pt(x,y+3.3,34),pt(x,y+3.16,34)],'#6b6864');poly([pt(x,y+3.16,6),pt(x,y+3.3,6),pt(x,y+2.54,34),pt(x,y+2.4,34)],'#57544f');
       for(const[v,z]of[[2.47,7],[3.23,7],[2.47,32],[3.23,32]])poly([pt(x,y+v-.07,z),pt(x,y+v+.07,z),pt(x,y+v+.07,z+2),pt(x,y+v-.07,z+2)],'#b9b2a6')});
-    // Stahlwanne vorne links
-    K(.3,3.35,1.15,.55,7,'#7f8387');K(.38,3.4,.99,.45,.4,'#20252a',6.6);
+    // Swinger-Ecke vorne links: Podest mit Matten, niedriges Gelaender, rotes Licht
+    K(.6,2.85,1.5,1.05,2.4,'#1a171c');K(.7,2.95,1.3,.85,.5,'#2a2228',2.4);
+    K(.6,2.85,.08,1.05,7,'#46433f');K(2.02,2.85,.08,1.05,7,'#46433f');K(.6,3.82,1.5,.08,7,'#46433f');
+    add('g',1.35,3.28,()=>{const[px,py]=pt(x+1.35,y+3.3,8);g.fillStyle=`rgba(214,38,54,${.13+.07*Math.sin(T*1.2)})`;g.beginPath();g.arc(px,py,21*Z,0,7);g.fill()});
     // Kaefig vorne rechts, einer steht drin
     for(const[u,v]of[[2.82,3.08],[3.66,3.08],[2.82,3.78],[3.66,3.78]])K(u,v,.09,.09,25,'#55524e');
     for(let i=0;i<5;i++)K(2.82,3.08+i*.175,.93,.03,.06,'#4a4743',4+i*4.4);
@@ -107,29 +118,169 @@ function einrichtung(b){const a=etagen(b)[b.stock||0].a,x=b.x,y=b.y,O=[];const a
     K(2.3,1.5,.12,.12,26,'#46433f');K(3.3,1.5,.12,.12,26,'#46433f');K(2.3,2.4,.12,.12,26,'#46433f');K(3.3,2.4,.12,.12,26,'#46433f');
     K(2.44,1.64,.86,.76,.2,'#201d1b',12);
     add('g',2.85,2.0,()=>{for(const[u,v]of[[2.36,1.56],[3.36,1.56],[2.36,2.46],[3.36,2.46]]){const[ax,ay]=pt(x+u,y+v,26),[bx2,by2]=pt(x+u,y+v,12.3);g.strokeStyle='rgba(150,148,142,.5)';g.lineWidth=.7*Z;g.beginPath();g.moveTo(ax,ay);g.lineTo(bx2,by2);g.stroke()}});
-    K(3.5,2.9,.38,1,9,'#17161a');
+    K(3.5,2.9,.38,1,9,'#17161a');K(2.6,.45,1.0,.5,6,'#4b4f52');K(2.66,.5,.88,.4,.3,'#15181a',5.6);
     for(const[u,v]of[[.62,.34],[3.3,.6],[1.25,3.5]])add('g',u,v,()=>{const[px,py]=pt(x+u,y+v,24);g.fillStyle='rgba(190,26,16,.12)';g.beginPath();g.arc(px,py,13*Z,0,7);g.fill();g.fillStyle=`rgba(230,60,40,${.4+.2*Math.sin(T*1.5+u)})`;g.beginPath();g.arc(px,py,2.4*Z,0,7);g.fill()})}
+  else if(a==='panorama'){
+    // Lange Theke, Hocker, niedrige Baenke an der Fensterfront, Rauch im Gegenlicht
+    K(2.3,.3,1.5,.5,13,'#4e4942');K(2.3,.3,1.5,.5,.3,'#8d8577',13);
+    for(let i=0;i<4;i++)K(2.45+i*.36,.9,.26,.26,9,'#2a2722');
+    for(let i=0;i<3;i++){K(.3,1.0+i*1.0,.5,.78,5,'#3a332c');K(.3,1.0+i*1.0,.5,.12,11,'#473e35')}
+    for(let i=0;i<3;i++)K(1.25+i*.85,3.3,.68,.5,5,'#3a332c');
+    K(1.35,1.65,1.25,.95,3.4,'#2f2a24');
+    for(const[u,v]of[[.95,.45],[3.55,2.95]])K(u,v,.32,.32,24,'#564f45');
+    add('g',2.0,2.1,()=>{for(let i=0;i<5;i++){const[px,py]=pt(x+1.4+i*.3,y+2.1,18+((T*6+i*9)%26));g.fillStyle='rgba(226,214,192,.11)';g.beginPath();g.arc(px,py,2.4*Z,0,7);g.fill()}})}
   else if(a==='buero'){for(let i=0;i<2;i++)for(let j=0;j<3;j++){K(.5+i*1.6,.5+j*1.1,1.1,.5,11,'#f4f1ea');K(.7+i*1.6,.55+j*1.1,.5,.06,7,'#1d2a36',11)}}
   else if(b.top==='home'){const own=WS.KATALOG.filter(i=>i.kat==='wohnen'&&ST.besitz[i.id]);if(!own.some(i=>i.id==='w-bett'))K(2.4,.4,1.4,1.6,6,'#d9d2c8');if(!own.some(i=>i.id==='w-sofa'))K(.4,2.6,1.6,.6,6,'#9a9aa2');
     for(const i of own){if(!i.platz)continue;const[u,v,w,d,h,z]=i.platz;K(u,v,w,d,h,i.farbe,z||0);if(i.id==='w-bett'){K(u,v,w,.12,24,'#d8c39a');K(u+w-.08,v,.08,d,24,'#d8c39a');K(u+.1,v+.2,w-.2,.3,3,'#ff7eb6',h)}if(i.id==='w-sofa')K(u,v,w,.18,13,i.farbe);if(i.id==='w-bar')add('g',u+.25,v+.4,()=>{const[px,py]=pt(x+u+.25,y+v+.4,16);g.drawImage(glut('#ffd166'),px-8*Z,py-8*Z,16*Z,16*Z)});if(i.id==='w-aquarium')add('f',u,v,()=>{for(let k=0;k<5;k++){const[px,py]=pt(x+u+.06,y+v+.2+((T*.3+k*.3)%1.4),8+k*3);g.fillStyle=['#ffd166','#ff7eb6','#7ef7ff'][k%3];g.fillRect(px,py,3*Z,1.5*Z)}})}}
   else{K(.4,.4,1.6,2.1,8,'#f2eee8');K(.4,.4,1.6,.25,16,'#c9b48a');K(2.4,.4,1.4,.6,9,'#8a8f96');K(2.6,2,.9,.9,7,'#c9b48a');K(3.4,3.3,.35,.35,22,'#4b5d4f')}
   if(typeof partyEinrichtung==='function')partyEinrichtung(b,x,y,add,K);
   return O}
-function innen(b){const x=b.x,y=b.y;const ee=etagen(b)[b.stock||0];const k=ee.k.find(v=>v!=='res')||(ee.a==='home'?'home':null);const DARK=ee.a==='darkroom',BERG=k==='berg'&&!DARK,T=performance.now()/1000;const WH=k==='berg'?84:58;
+function innen(b){const x=b.x,y=b.y;const ee=etagen(b)[b.stock||0];const k=ee.k.find(v=>v!=='res')||(ee.a==='home'?'home':null);const DARK=ee.a==='darkroom',PANO=ee.a==='panorama',BERG=k==='berg'&&!DARK&&!PANO,T=performance.now()/1000;const WH=BERG?84:PANO?62:58;
   /* Berghain: Beton, Dunkelheit, Tanzfläche im Takt (128 BPM), rote Leuchtbänder, Stroboskop */
-  const PAL=DARK?['#09090b','#0c0c0e','#121214','#0e0e10','#8c1008','#5e0b05']:BERG?['#16161a','#1e1e23','#2c2b2f','#232226','#ff3b2f','#b8261d']:['#efe6dc','#e6dbcf','#f4efe8','#dcd3c8','#ff7eb6','#e0609c'];const takt=Math.floor(T*128/60);
+  const PAL=PANO?['#3b3934','#343029','#55504a','#443f39','#e8b26a','#bb7f3f']:DARK?['#09090b','#0c0c0e','#121214','#0e0e10','#8c1008','#5e0b05']:BERG?['#16161a','#1e1e23','#2c2b2f','#232226','#ff3b2f','#b8261d']:['#efe6dc','#e6dbcf','#f4efe8','#dcd3c8','#ff7eb6','#e0609c'];const takt=Math.floor(T*128/60);
   top4(x,y,4,4,0,PAL[0]);for(let i=0;i<4;i++)for(let j=0;j<4;j++){if((i+j)%2)top4(x+i,y+j,1,1,0,PAL[1]);if(BERG&&(i*7+j*3+takt)%5===0)top4(x+i+.05,y+j+.05,.9,.9,0,['rgba(255,59,47,.5)','rgba(255,18,10,.34)','rgba(240,244,250,.18)'][(i+j+takt)%3])}
   poly([pt(x,y,0),pt(x+4,y,0),pt(x+4,y,WH),pt(x,y,WH)],PAL[2]);poly([pt(x,y,0),pt(x,y+4,0),pt(x,y+4,WH),pt(x,y,WH)],PAL[3]);
   poly([pt(x,y,WH-6),pt(x+4,y,WH-6),pt(x+4,y,WH),pt(x,y,WH)],PAL[4]);poly([pt(x,y,WH-6),pt(x,y+4,WH-6),pt(x,y+4,WH),pt(x,y,WH)],PAL[5]);
   if(BERG){for(let i=0;i<4;i++){poly([pt(x+.4+i,y,10),pt(x+.6+i,y,10),pt(x+.6+i,y,WH-8),pt(x+.4+i,y,WH-8)],'rgba(255,59,47,'+(.25+.25*Math.sin(T*6+i))+')')}if(takt%8<1)poly([pt(x,y,0),pt(x+4,y,0),pt(x+4,y+4,0),pt(x,y+4,0)],'rgba(255,255,255,.12)')}
+  if(PANO){// Fensterfront nach Osten, Sonntagmorgen
+    for(let i=0;i<4;i++){const u=x+.3+i*.95;poly([pt(u,y,16),pt(u+.8,y,16),pt(u+.8,y,52),pt(u,y,52)],'rgba(255,206,140,.3)');poly([pt(u+.38,y,16),pt(u+.42,y,16),pt(u+.42,y,52),pt(u+.38,y,52)],'#51493f')}
+    for(let i=0;i<3;i++){const v=y+.9+i*1.05;poly([pt(x,v,16),pt(x,v+.8,16),pt(x,v+.8,52),pt(x,v,52)],'rgba(255,196,124,.22)')}
+    const[sx,sy]=pt(x+1.6,y+.2,34);const gr3=g.createRadialGradient(sx,sy,2,sx,sy,90*Z);gr3.addColorStop(0,'rgba(255,196,120,.3)');gr3.addColorStop(1,'rgba(255,196,120,0)');g.fillStyle=gr3;g.beginPath();g.arc(sx,sy,90*Z,0,7);g.fill()}
   if(BERG){for(let i=1;i<8;i++){poly([pt(x+i*.5,y,0),pt(x+i*.5+.03,y,0),pt(x+i*.5+.03,y,WH),pt(x+i*.5,y,WH)],'rgba(0,0,0,.22)');poly([pt(x,y+i*.5,0),pt(x,y+i*.5+.03,0),pt(x,y+i*.5+.03,WH),pt(x,y+i*.5,WH)],'rgba(0,0,0,.22)')}
     for(let i=0;i<4;i++){const u=x+.45+i*.9;poly([pt(u,y,26),pt(u+.52,y,26),pt(u+.52,y,50),pt(u,y,50)],'rgba(168,186,205,.15)');poly([pt(u+.24,y,26),pt(u+.28,y,26),pt(u+.28,y,50),pt(u+.24,y,50)],'#4a4845')}
     for(let i=0;i<3;i++){const v=y+1.4+i*.9;poly([pt(x,v,26),pt(x,v+.52,26),pt(x,v+.52,50),pt(x,v,50)],'rgba(150,168,188,.11)')}}
   if(etagen(b).length>1){poly([pt(x,y+2.9,0),pt(x,y+3.7,0),pt(x,y+3.7,34),pt(x,y+2.9,34)],'#9aa3ad');poly([pt(x,y+3.28,0),pt(x,y+3.32,0),pt(x,y+3.32,34),pt(x,y+3.28,34)],'#5a636d');poly([pt(x,y+3.1,38),pt(x,y+3.5,38),pt(x,y+3.5,42),pt(x,y+3.1,42)],AUFZUG?'#ff4fa3':'#2fe0d2')}
   if(k&&!BERG){const[cx,cy]=pt(x+2,y,WH-20);const s=Math.min(Z/DPR,2)*DPR;g.setTransform(s*.9,s*.45,0,s,cx,cy);brand(k,120,22);g.setTransform(1,0,0,1,0,0)}
   if(DARK){const[gx,gy]=pt(x+2,y+2,6);const gr2=g.createRadialGradient(gx,gy,2,gx,gy,70*Z);gr2.addColorStop(0,'rgba(190,24,14,.22)');gr2.addColorStop(1,'rgba(0,0,0,0)');g.fillStyle=gr2;g.beginPath();g.arc(gx,gy,70*Z,0,7);g.fill()}
-  const O=einrichtung(b);const mitTanz=p=>()=>{const d=(p.tanzt||(p.tanzBis||0)>Date.now())?Math.abs(Math.sin(T*6.7+(p.ph||0)))*.12:0;p.y-=d;p.x-=d;person(p);p.y+=d;p.x+=d};
+  const O=einrichtung(b);const mitTanz=p=>()=>{if(p.paar){const d2=Math.sin(T*2.3+(p.takt||0))*.07*((p.ph||0)%2?1:-1);p.y+=d2;person(p);p.y-=d2;return}const d=(p.tanzt||(p.tanzBis||0)>Date.now())?Math.abs(Math.sin(T*6.7+(p.ph||0)))*.12:0;p.y-=d;p.x-=d;person(p);p.y+=d;p.x+=d};
   const LIVE=typeof window.liveImRaum==='function'?window.liveImRaum(b):[];for(const p of[...(b.innen||[]),...LIVE])O.push({x:p.x,y:p.y,f:mitTanz(p)});O.push({x:ICH.x,y:ICH.y,f:mitTanz(ICH)});
   O.sort((a,c)=>(a.x+a.y)-(c.x+c.y)).forEach(o=>o.f());
   // Schnittkante vorne: niedrige Glasbrüstung
   const f={x,y,w:4,d:4};fL(f,0,4,0,5,BERG?'rgba(54,56,62,.5)':'rgba(220,230,240,.5)');fR(f,0,4,0,5,BERG?'rgba(40,42,48,.5)':'rgba(200,215,230,.5)');fL(f,0,4,5,6,PAL[4]);fR(f,0,4,5,6,PAL[5])}
+
+// ---------- Leute im Club ansprechen: jede Figur hat ihren eigenen Faden ----------
+const KLUB_LEUTE=[
+ {n:'Sven',t:'Türsteher',s:'Er sieht dich an und sagt erstmal gar nichts.',a:[
+   ['Einfach zurückgucken','Er nickt knapp zur Seite. Du bist drin.',{fol:20}],
+   ['„Ich kenne den DJ."','„Alle kennen den DJ."',{stil:-3}],
+   ['Nach der Garderobe fragen','„Links. Und das Handy klebt dir gleich einer zu."',{}]]},
+ {n:'Dealer',t:'steht am Klo',s:'„Alles gut bei dir? Brauchst du was?"',a:[
+   ['„Was hast du da?"','„Was du willst. Preis steht, gewechselt wird nicht."',{}],
+   ['„Nur Wasser."','„Fünf Euro. Flasche bleibt hier."',{geld:-5,energie:10}],
+   ['Kopf schütteln','„Später vielleicht." Er steht schon wieder woanders.',{}]]},
+ {n:'Nike',t:'tanzt seit vier Stunden',s:'Sie tanzt mit geschlossenen Augen und merkt dich erst beim zweiten Mal.',a:[
+   ['Mittanzen','„Endlich jemand, der nicht quatscht."',{fol:35,energie:-8}],
+   ['„Wie lange bist du schon hier?"','„Keine Ahnung. Es war hell, als ich kam."',{}],
+   ['Wasser anbieten','Sie trinkt die halbe Flasche und gibt sie dir zurück.',{stil:2,energie:-4}]]},
+ {n:'Jonas',t:'zum ersten Mal hier',s:'„Ey, ist das hier wirklich das Berghain? Ich bin extra aus München."',a:[
+   ['„Ja. Und jetzt leise."','„Sorry. Sorry!" Er flüstert den Rest der Nacht.',{stil:3}],
+   ['Ihm die Panorama Bar zeigen','„Alter. Danke." Er läuft sofort die Treppe hoch.',{fol:15}],
+   ['„Handy weg."','Er klebt den Sticker selbst drauf.',{stil:2}]]},
+ {n:'Mirela',t:'DJ, gerade Pause',s:'Sie steht an der Säule und hört von draußen ihrem eigenen Set zu.',a:[
+   ['„Starkes Set."','„Die nächste Stunde wird besser."',{fol:60}],
+   ['Nach einem Track fragen','„Frag mich Dienstag, jetzt weiß ich gar nichts."',{}],
+   ['Nichts sagen, danebenstehen','Nach zwei Minuten reicht sie dir wortlos ihr Wasser.',{stil:5}]]},
+ {n:'Frau mit Sonnenbrille',t:'seit gestern hier',s:'Drinnen, nachts, Sonnenbrille. Sie findet das völlig normal.',a:[
+   ['„Siehst du überhaupt was?"','„Genug."',{}],
+   ['Brille loben','„Die ist von meiner Mutter." Sie lächelt zum ersten Mal.',{stil:4}],
+   ['Nach der Uhrzeit fragen','„Sowas fragt man hier nicht."',{stil:-2}]]},
+ {n:'Typ im Harnisch',t:'kommt aus dem Darkroom',s:'Er lehnt an der Theke und sieht aus, als hätte er die Nacht schon gewonnen.',a:[
+   ['„Woher hast du den?"','„Unten. Kostet 240, hält ewig."',{}],
+   ['„Wie ist es da unten?"','„Dunkel. Und keiner fragt was."',{fol:10}],
+   ['Ihm einen Drink ausgeben','„Du bist in Ordnung." Er stellt sich zu dir.',{geld:-12,fol:25}]]},
+ {n:'Lena',t:'sucht ihre Freundinnen',s:'„Hast du drei Frauen gesehen, eine mit rotem Mantel?"',a:[
+   ['„Oben an der Bar."','„Du rettest mein Leben." Sie rennt los.',{fol:20}],
+   ['„Nein, aber bleib hier."','Sie bleibt. Zwei Stunden.',{fol:45,energie:-10}],
+   ['Mithelfen suchen','Ihr findet alle drei im Darkroom. Sie wollten nicht gefunden werden.',{fol:30,stil:2}]]},
+ {n:'Bastian',t:'erklärt dir Berlin',s:'„Früher war das hier ein Heizkraftwerk, weißt du das?"',a:[
+   ['„Ja, wusste ich."','„Oh." Pause. „Und das Dach?"',{}],
+   ['„Erzähl."','Zwanzig Minuten später weißt du alles über Fernwärme.',{stil:-4,energie:-6}],
+   ['Weitergehen','Er redet trotzdem weiter.',{}]]},
+ {n:'Alex',t:'raucht an der Säule',s:'„Feuer?"',a:[
+   ['Feuer geben','„Danke." Mehr kommt nicht, und das ist okay.',{stil:1}],
+   ['„Rauche nicht."','„Auch gut." Er dreht sich weg.',{}],
+   ['Mitrauchen','Ihr steht zehn Minuten schweigend nebeneinander. Bester Teil der Nacht.',{stil:3,energie:-3}]]},
+ {n:'Kati',t:'hat zu wenig getrunken',s:'„Weißt du, wo es Leitungswasser gibt?"',a:[
+   ['Zur Theke bringen','Sie trinkt zwei Gläser und ist wieder da.',{fol:15,stil:2}],
+   ['Deine Flasche geben','„Du bist ein Engel."',{fol:20,energie:-5}],
+   ['„Der Dealer verkauft welches."','„Fünf Euro? Ernsthaft?"',{}]]},
+ {n:'Robin',t:'guckt auf dein Outfit',s:'„Das ist gut. Wo ist das her?"',a:[
+   ['„Unten im Laden."','„Dachte ich mir." Er geht sofort runter.',{fol:25}],
+   ['„Gehört meiner Ex."','„Noch besser."',{stil:5}],
+   ['Nichts verraten','„Verstehe." Er nickt anerkennend.',{stil:3}]]},
+ {n:'Sonja',t:'muss Montag arbeiten',s:'„Ich wollte um zwei zu Hause sein. Es ist halb sechs."',a:[
+   ['„Dann bleib ganz."','„Das sagen alle." Sie bleibt.',{fol:30,energie:-12}],
+   ['„Fahr nach Hause."','„Du hast ja recht." Sie bleibt trotzdem.',{}],
+   ['Nach ihrem Job fragen','„Zahnarztpraxis. Bitte frag nicht weiter."',{stil:1}]]},
+ {n:'Mo',t:'macht das Licht',s:'„Guck mal hoch. Gleich geht das Rote an."',a:[
+   ['Hochgucken','Das ganze Dach wird rot. Alle schreien.',{fol:70,stil:4}],
+   ['„Mach mal heller."','„Niemals."',{stil:-2}],
+   ['„Wie lange machst du das schon?"','„Länger als du lebst."',{}]]}];
+const KLUB_DARK=[
+ {n:'Stimme',t:'aus dem Dunkeln',s:'Du siehst nichts. Jemand steht einen Schritt neben dir.',a:[
+   ['„Hallo?"','„Pssst."',{}],
+   ['Stehen bleiben','Nach einer Weile geht die Person weiter.',{fol:10}],
+   ['Zurück zum Vorhang','Du findest raus, ohne jemanden anzurempeln. Kleine Kunst.',{stil:2}]]},
+ {n:'Jemand am Vorhang',t:'passt auf',s:'„Handy aus. Licht aus. Dann ist alles gut."',a:[
+   ['„Alles klar."','„Dann viel Spaß."',{stil:2}],
+   ['„Was sind die Regeln?"','„Fragen. Und bei Nein ist Schluss."',{stil:4}],
+   ['Umdrehen','„Auch okay. Oben ist Bar."',{}]]},
+ {n:'Rico',t:'Security mit Lampe',s:'Er leuchtet kurz an dir vorbei, nicht ins Gesicht.',a:[
+   ['Nicken','Er nickt zurück und geht weiter.',{}],
+   ['„Alles ruhig?"','„Immer. Deshalb bin ich hier."',{stil:2}],
+   ['„Kann ich hier schlafen?"','„Nein."',{}]]},
+ {n:'Zwei',t:'sehen kurz auf',s:'Zwei Schatten, dicht beieinander. Einer schaut kurz zu dir rüber.',a:[
+   ['Weitergehen','Sie sind schon wieder beschäftigt.',{}],
+   ['Nicken','Nicken zurück. Mehr braucht es nicht.',{fol:5}],
+   ['Dazustellen','Es wird kurz still. Dann ein Platz für dich.',{fol:25,stil:-3}]]},
+ {n:'Typ auf der Bank',t:'macht Pause',s:'„Setz dich, wenn du willst. Hier ist es am leisesten."',a:[
+   ['Setzen','Ihr sitzt zehn Minuten. Danach geht es wieder.',{energie:12}],
+   ['„Erste Mal hier?"','„Sechstes Jahr."',{}],
+   ['Stehen bleiben','„Auch gut."',{}]]}];
+const KLUB_PANO=[
+ {n:'Barfrau',t:'Panorama Bar',s:'„Von hier siehst du die Sonne aufgehen. Dauert noch zwanzig Minuten."',a:[
+   ['Mate bestellen','„Vier Euro. Und trink was Richtiges dazu."',{geld:-4,energie:12}],
+   ['„Was nimmst du selbst?"','„Kaffee. Immer Kaffee."',{stil:1}],
+   ['Auf die Sonne warten','Sie stellt dir ungefragt ein Wasser hin.',{energie:8,stil:3}]]},
+ {n:'Zwei am Fenster',t:'reden seit Stunden',s:'Sie reden über Wohnungen. Seit drei Uhr.',a:[
+   ['Zuhören','Du erfährst, was Mitte wirklich kostet. Es tut weh.',{stil:-2}],
+   ['Mitreden','„Sag das nochmal, genau so!"',{fol:20}],
+   ['Weitergehen','Sie merken es nicht.',{}]]},
+ {n:'Mann mit Kaffee',t:'war schon arbeiten',s:'„Ich komme morgens her, wenn alle gehen. Beste Zeit."',a:[
+   ['„Warum?"','„Weil dann keiner mehr etwas beweisen will."',{stil:5}],
+   ['Kaffee holen','Ihr trinkt zusammen und sagt nichts.',{energie:10}],
+   ['„Verrückt."','„Du bist doch auch noch hier."',{}]]},
+ {n:'Frau mit Decke',t:'friert',s:'„Ist dir auch kalt oder bin das nur ich?"',a:[
+   ['Jacke anbieten','„Du kriegst sie wieder. Irgendwann."',{stil:4,fol:15}],
+   ['„Nur du."','Sie lacht und rückt näher ans Fenster.',{fol:10}],
+   ['Heizung suchen','Es gibt keine. Ihr setzt euch in die Sonne.',{energie:6}]]},
+ {n:'Jemand am Handy',t:'sucht Netz',s:'„Kein Empfang hier oben, oder?"',a:[
+   ['„Gott sei Dank."','„Stimmt eigentlich."',{stil:3}],
+   ['Beim Suchen helfen','Am Fenster geht ein Balken. Mehr nicht.',{}],
+   ['„Leg weg."','Er legt es weg. Sieht erleichtert aus.',{stil:4,fol:10}]]}];
+const klubListe=p=>p.liste==='dark'?KLUB_DARK:p.liste==='pano'?KLUB_PANO:KLUB_LEUTE;
+function klubGespraech(p){const L=klubListe(p),d=L[p.klub%L.length],b=INNEN;
+  const cb=panel(`${d.n} · ${d.t}`);const s1=document.createElement('p');s1.className='hin';s1.textContent=d.s;cb.append(s1);
+  for(const[frage,antwort,w]of d.a){const bt=document.createElement('button');bt.className='big test';bt.style.marginTop='5px';bt.textContent=frage;
+    bt.onclick=()=>{const c2=panel(`${d.n} · ${d.t}`);const q=document.createElement('p');q.className='hin';q.textContent='Du: '+frage;
+      const a2=document.createElement('p');a2.textContent=`${d.n}: ${antwort}`;c2.append(q,a2);
+      if(w){if(w.fol)ST.follower=(ST.follower||0)+w.fol;if(w.stil)ST.stil=(ST.stil||0)+w.stil;if(w.geld)ST.geld+=w.geld;
+        if(w.energie)ST.energie=Math.max(0,Math.min(100,(ST.energie??70)+w.energie));save();hud();
+        const txt=[w.fol?`Follower ${w.fol>0?'+':''}${w.fol}`:'',w.stil?`Stil ${w.stil>0?'+':''}${w.stil}`:'',w.geld?`${w.geld>0?'+':''}${euro(w.geld)}`:'',w.energie?`Energie ${w.energie>0?'+':''}${w.energie}`:''].filter(Boolean).join(' · ');
+        if(txt){const e3=document.createElement('p');e3.className='hin';e3.textContent=txt;c2.append(e3)}}
+      const zu=document.createElement('button');zu.className='big';zu.textContent='Zurück in den Club';zu.onclick=()=>zeigeEtage(b);c2.append(zu)};
+    cb.append(bt)}
+  const w2=document.createElement('button');w2.className='big test';w2.textContent='Weitergehen';w2.onclick=()=>zeigeEtage(b);cb.append(w2)}
+// Antippen im Club: steht jemand an der Stelle, wird er angesprochen statt hingelaufen
+window.klubAntippen=(wx2,wy2)=>{const b=INNEN;if(!b||!b.innen)return false;let best=null,bd=.55;
+  for(const q of b.innen){if(q.klub==null)continue;const dd=Math.hypot(q.x-wx2,q.y-wy2);if(dd<bd){bd=dd;best=q}}
+  if(!best)return false;document.getElementById('card').hidden=false;klubGespraech(best);return true};
+// Tanzen: die eigene Figur tanzt sichtbar, auch fuer alle Mitspieler im Raum
+function klubBereich(cb,b){const E=etagen(b);if(E[0].a!=='berghain')return;
+  const h=document.createElement('h4');h.textContent='Im Club';cb.append(h);
+  const t=document.createElement('button');t.className='big';const tanzt=(ICH.tanzBis||0)>Date.now();
+  t.textContent=tanzt?'Du tanzt gerade':'💃 Tanzen';t.disabled=tanzt;
+  t.onclick=()=>{ICH.tanzBis=Date.now()+30000;if(typeof PARTY!=='undefined'&&PARTY)PARTY.tanzBis=ICH.tanzBis;
+    ST.follower=(ST.follower||0)+15;ST.energie=Math.max(0,(ST.energie??70)-5);save();hud();toast('Du tanzt. Alle im Raum sehen es.');zeigeEtage(b)};
+  cb.append(t);
+  const hin=document.createElement('p');hin.className='hin';hin.textContent='Tippe jemanden im Raum an, um ihn anzusprechen. Jede Person sagt etwas anderes.';cb.append(hin)}

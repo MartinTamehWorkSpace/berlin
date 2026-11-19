@@ -1,7 +1,7 @@
 // Berlin City 3D · haeuser.js · Häuser aus dem Stadtplan (B): Art déco, Glas mit Solardach, Alex Tower. Schilder kommen aus brand() des Spiels.
 // Ein Feld des Spiels = 3 Meter. Spiel-x wird 3D-X, Spiel-y wird 3D-Z.
 import * as THREE from 'three';
-import { markise, glasfassade } from './texturen.js?v=1795050331';
+import { markise, glasfassade } from './texturen.js?v=1795050481';
 
 export const M = 3;
 export const NEON = [], FENSTER = [], GLAS = []; // GLAS: Hochhausglas, nachts chromartig spiegelnd
@@ -52,10 +52,15 @@ function beton(b, gr) { const p = b.pod, w = 4 * M - .8, d = w, h = 7 + p.fl * 2
   box(w, h, d, m, 0, 0, 0, gr); box(w + .35, 2.2, d + .35, sockel, 0, 0, 0, gr); box(w + .3, .55, d + .3, kranz, 0, h - .55, 0, gr);
   for (const x of [-w / 2 + .35, w / 2 - .35]) for (const z of [-d / 2 + .35, d / 2 - .35]) box(.7, h, .7, std('#7e7b75', { roughness: .95 }), x, 0, z, gr);
   const tt = 2.4; box(tt, h + 5, tt, m, -w / 2 + tt / 2 + .4, 0, -d / 2 + tt / 2 + .4, gr);
-  const schlitz = new THREE.MeshStandardMaterial({ color: '#2a2622', emissive: '#ffbf7a', emissiveIntensity: 0, roughness: .3 }); schlitz.userData.basis = .5; FENSTER.push(schlitz);
-  for (let i = -2; i <= 2; i++) { box(.5, h * .34, .22, schlitz, i * 2.1, h * .5, d / 2 + .06, gr); box(.22, h * .34, .5, schlitz, w / 2 + .06, h * .5, -i * 2.1, gr) }
+  const schlitz = new THREE.MeshStandardMaterial({ color: '#3a2d1f', emissive: '#ffb257', emissiveIntensity: .25, roughness: .3 }); schlitz.userData.basis = 2.6; schlitz.userData.tag = .18; schlitz.userData.puls = .2; FENSTER.push(schlitz);
+  const schlitzRot = new THREE.MeshStandardMaterial({ color: '#2e1412', emissive: '#ff2f1c', emissiveIntensity: .2, roughness: .3 }); schlitzRot.userData.basis = 2.2; schlitzRot.userData.tag = .12; schlitzRot.userData.puls = .38; schlitzRot.userData.ph = 1.7; FENSTER.push(schlitzRot);
+  // Hohe schmale Fenster auf drei Etagen, rundherum. Die meisten warm, ein paar rot, alle leuchten nach aussen.
+  for (let et = 0; et < 3; et++) { const yy = h * (.3 + et * .23), hh = h * .18;
+    for (let i = -2; i <= 2; i++) { const mm = (i + et) % 4 === 0 ? schlitzRot : schlitz;
+      box(.62, hh, .22, mm, i * 2.1, yy, d / 2 + .06, gr); box(.22, hh, .62, mm, w / 2 + .06, yy, -i * 2.1, gr);
+      box(.62, hh, .22, mm, i * 2.1, yy, -d / 2 - .06, gr); box(.22, hh, .62, mm, -w / 2 - .06, yy, -i * 2.1, gr) } }
   box(1.9, 3.2, .35, std('#121116', { roughness: .6 }), -1.3, 0, d / 2 + .06, gr);
-  box(2, .2, .4, neon(p.neon || '#ff3b2f', 4), -1.3, 3.2, d / 2 + .12, gr);
+  box(2.2, .26, .4, neon(p.neon || '#ff3b2f', 7), -1.3, 3.25, d / 2 + .12, gr);
   return h }
 
 // Ladensockel aus Glas mit Rahmen, darüber optional ein Glasturm mit sichtbaren Geschossdecken
