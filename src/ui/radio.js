@@ -1,9 +1,9 @@
 // Berlin City · radio.js · Drei Radiosender mit selbst erzeugter Musik im 80er-Stil (Web Audio, keine Fremdmusik)
 // Knopf "Radio" schaltet weiter: aus, Spree FM, Palm Radio, Club Neon. Startet erst nach einem Klick (Browser-Regel).
 const SENDER = [
-  { name: 'Spree FM', stil: 'Synthwave', bpm: 104, akk: [[57, 60, 64], [53, 57, 60], [48, 52, 55], [55, 59, 62]], arp: true, drums: 'gross', farbe: '#ff4fa3' },
-  { name: 'Kiez Radio 030', stil: 'Chill', bpm: 84, akk: [[50, 53, 57, 60], [55, 59, 62, 65], [48, 52, 55, 59], [53, 57, 60, 64]], arp: false, drums: 'leise', farbe: '#2fe0d2' },
-  { name: 'Bunker Techno', stil: 'Dance', bpm: 124, akk: [[57, 60, 64], [57, 60, 64], [53, 57, 60], [55, 59, 62]], arp: true, drums: 'club', farbe: '#b79cff' }
+  { name: 'Spree FM', stil: 'Indie Pop', bpm: 104, akk: [[57, 60, 64], [53, 57, 60], [48, 52, 55], [55, 59, 62]], arp: true, drums: 'gross', farbe: '#ff4fa3' },
+  { name: 'Kiez Radio 030', stil: 'Deutschrap', bpm: 84, akk: [[50, 53, 57, 60], [55, 59, 62, 65], [48, 52, 55, 59], [53, 57, 60, 64]], arp: false, drums: 'leise', farbe: '#2fe0d2' },
+  { name: 'Bunker Techno', stil: 'Techno, 140 BPM', bpm: 124, akk: [[57, 60, 64], [57, 60, 64], [53, 57, 60], [55, 59, 62]], arp: true, drums: 'club', farbe: '#b79cff' }
 ];
 const RADIO = { an: -1, ctx: null, master: null, hall: null, takt: 0, naechste: 0, uhr: null };
 const hz = n => 440 * Math.pow(2, (n - 69) / 12);
