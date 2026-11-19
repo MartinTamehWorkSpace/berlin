@@ -1,4 +1,4 @@
-// Berlin City 3D · flughafen.js · Flughafen Tempelhoff östlich der Stadt: Zufahrt, Vorfeld, Landebahn mit Befeuerung, Hangar, Tower und vier Glowstream-Jets.
+// Berlin City 3D · flughafen.js · Flughafen Tempelhoff östlich der Stadt: Zufahrt, Vorfeld, Landebahn mit Befeuerung, Hangar, Tower und vier Spreestream-Jets.
 // Gekaufte Jets stehen schwarz mit Goldstreifen, die anderen weiß mit Preisschild. Antippen deines Jets öffnet die Flugziele (src/spiel/jet.js).
 import * as THREE from 'three';
 import { M } from './haeuser.js?v=1795067735';

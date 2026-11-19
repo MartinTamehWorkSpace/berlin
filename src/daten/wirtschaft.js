@@ -149,10 +149,10 @@ window.GLOW_WIRTSCHAFT = (() => {
     { id: 'j-speed', kat: 'jacht', rang: 100, laden: 'nicky', name: 'Speedboot Rosa',        preis: 180000,   stil: 30,  boot: 'speed' },
     { id: 'j-motor', kat: 'jacht', rang: 300, laden: 'nicky', name: 'Motorjacht Azzurra',    preis: 850000,   stil: 90,  boot: 'jacht', ab: 17 },
     // Privatjets am Flughafen Tempelhoff: Preise steigen stark, der kleinste ist nach etwa zwei Wochen aktivem Spielen drin
-    { id: 'jet-light', kat: 'jet', rang: 100, laden: 'jets', name: 'Glowstream Light',      preis: 6000000,   stil: 150,  jet: 'light' },
-    { id: 'jet-mid',   kat: 'jet', rang: 300, laden: 'jets', name: 'Glowstream Midsize',    preis: 18000000,  stil: 320,  jet: 'mid' },
-    { id: 'jet-long',  kat: 'jet', rang: 600, laden: 'jets', name: 'Glowstream Long Range', preis: 45000000,  stil: 700,  jet: 'long' },
-    { id: 'jet-ultra', kat: 'jet', rang: 900, laden: 'jets', name: 'Glowstream Ultra',      preis: 95000000,  stil: 1400, jet: 'ultra' },
+    { id: 'jet-light', kat: 'jet', rang: 100, laden: 'jets', name: 'Spreestream Light',      preis: 6000000,   stil: 150,  jet: 'light' },
+    { id: 'jet-mid',   kat: 'jet', rang: 300, laden: 'jets', name: 'Spreestream Midsize',    preis: 18000000,  stil: 320,  jet: 'mid' },
+    { id: 'jet-long',  kat: 'jet', rang: 600, laden: 'jets', name: 'Spreestream Long Range', preis: 45000000,  stil: 700,  jet: 'long' },
+    { id: 'jet-ultra', kat: 'jet', rang: 900, laden: 'jets', name: 'Spreestream Ultra',      preis: 95000000,  stil: 1400, jet: 'ultra' },
     { id: 'j-super', kat: 'jacht', rang: 900, laden: 'nicky', name: 'Superjacht Glow One',   preis: 12000000, stil: 400, boot: 'gross', ab: 45, warte: 10, minStil: 10000 },
     // Designer-Etage in der Galeries Lafayetto: jedes Teil ist ein ganzer Look, den man an der Figur sieht
     { id: 'gucchi-anzug',   kat: 'mode', rang: 700, laden: 'designer', name: 'Gucchi Trainingsanzug', preis: 2400, stil: 26, look: { outfit: 'sport', muster: 'streifen', c2: '#ffffff' }, farben: ['#1d3557', '#16171a', '#f3a6c6', '#2e8b57'] },
