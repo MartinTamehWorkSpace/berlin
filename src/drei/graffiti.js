@@ -37,7 +37,12 @@ export function graffiti(szene) { grauMachen(szene); const g = new THREE.Group()
   const wagen = st(new THREE.BoxGeometry(2.4, 1.2, 1.6), gruen, 0, 13.6, 0); for (let i = 0; i < 4; i++) { st(new THREE.BoxGeometry(.5, 1.3, 1.6), gruen, -1.8 + i * 1.2, 13.7, -1.3); st(new THREE.BoxGeometry(.35, .7, .4), gruen, -1.8 + i * 1.2, 14.6, -1.95) }
   st(new THREE.CylinderGeometry(.18, .18, 2.2, 8), gruen, 0, 15.2, .2); st(new THREE.SphereGeometry(.45, 10, 8), gruen, 0, 16.5, .2);
   const bahn = sBahn(g); spaetis(g); ryotei(g, mats); strassenbild(g); weltzeituhr(g); oberbaum(g); const streife = polizei(g);
-  return { weiter(dt = .016) { bahn(dt); streife() } } }
+  /* Zielringe der Karriere: gelb pulsierende Ringe an Deal-Ecken oder Hotspots */
+  const ringe = {}, ringMat = new THREE.MeshBasicMaterial({ color: '#ffb21a', transparent: true, opacity: .7, depthWrite: false });
+  const zielringe = () => { if (typeof ORTE === 'undefined' || typeof ST === 'undefined') return; const ids = ST.karriere === 'dealer' ? ['goerli', 'raw', 'kotti'] : ST.karriere === 'influ' ? ['tor', 'alex', 'ufer', 'berg', 'scorp', 'kadeve'] : [];
+    for (const k in ringe) ringe[k].visible = ids.includes(k); for (const id of ids) { let r = ringe[id]; if (!r) { const q = ORTE[id].p(); if (!q) continue; r = new THREE.Mesh(new THREE.RingGeometry(1.6, 2.1, 40), ringMat); r.rotation.x = -Math.PI / 2; r.position.set(q.x * M, .12, q.y * M); g.add(r); ringe[id] = r } }
+    ringMat.opacity = .45 + Math.sin(performance.now() / 300) * .3 };
+  return { weiter(dt = .016) { bahn(dt); streife(); zielringe() } } }
 /* S-Bahn auf dem Viadukt am Nordrand: Ziegelbögen, Gleis, rot-gelber Zug pendelt hin und her */
 function sBahn(g) { const y0 = -2.6 * M, x0 = -34 * M, x1 = 58 * M, H = 6.5, ziegel = new THREE.MeshStandardMaterial({ color: '#7a4a3a', roughness: .95 }), dunkel = new THREE.MeshStandardMaterial({ color: '#2a2b2f', roughness: .7 });
   const deck = new THREE.Mesh(new THREE.BoxGeometry(x1 - x0, 1.2, 5.5), ziegel); deck.position.set((x0 + x1) / 2, H, y0); deck.castShadow = deck.receiveShadow = true; g.add(deck);
