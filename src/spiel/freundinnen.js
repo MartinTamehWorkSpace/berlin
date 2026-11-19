@@ -13,7 +13,7 @@ function boutiquenListe() { const liste = [];
 function besuchen(b) { const bh = besuchtHeute(); if (bh.ids.includes(b.id) || bh.ids.length >= BESUCH.proTag) return;
   bh.ids.push(b.id); ST.geld += BESUCH.geldGast; xpGeben(BESUCH.xpGast); setTimeout(() => ereignis('besuch', { b }));
   const t = b.tasche && GLOW_FIGUREN.TASCHE[b.tasche]; const alb = ALLE_TASCHEN.find(x => x.id === b.tasche) || (t && Object.assign({ f: 'halb' }, t));
-  karteZeigen({ kopf: b.live ? 'BESUCH BEI EINER FREUNDIN' : 'BESUCH IN DER STADT', bild: alb ? taschenBild(alb, 120, true) : null, titel: b.name, sub: `Glow-Level ${b.lvl} · ${b.album} Taschen in der Kollektion`,
+  karteZeigen({ kopf: b.live ? 'BESUCH BEI EINER FREUNDIN' : 'BESUCH IN DER STADT', bild: alb ? taschenBild(alb, 120, true) : null, titel: b.name, sub: `Level ${b.lvl} · ${b.album} Taschen in der Kollektion`,
     unter: b.live ? `Du hast ihre Regale aufpoliert: Ihre Ware verkauft sich 15 Min. schneller. Du bekommst +${euro(BESUCH.geldGast)} und +${BESUCH.xpGast} XP.` : `Ihr habt über Taschen geredet: +${euro(BESUCH.geldGast)} und +${BESUCH.xpGast} XP.`,
     farbe: b.live ? '#2fe0d2' : '#ff8fc7', knopf: 'Danke' }); save(); hud() }
 // Besuche bei mir: einmal pro Besucherin und Tag laufende Ware schneller fertig, dazu XP

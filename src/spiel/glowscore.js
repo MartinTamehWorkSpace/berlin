@@ -1,4 +1,4 @@
-// Berlin City · glowscore.js · Der Glow Score: ein Hauptwert, auf den alles einzahlt. Er bestimmt deinen Rang in der Stadt.
+// Berlin City · glowscore.js · Der Respekt: ein Hauptwert, auf den alles einzahlt. Er bestimmt deinen Rang in der Stadt.
 // Alle Einzelwerte bleiben (Stil, Vermögen, Follower, Klinik, Meisterschaft, Pokale, Anerkennung), der Score fasst sie zusammen.
 // Große Zahlen wachsen über Wurzeln, damit niemand mit nur einem Wert davonzieht: wer überall gut ist, steht oben.
 const SCORE_TEILE = [
@@ -15,6 +15,6 @@ const SCORE_TEILE = [
 const glowScore = () => Math.round(SCORE_TEILE.reduce((s, t) => s + t.wert(), 0));
 // Bewohnerinnen ohne Klinik: Score aus Stil, Vermögen und Followern; echte Spielerinnen bringen ihren Score aus dem Profil mit
 const scoreVon = pr => pr.p === ICH ? glowScore() : pr.score != null ? pr.score : Math.round((pr.stil || 0) * 10 + Math.sqrt(pr.verm || 0) * 2 + Math.sqrt(pr.fol || 0) * 25);
-function scoreAufbau(cb) { const h = el_('h4', null, 'So setzt sich dein Glow Score zusammen'), box = el_('div', 'scoreteile'), ges = glowScore() || 1;
+function scoreAufbau(cb) { const h = el_('h4', null, 'So setzt sich dein Respekt zusammen'), box = el_('div', 'scoreteile'), ges = glowScore() || 1;
   for (const t of SCORE_TEILE) { const w = Math.round(t.wert()), r = el_('div', 'scoreteil'), bar = el_('i'); const sb = el_('em', 'sbalken'); sb.append(bar); r.append(el_('span', null, `${t.icon} ${t.name}`), el_('b', null, w.toLocaleString('de-DE')), sb); bar.style.width = Math.min(100, w / ges * 100) + '%'; box.append(r) }
   cb.append(h, box) }

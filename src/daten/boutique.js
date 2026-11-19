@@ -1,7 +1,7 @@
-// Berlin City · boutique.js (Daten) · Ware für die eigene Boutique, Regale, Kasse, Glow-Level und das Kollektion
+// Berlin City · boutique.js (Daten) · Ware für die eigene Boutique, Regale, Kasse, Level und das Kollektion
 // Reine Daten. Zeiten in echten Sekunden: Ware verkauft sich auch, wenn das Spiel zu ist.
 window.GLOW_BOUTIQUE = (() => {
-  // Ware fürs Regal: zeit = Sekunden bis verkauft, ek = Einkauf, vk = Erlös, xp = Erfahrung, lvl = ab Glow-Level, fund = Chance auf eine Albumtasche
+  // Ware fürs Regal: zeit = Sekunden bis verkauft, ek = Einkauf, vk = Erlös, xp = Erfahrung, lvl = ab Level, fund = Chance auf eine Albumtasche
   const WARE = [
     { id: 'gloss',   icon: '💄', name: 'Glow Lipgloss',         zeit: 60,     ek: 20,   vk: 70,    xp: 8,   lvl: 1,  fund: .04 },
     { id: 'lack',    icon: '💅', name: 'Nagellack Rosé',         zeit: 300,    ek: 40,   vk: 170,   xp: 20,  lvl: 1,  fund: .07 },
@@ -25,7 +25,7 @@ window.GLOW_BOUTIQUE = (() => {
     { cap: 60000, preis: 250000, lvl: 15, name: 'Private Shopping Lounge' }
   ];
   const kasseProStunde = lvl => 150 + 40 * lvl;
-  // Glow-Level: die ersten gehen schnell, danach wird es langsamer
+  // Level: die ersten gehen schnell, danach wird es langsamer
   const xpFuer = lvl => Math.round(30 * Math.pow(lvl, 1.5));
   const LEVEL_MAX = 100;
   const levelLohn = lvl => lvl * 1000;

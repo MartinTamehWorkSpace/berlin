@@ -1,4 +1,4 @@
-// Berlin City · boutique.js · Die eigene Boutique (Regale, Kasse), Glow-Level und Funde fürs Kollektion
+// Berlin City · boutique.js · Die eigene Boutique (Regale, Kasse), Level und Funde fürs Kollektion
 // Der tägliche Kreislauf: Ware einräumen, wiederkommen, abholen, Kasse leeren, ausbauen. Zeiten laufen in echter Zeit weiter.
 const BQ = window.GLOW_BOUTIQUE;
 // Taschen der Kollektion kennt auch die Figur, damit man sie in der Stadt tragen kann
@@ -14,14 +14,14 @@ function boutStand() { if (!ST.bout) ST.bout = { regale: [null, null, null], kas
 const jetzt = () => Date.now() + (boutStand().vs || 0);
 const dauer = s => s >= 3600 ? `${Math.floor(s / 3600)} Std. ${Math.round(s % 3600 / 60)} Min.` : s >= 60 ? `${Math.floor(s / 60)}:${String(Math.floor(s % 60)).padStart(2, '0')} Min.` : `${Math.ceil(s)} Sek.`;
 
-// ---------- Glow-Level ----------
+// ---------- Level ----------
 function glowLevel(xp) { let l = 1, x = xp ?? ST.xp ?? 0; while (l < BQ.LEVEL_MAX && x >= BQ.xpFuer(l)) { x -= BQ.xpFuer(l); l++ } return { l, rest: x, bis: BQ.xpFuer(l) } }
 function freiBei(l) { return [...BQ.WARE.filter(w => w.lvl === l).map(w => w.name), ...BQ.REGALE.map((r, i) => r.lvl === l && i > 2 ? `${i + 1}. Regal` : '').filter(Boolean), ...BQ.KASSE.filter(k => k.lvl === l && k.preis).map(k => k.name)] }
 function xpGeben(n) { if (!n) return; const vor = glowLevel().l; ST.xp = (ST.xp || 0) + n; const nach = glowLevel().l;
-  for (let l = vor + 1; l <= nach; l++) { const lohn = BQ.levelLohn(l); ST.geld += lohn; const neu = freiBei(l); banner(`GLOW-LEVEL ${l}`, neu.length ? 'Neu: ' + neu.join(', ') : 'Du wirst bekannter in der Stadt', `+${euro(lohn)}`) }
+  for (let l = vor + 1; l <= nach; l++) { const lohn = BQ.levelLohn(l); ST.geld += lohn; const neu = freiBei(l); banner(`LEVEL ${l}`, neu.length ? 'Neu: ' + neu.join(', ') : 'Du wirst bekannter in der Stadt', `+${euro(lohn)}`) }
   xpLeiste() }
 function xpLeiste() { const el = document.getElementById('xpLeiste'); if (!el) return; const g = glowLevel();
-  el.querySelector('b').textContent = `GLOW-LEVEL ${g.l}`; el.querySelector('i').style.width = Math.round(g.rest / g.bis * 100) + '%'; el.querySelector('span').textContent = `${g.rest.toLocaleString('de-DE')} / ${g.bis.toLocaleString('de-DE')} XP` }
+  el.querySelector('b').textContent = `LEVEL ${g.l}`; el.querySelector('i').style.width = Math.round(g.rest / g.bis * 100) + '%'; el.querySelector('span').textContent = `${g.rest.toLocaleString('de-DE')} / ${g.bis.toLocaleString('de-DE')} XP` }
 
 // ---------- Boutique ----------
 const setBonus = () => (1 + BQ.SETS.filter(setKomplett).reduce((s, x) => s + x.bonus, 0)) * (typeof ruhmStufe === 'function' ? ruhmStufe().preis : 1);

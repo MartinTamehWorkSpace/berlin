@@ -14,7 +14,7 @@ function profil(p){if(p===ICH){const k=WS.lohnStufe(ST.tage);return{name:(ST.pro
   if(!p.prof){const r=(p.ph*9301+49297)%233280/233280;const sterne={Valentina:62000,Mila:21000,Jonas:7400,'Dr. Glatt':3900};const stil=sterne[p.name]??Math.round(Math.pow(r,3.2)*9000+Math.random()*40);
     const tage=Math.min(900,Math.round(stil/9+Math.random()*20));const autos=WS.KATALOG.filter(i=>i.kat==='auto'&&i.preis<stil*120).sort((a,b)=>b.rang-a.rang);
     p.prof={verm:Math.round(stil*42+3000),glow:Math.round((5.5+r*3.5)*10)/10,name:p.name||(p.bw&&p.bw.name)||'Bewohnerin',handle:p.star?(p.name==='Dr. Glatt'?'Arzt · Ästhetik Klinik':'@'+p.name.toLowerCase()):(p.bw?p.bw.handle:''),titel:WS.lohnStufe(tage).titel,lohn:WS.lohnStufe(tage).lohn,stil,fol:Math.round(stil*3.4+Math.random()*200),tasche:p.bagK,auto:autos[0]&&autos[0].name,p}}return p.prof}
-// Rang in der Stadt nach dem Glow Score (src/spiel/glowscore.js)
+// Rang in der Stadt nach dem Respekt (src/spiel/glowscore.js)
 function rangVon(pr){const wer=pr&&pr.p||ICH,wert=pr?scoreVon(pr):glowScore(),alle=[...new Set(P)].filter(q=>q!==wer).map(q=>scoreVon(profil(q)));return 1+alle.filter(v=>v>wert).length}
 function karte(pr,fremd){const st=stufe(pr.stil),nx=naechste(pr.stil);const d=document.createElement('div');d.className='vk'+(fremd?' fremd':'');d.style.setProperty('--vkbg',st.bg);d.style.setProperty('--vkr',st.r);d.style.setProperty('--vkt',st.t);
   const p=pr.p;const av=`<div class="av" style="background:${p.skin}"><i style="background:${p.top}"></i></div>`;

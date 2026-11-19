@@ -1,7 +1,7 @@
 // Berlin City · radio.js · Drei Radiosender mit selbst erzeugter Musik im 80er-Stil (Web Audio, keine Fremdmusik)
-// Knopf "Radio" schaltet weiter: aus, Glow FM, Palm Radio, Club Neon. Startet erst nach einem Klick (Browser-Regel).
+// Knopf "Radio" schaltet weiter: aus, Spree FM, Palm Radio, Club Neon. Startet erst nach einem Klick (Browser-Regel).
 const SENDER = [
-  { name: 'Glow FM', stil: 'Synthwave', bpm: 104, akk: [[57, 60, 64], [53, 57, 60], [48, 52, 55], [55, 59, 62]], arp: true, drums: 'gross', farbe: '#ff4fa3' },
+  { name: 'Spree FM', stil: 'Synthwave', bpm: 104, akk: [[57, 60, 64], [53, 57, 60], [48, 52, 55], [55, 59, 62]], arp: true, drums: 'gross', farbe: '#ff4fa3' },
   { name: 'Palm Radio', stil: 'Chill', bpm: 84, akk: [[50, 53, 57, 60], [55, 59, 62, 65], [48, 52, 55, 59], [53, 57, 60, 64]], arp: false, drums: 'leise', farbe: '#2fe0d2' },
   { name: 'Club Neon', stil: 'Dance', bpm: 124, akk: [[57, 60, 64], [57, 60, 64], [53, 57, 60], [55, 59, 62]], arp: true, drums: 'club', farbe: '#b79cff' }
 ];
