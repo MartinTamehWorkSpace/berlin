@@ -100,6 +100,7 @@ function karriereZeigen() { const kar = ST.karriere, cb = panel(kar ? `${KARRIER
   if (kar === 'gastro') { h2.textContent = 'Lokale'; for (const l of LAEDEN) { const meins = ST.gastro && ST.gastro[l.id]; knopf(meins ? `✓ ${l.t} · ${euro(lokalProMin(l))}/Min · Kasse vor Ort leeren` : `${l.t} kaufen · ${euro(l.preis)} · ${euro(l.proMin)}/Min`, () => { if (!meins) { lokalKaufen(l); karriereZeigen() } }, meins);
       if (meins) for (const a of AUSBAU) { const hat = ST.ausbau && ST.ausbau[l.id + a.id], preis = Math.round(l.preis * a.f); if (!hat) knopf(`   ${a.n} · ${euro(preis)} · +${Math.round(a.f * 100)} %`, () => { if (ST.geld < preis) return toast('Dafür reicht dein Geld nicht'); ST.geld -= preis; ST.ausbau = ST.ausbau || {}; ST.ausbau[l.id + a.id] = 1; banner('🔨 AUSBAU', `${l.t}: ${a.n.slice(2).trim()}`, `+${Math.round(a.f * 100)} % Einnahmen`); save(); hud(); karriereZeigen() }) } }
     absatz(`Einnahmen gesamt: ${euro(gastroProMin())} pro Minute. Die Kasse füllt sich bis zu 4 Stunden, dann ist sie voll.`) }
+  if (kar === 'influ') knopf('🔴 Jetzt live gehen · überall möglich', () => { liveGehen(); karriereZeigen() });
   if (kar === 'influ') { h2.textContent = 'Kooperationen'; for (const c of KOOPS) { const fertig = ST.koops && ST.koops[c.id], frei = (ST.follower || 0) >= c.ab;
       knopf(fertig ? `✓ ${c.n}` : frei ? `${c.n} · ${euro(c.geld)} annehmen` : `🔒 ${c.n} · ab ${c.ab.toLocaleString('de-DE')} Followern`, () => { ST.koops = ST.koops || {}; ST.koops[c.id] = 1; ST.geld += c.geld; banner('🤝 KOOPERATION', c.n.slice(2).trim(), `+${euro(c.geld)}`); save(); hud(); karriereZeigen() }, fertig || !frei) } }
   if (kar === 'influ') { const hh = document.createElement('h4'); hh.textContent = 'Hotspots'; cb.append(hh); for (const o of ['tor', 'alex', 'ufer', 'berg', 'scorp', 'kadeve']) absatz(`${k.orte[o] ? '✅' : '📍'} ${ORTE[o].n}`); absatz(`Posts: ${k.posts} · Viral: ${k.viral}. Am Hotspot erscheint der Knopf „Content drehen“.`) }
@@ -125,3 +126,10 @@ setInterval(() => { if (typeof ICH === 'undefined' || typeof ST === 'undefined')
 
 /* Oben in der Tagesleiste steht der Karriere-Rang statt „Praktikum“ */
 function tagTitel() { const k = ST.karriere; return k ? `${KARRIEREN[k].n} · ${karRang(k)}` : 'Neu in Berlin' }
+
+/* Wer noch keine Karriere hat, bekommt sie nach dem Betreten der Stadt einmal angeboten */
+setTimeout(function frage() { if (typeof ST === 'undefined' || !document.getElementById('start') || !document.getElementById('start').hidden) return setTimeout(frage, 3000); if (!ST.karriere && !ST.karriereGefragt) { ST.karriereGefragt = 1; save(); karriereZeigen() } }, 8000);
+/* Influencer: überall live gehen, kostet Energie, bringt Follower je nach Uhrzeit (abends am meisten) */
+function liveGehen() { const k = kst(), t = Date.now(); if ((k.pause.live || 0) > t) return toast(`Wieder live in ${dauer(Math.ceil((k.pause.live - t) / 1000))}`); if ((ST.energie ?? 70) < 15) return toast('Zu müde zum Streamen. Schlaf erst.');
+  const h = typeof stunde === 'function' ? stunde() : 20, faktor = h >= 19 || h < 2 ? 2 : h >= 12 ? 1.2 : .6, fol = Math.round((150 + (k.m.influ || 0) * 300) * faktor * (.7 + Math.random() * .6));
+  k.pause.live = t + 180000; ST.energie = Math.max(0, (ST.energie ?? 70) - 12); ST.follower = (ST.follower || 0) + fol; k.posts++; banner('🔴 LIVE', h >= 19 || h < 2 ? 'Prime Time, alle schauen zu' : 'Stream läuft', `+${fol.toLocaleString('de-DE')} Follower`); missionPruefen(); save(); hud() }
