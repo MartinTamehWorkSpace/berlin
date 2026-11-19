@@ -46,6 +46,18 @@ function deko(b, gr) { const p = b.pod, w = 4 * M - .8, d = w, stock = p.fl, h =
   const k = (p.shops[0] || [])[3]; if (k) { schildAn(gr, k, 'L', .4, 3.6, 3.95 + .6, 1.4, d / 2 + .12); schildAn(gr, k, 'R', .4, 3.6, 3.95 + .6, 1.4, w / 2 + .12) }
   solardach(gr, w - 1.2, d - 1.2, h); return h }
 
+// Beton: Koloss aus einem alten Heizkraftwerk, fast fensterlos, hohe schmale Schlitze, Treppenturm, rotes Licht über der Tür
+function beton(b, gr) { const p = b.pod, w = 4 * M - .8, d = w, h = 7 + p.fl * 2.4;
+  const m = std(p.farbe || '#8a8781', { roughness: .95 }), sockel = std('#5f5d59', { roughness: .95 }), kranz = std('#9b978f', { roughness: .9 });
+  box(w, h, d, m, 0, 0, 0, gr); box(w + .35, 2.2, d + .35, sockel, 0, 0, 0, gr); box(w + .3, .55, d + .3, kranz, 0, h - .55, 0, gr);
+  for (const x of [-w / 2 + .35, w / 2 - .35]) for (const z of [-d / 2 + .35, d / 2 - .35]) box(.7, h, .7, std('#7e7b75', { roughness: .95 }), x, 0, z, gr);
+  const tt = 2.4; box(tt, h + 5, tt, m, -w / 2 + tt / 2 + .4, 0, -d / 2 + tt / 2 + .4, gr);
+  const schlitz = new THREE.MeshStandardMaterial({ color: '#2a2622', emissive: '#ffbf7a', emissiveIntensity: 0, roughness: .3 }); schlitz.userData.basis = .5; FENSTER.push(schlitz);
+  for (let i = -2; i <= 2; i++) { box(.5, h * .34, .22, schlitz, i * 2.1, h * .5, d / 2 + .06, gr); box(.22, h * .34, .5, schlitz, w / 2 + .06, h * .5, -i * 2.1, gr) }
+  box(1.9, 3.2, .35, std('#121116', { roughness: .6 }), -1.3, 0, d / 2 + .06, gr);
+  box(2, .2, .4, neon(p.neon || '#ff3b2f', 4), -1.3, 3.2, d / 2 + .12, gr);
+  return h }
+
 // Ladensockel aus Glas mit Rahmen, darüber optional ein Glasturm mit sichtbaren Geschossdecken
 const TOENE = { res: '#7f9fba', clinic: '#a9cdd6', null: '#8eaac2' }; // getöntes Glas: bei Tag blaugrau statt milchig weiß
 function sockelUndTurm(b, gr) { const p = b.pod, w = 4 * M - .8, d = w, hs = 4.6 + (p.fl - 1) * 3.6; const rahmen = std(new THREE.Color(p.frame || '#e9e5de').multiplyScalar(.86), { roughness: .5 });
@@ -117,6 +129,6 @@ export function durchsicht(haeuser, kamera, ziel) { const v = ziel.clone().proje
     h.traverse(o => { if (o.isMesh || o.isInstancedMesh) o.castShadow = !soll }) } }
 export function baueHaeuser(szene) { const alle = [];
   for (const b of B) { const gr = new THREE.Group(); gr.position.set((b.x + 2) * M, 0, (b.y + 2) * M); szene.add(gr);
-    const h = b.haupt ? glowTower(gr) : b.pod.style === 'deko' ? deko(b, gr) : sockelUndTurm(b, gr);
+    const h = b.haupt ? glowTower(gr) : b.pod.style === 'beton' ? beton(b, gr) : b.pod.style === 'deko' ? deko(b, gr) : sockelUndTurm(b, gr);
     gr.traverse(o => { o.userData.haus = b }); gr.userData.haupt = !!b.haupt; eigeneMaterialien(gr); gr.userData.hoehe = h; b.drei = gr; alle.push(gr) }
   return alle }

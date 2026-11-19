@@ -25,6 +25,7 @@ function schatten(b){const h=typeof stunde==='function'?stunde():15;if(h<6.5||h>
 function podium(b){const p=b.pod,f=b,top=b.ph;
   quad(f.x-.35,f.y-.35,f.x+4.35,f.y+4.35,'rgba(30,20,40,.10)');quad(f.x-.15,f.y-.15,f.x+4.15,f.y+4.15,'rgba(30,20,40,.12)');
   schatten(b);
+  if(p.style==='beton'){beton(b);return}
   if(p.style==='deko'){deko(b);return}
   // Durchgehend Glas: Einkaufszentrum unten im selben Blau wie der Turm, Läden innen warm beleuchtet
   for(const side of['L','R']){const F=side==='L'?fL:fR;
@@ -40,6 +41,16 @@ function podium(b){const p=b.pod,f=b,top=b.ph;
   // Ladenschilder auf der Fassade
   const gross=b.tow||p.fl>=2;for(const[side,u0,u1,br]of p.shops){if(gross&&GLOW[br])continue;faceT(f,side,(u0+u1)/2,top-PAR/2-.5);brand(br,(u1-u0)*35.78*.86,11);g.setTransform(1,0,0,1,0,0)}
   solar(f.x,f.y,4,4,top)}
+// Beton am Gleis: Koloss aus einem alten Heizkraftwerk, fast fensterlos, hohe schmale Schlitze, Treppenturm, rotes Licht über der Tür
+function beton(b){const p=b.pod,f=b,top=b.ph,c=p.farbe||'#8a8781',neon=p.neon||'#ff3b2f';
+  for(const side of['L','R']){const F=side==='L'?fL:fR;
+    F(f,0,4,0,top,grad(f,side,0,top,sh(c,side==='L'?1.04:.88),sh(c,side==='L'?.84:.70)));
+    for(let i=1;i<8;i++)F(f,i*.5-.03,i*.5+.03,2.4,top-PAR,'rgba(0,0,0,.16)');
+    for(let i=1;i<7;i+=2)F(f,i*.5+.14,i*.5+.36,top*.5,top-PAR-2,'rgba(255,198,126,.26)');
+    F(f,0,4,0,2.4,sh(c,.6));F(f,0,4,top-PAR,top,sh(c,.76));F(f,0,4,top-1.1,top,sh(c,1.1))}
+  fL(f,1.4,2.4,0,9,'#15141a');fL(f,1.4,2.4,8.6,9,neon);
+  const tt={x:f.x+.2,y:f.y+.2,w:1.1,d:1.1};fL(tt,0,1.1,0,top+16,sh(c,.98));fR(tt,0,1.1,0,top+16,sh(c,.78));top4(tt.x,tt.y,1.1,1.1,top+16,sh(c,1.06));
+  top4(f.x,f.y,4,4,top,sh(c,1.02));top4(f.x+.25,f.y+.25,3.5,3.5,top,sh(c,.88))}
 // Art déco an der Promenade: Pastellfassade, weiße Gesimsbänder, Bullaugen, abgestufte Attika, Neonkante und Neon-Turm
 function deko(b){const p=b.pod,f=b,top=b.ph,c=p.farbe,neon=p.neon;
   for(const side of['L','R']){const F=side==='L'?fL:fR;
