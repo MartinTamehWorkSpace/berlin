@@ -2,7 +2,7 @@
 // Ein Spieltag dauert 4 echte Stunden (eine Spielstunde = 10 echte Minuten). Die Uhr folgt der echten Zeit,
 // darum ist für alle Spielerinnen gleichzeitig Tag oder Nacht. UHR.min zählt immer weiter, die Stunde ist min/60 modulo 24.
 const UHR = { tagMs: 4 * 3600e3, min: 0, zuletzt: '' };
-const UHR_VERSATZ = 635; /* Minuten, am 19.11.2026 so gestellt, dass es in Berlin gerade Mittag ist (für alle gleich) */ const uhrStellen = () => { UHR.min = Date.now() / UHR.tagMs * 1440 + UHR_VERSATZ }; uhrStellen();
+const UHR_VERSATZ = 89; /* Minuten, am 19.11.2026 so gestellt, dass es in Berlin gerade Mittag ist (für alle gleich) */ const uhrStellen = () => { UHR.min = Date.now() / UHR.tagMs * 1440 + UHR_VERSATZ }; uhrStellen();
 const HIMMEL = [ // Stunde, vier Verlaufsfarben von oben nach unten, Dunkelheit über der Stadt
   [0, ['#0b0820', '#1a1238', '#2a1840', '#311a3a'], .52],
   [5, ['#141236', '#3a2a5e', '#6a3a6a', '#8a4a6a'], .4],

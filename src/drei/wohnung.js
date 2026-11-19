@@ -4,8 +4,8 @@
 import * as THREE from 'three';
 import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
 import { RoundedBoxGeometry } from 'three/addons/geometries/RoundedBoxGeometry.js';
-import { neueFigur, einkleiden, gehen, tanzen } from './leben.js?v=1795081411';
-import { hindernisseSammeln, schritt } from './kollision.js?v=1795081411';
+import { neueFigur, einkleiden, gehen, tanzen } from './leben.js?v=1795081513';
+import { hindernisseSammeln, schritt } from './kollision.js?v=1795081513';
 const std = (c, o = {}) => new THREE.MeshStandardMaterial(Object.assign({ color: c, roughness: .6 }, o));
 const leinwand = (w, h, mal) => { const c = document.createElement('canvas'); c.width = w; c.height = h; mal(c.getContext('2d'), w, h); const t = new THREE.CanvasTexture(c); t.colorSpace = THREE.SRGBColorSpace; t.anisotropy = 8; return t };
 const PARKETT = leinwand(512, 512, (g, w, h) => { for (let r = 0; r < 16; r++) for (let c = 0; c < 8; c++) { const x = c * 64, y = r * 32, l = 40 + Math.random() * 25; g.fillStyle = `hsl(32,${30 + Math.random() * 8}%,${52 + Math.random() * 10}%)`; g.save(); g.translate(x + 32, y + 16); g.rotate((r + c) % 2 ? .785 : -.785); g.fillRect(-36, -9, 72, 18); g.restore() } g.fillStyle = 'rgba(255,255,255,.05)'; g.fillRect(0, 0, w, h) });
