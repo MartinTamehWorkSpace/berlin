@@ -8,7 +8,7 @@
   async function api(methode, pfad, daten, offen) { const r = await fetch(pfad, { method: methode, headers: Object.assign({ 'content-type': 'application/json' }, token && !offen ? { authorization: 'Bearer ' + token } : {}), body: daten == null ? undefined : JSON.stringify(daten) });
     const j = await r.json().catch(() => ({})); if (!r.ok) { const f = new Error(j.fehler || 'Fehler'); f.status = r.status; throw f } return j }
   // Anmeldefenster über dem Startbildschirm
-  function fenster() { return new Promise(fertig => { const d = document.createElement('div'); d.className = 'login'; d.innerHTML = `<div class="loginbox"><div class="loginlogo">Berlin <span>City</span></div><p>Melde dich an oder leg dein Konto an. Dein Spielstand wird gespeichert, auf jedem Gerät.</p>
+  function fenster() { return new Promise(fertig => { const d = document.createElement('div'); d.className = 'login'; d.innerHTML = `<div class="loginbox"><div class="loginlogo">Berlin <span>030</span></div><p>Melde dich an oder leg dein Konto an. Dein Spielstand wird gespeichert, auf jedem Gerät.</p>
       <label>Name<input id="lName" autocomplete="username" maxlength="20" placeholder="z. B. lena.berlin"></label><label>Passwort<input id="lPw" type="password" autocomplete="current-password" maxlength="60" placeholder="mindestens 4 Zeichen"></label>
       <div class="loginfehler" id="lFehler"></div><button class="cta" id="lAn">Anmelden</button><button class="zweit" id="lNeu">Neues Konto anlegen</button><button class="gast" id="lGast">Ohne Konto spielen</button></div>`;
     document.body.append(d); const f = d.querySelector('#lFehler'), feld = () => ({ name: d.querySelector('#lName').value.trim(), passwort: d.querySelector('#lPw').value });

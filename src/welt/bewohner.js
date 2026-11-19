@@ -1,7 +1,8 @@
 // Berlin City · bewohner.js · wird als klassisches Skript in index.html geladen (gemeinsamer globaler Bereich, Reihenfolge zählt)
 // ---------- Menschen ----------
 const SK=['#f3d5bf','#e4b997','#c48f6b','#8d5b3d','#5c3b29'],HAIR=['#2b2118','#5a3d2b','#dcc28e','#141414','#8a4b2c','#cfc9c0'];
-const CL=['#16171a','#f2eee8','#2f3e46','#7a6a58','#c9b48a','#3d405b','#8c2f39','#d9d2c3','#4b5d4f','#1d3557','#e8d5c4','#b8c4cc'];
+/* Berlin (Martin 19.11.2026): dunkler angezogen. Viel Schwarz, Anthrazit, Oliv, Denim, ein Bordeaux, kaum Helles */
+const CL=['#0f0f11','#16171a','#1c1d21','#232428','#2b2d31','#33363b','#3b3f2f','#4a4f3a','#2c3a4f','#3a4a63','#4a1e24','#5b5f63','#16171a','#0f0f11','#7a6a58'];
 const BAGS=['#111','#f2eee8','#c8102e','#d8c39a','#1e6b4a'];
 const P=[];
 const lots=[];for(let by=0;by<5;by++)for(let bx=0;bx<5;bx++)lots.push(lot(bx,by));

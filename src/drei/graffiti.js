@@ -36,7 +36,7 @@ export function graffiti(szene) { grauMachen(szene); const g = new THREE.Group()
   st(new THREE.BoxGeometry(17.6, 1.6, 4.8), sand, 0, 10.6, 0); st(new THREE.BoxGeometry(12, 1.6, 3.6), sand, 0, 12.2, 0);
   const wagen = st(new THREE.BoxGeometry(2.4, 1.2, 1.6), gruen, 0, 13.6, 0); for (let i = 0; i < 4; i++) { st(new THREE.BoxGeometry(.5, 1.3, 1.6), gruen, -1.8 + i * 1.2, 13.7, -1.3); st(new THREE.BoxGeometry(.35, .7, .4), gruen, -1.8 + i * 1.2, 14.6, -1.95) }
   st(new THREE.CylinderGeometry(.18, .18, 2.2, 8), gruen, 0, 15.2, .2); st(new THREE.SphereGeometry(.45, 10, 8), gruen, 0, 16.5, .2);
-  const bahn = sBahn(g); spaetis(g); ryotei(g, mats);
+  const bahn = sBahn(g); spaetis(g); ryotei(g, mats); strassenbild(g);
   return { weiter(dt = .016) { bahn(dt) } } }
 /* S-Bahn auf dem Viadukt am Nordrand: Ziegelbögen, Gleis, rot-gelber Zug pendelt hin und her */
 function sBahn(g) { const y0 = -2.6 * M, x0 = -34 * M, x1 = 58 * M, H = 6.5, ziegel = new THREE.MeshStandardMaterial({ color: '#7a4a3a', roughness: .95 }), dunkel = new THREE.MeshStandardMaterial({ color: '#2a2b2f', roughness: .7 });
@@ -68,3 +68,27 @@ function ryotei(g, mats) { const b = B.find(x => x.title === 'Ryotei 398'); if (
   const c = document.createElement('canvas'); c.width = 256; c.height = 96; const x = c.getContext('2d'); x.fillStyle = '#8a6a4a'; x.fillRect(0, 0, 256, 96); for (let i = 0; i < 12; i++) { x.fillStyle = 'rgba(0,0,0,.12)'; x.fillRect(0, i * 8, 256, 2) }
   x.font = '900 64px Arial'; x.textAlign = 'center'; x.shadowColor = '#ff2a2a'; x.shadowBlur = 18; x.fillStyle = '#ff5a4a'; x.fillText('398', 128, 70); const t = new THREE.CanvasTexture(c); t.colorSpace = THREE.SRGBColorSpace;
   const brett = new THREE.Mesh(new THREE.PlaneGeometry(1.6, .6), new THREE.MeshBasicMaterial({ map: t, toneMapped: false })); brett.position.set(cx + 3, 3.4, cz + halb + .2); g.add(brett) }
+/* Berliner Straßenbild: Litfaßsäulen mit Plakaten, U-Bahn-Eingänge mit blauem U, Ampelmännchen an Kreuzungen, Fahrräder an Laternen */
+function plakat(nr) { const c = document.createElement('canvas'); c.width = 256; c.height = 256; const x = c.getContext('2d'); const F = [['#ff2f7d', '#16171a'], ['#ffb21a', '#16171a'], ['#2fe0d2', '#16171a'], ['#16171a', '#ffffff'], ['#e9e1d2', '#c8211b']];
+  for (let i = 0; i < 4; i++) { const [a, b] = F[(nr + i) % F.length]; x.fillStyle = a; x.fillRect(i * 64, 0, 64, 256); x.fillStyle = b; x.font = '900 22px Arial'; x.save(); x.translate(i * 64 + 44, 230); x.rotate(-Math.PI / 2); x.fillText(['TECHNO', 'KONZERT', 'THEATER', 'AUSSTELLUNG', 'RAVE'][(nr + i) % 5], 0, 0); x.restore() }
+  const t = new THREE.CanvasTexture(c); t.colorSpace = THREE.SRGBColorSpace; t.wrapS = THREE.RepeatWrapping; return t }
+function uSchild() { const c = document.createElement('canvas'); c.width = 128; c.height = 128; const x = c.getContext('2d'); x.fillStyle = '#1452a0'; x.fillRect(0, 0, 128, 128); x.fillStyle = '#fff'; x.font = '900 100px Arial'; x.textAlign = 'center'; x.fillText('U', 64, 102); const t = new THREE.CanvasTexture(c); t.colorSpace = THREE.SRGBColorSpace; return t }
+function strassenbild(g) { const r = zufall(99), gruen = new THREE.MeshStandardMaterial({ color: '#1f3a2e', metalness: .4, roughness: .5 }), grau = new THREE.MeshStandardMaterial({ color: '#4a4c50', roughness: .8 });
+  const STR = [1, 9, 17, 25, 33]; const ecke = (i, j, dx, dy) => [(STR[i] + dx) * M, (STR[j] + dy) * M];
+  /* Litfaßsäulen */
+  for (let n = 0; n < 8; n++) { const [x, z] = ecke(Math.floor(r() * 5), Math.floor(r() * 5), 1.6, 1.6); const s = new THREE.Mesh(new THREE.CylinderGeometry(.75, .75, 3, 20), new THREE.MeshStandardMaterial({ map: plakat(n), roughness: .8 })); s.position.set(x, 1.7, z); s.castShadow = true; g.add(s);
+    const fuss = new THREE.Mesh(new THREE.CylinderGeometry(.85, .9, .3, 20), gruen); fuss.position.set(x, .15, z); g.add(fuss); const d = new THREE.Mesh(new THREE.CylinderGeometry(.5, .9, .5, 20), gruen); d.position.set(x, 3.45, z); g.add(d) }
+  /* U-Bahn-Eingänge: Treppe in den Boden, Geländer, blauer Würfel mit U */
+  const U = new THREE.MeshBasicMaterial({ map: uSchild(), toneMapped: false });
+  for (let n = 0; n < 5; n++) { const [x, z] = ecke(Math.floor(r() * 5), Math.floor(r() * 5), -1.7, 1.7); const loch = new THREE.Mesh(new THREE.BoxGeometry(1.4, .05, 2.6), new THREE.MeshStandardMaterial({ color: '#0b0b0d' })); loch.position.set(x, .06, z); g.add(loch);
+    for (const sx of [-.75, .75]) { const gel = new THREE.Mesh(new THREE.BoxGeometry(.06, .9, 2.6), gruen); gel.position.set(x + sx, .5, z); g.add(gel) }
+    const mast = new THREE.Mesh(new THREE.BoxGeometry(.08, 2.8, .08), grau); mast.position.set(x + .9, 1.4, z - 1.4); g.add(mast); const w = new THREE.Mesh(new THREE.BoxGeometry(.6, .6, .6), U); w.position.set(x + .9, 3.1, z - 1.4); g.add(w) }
+  /* Ampelmännchen-Ampeln an jeder zweiten Kreuzung */
+  const rot = new THREE.MeshStandardMaterial({ color: '#ff2a2a', emissive: '#ff2a2a', emissiveIntensity: 1.6 }), gruenL = new THREE.MeshStandardMaterial({ color: '#39d353', emissive: '#39d353', emissiveIntensity: 1.6 });
+  for (let i = 0; i < 5; i++) for (let j = 0; j < 5; j++) { if ((i + j) % 2) continue; const [x, z] = ecke(i, j, 1.9, -1.9); const m = new THREE.Mesh(new THREE.CylinderGeometry(.06, .06, 2.6, 8), grau); m.position.set(x, 1.3, z); g.add(m);
+    const k = new THREE.Mesh(new THREE.BoxGeometry(.32, .7, .22), new THREE.MeshStandardMaterial({ color: '#16171a' })); k.position.set(x, 2.5, z); g.add(k);
+    const mann = new THREE.Mesh(new THREE.BoxGeometry(.18, .22, .02), (i + j) % 4 ? rot : gruenL); mann.position.set(x, 2.6, z + .12); g.add(mann); const hut = new THREE.Mesh(new THREE.BoxGeometry(.22, .04, .02), mann.material); hut.position.set(x, 2.74, z + .12); g.add(hut) }
+  /* Fahrräder an Gittern */
+  const rad = new THREE.MeshStandardMaterial({ color: '#2b2d31', metalness: .6, roughness: .4 });
+  for (let n = 0; n < 16; n++) { const [x, z] = ecke(Math.floor(r() * 5), Math.floor(r() * 5), (r() - .5) * 3, 1.9 + r() * .3); const f = new THREE.Group(); f.position.set(x, 0, z); f.rotation.y = r() * .4; g.add(f);
+    for (const sx of [-.45, .45]) { const ring = new THREE.Mesh(new THREE.TorusGeometry(.33, .03, 6, 16), rad); ring.position.set(sx, .36, 0); f.add(ring) } const rahmen = new THREE.Mesh(new THREE.BoxGeometry(.9, .05, .05), new THREE.MeshStandardMaterial({ color: ['#c8211b', '#16171a', '#e9e1d2', '#2c3a4f'][n % 4] })); rahmen.position.set(0, .55, 0); rahmen.rotation.z = .2; f.add(rahmen) } }
