@@ -1,7 +1,7 @@
 // Berlin City 3D · haeuser.js · Häuser aus dem Stadtplan (B): Art déco, Glas mit Solardach, Alex Tower. Schilder kommen aus brand() des Spiels.
 // Ein Feld des Spiels = 3 Meter. Spiel-x wird 3D-X, Spiel-y wird 3D-Z.
 import * as THREE from 'three';
-import { glasfassade } from './texturen.js?v=1795050503';
+import { glasfassade } from './texturen.js?v=1795050641';
 
 export const M = 3;
 export const NEON = [], FENSTER = [], GLAS = []; // GLAS: Hochhausglas, nachts chromartig spiegelnd
