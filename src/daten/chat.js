@@ -2,7 +2,7 @@
 // {n} = Name einer anderen Bewohnerin, {du} = dein Name. Gespräche: erst die Frage, dann passende Antworten anderer.
 window.GLOW_CHAT = {
   TAGESZEIT: {
-    morgen: ['Erst mal Oat Latte, dann reden wir', 'Wer ist schon wach? Ich steh im Stau am Boulevard', 'Gym um 7, ich hasse mich und liebe mich gleichzeitig', 'Guten Morgen Berlin City ☀️', 'Mein Wecker hat 4 mal geklingelt, Rekord', 'Café Zweistein hat die neue Pistazien-Latte, Leute', 'Heute Termin bei der Klinik im Tower, wünscht mir Glück', 'Wer joggt mit an der Promenade?'],
+    morgen: ['Erst mal Club Mate, dann reden wir', 'Wer ist schon wach? Ich steh im Stau an der Warschauer', 'Gym um 7, ich hasse mich und liebe mich gleichzeitig', 'Guten Morgen Berlin City ☀️', 'Mein Wecker hat 4 mal geklingelt, Rekord', 'Café Zweistein hat die neue Pistazien-Latte, Leute', 'Heute Termin bei der Klinik im Tower, wünscht mir Glück', 'Wer joggt mit an der Promenade?'],
     mittag: ['Mittagspause im Papillong, Sushi ist heute top', 'Bin in der Fabrik und schlaf gleich ein', 'Wer hat Lust auf Salat bei Huggo\'s?', 'Sonne knallt, Spreeufer ist voll', 'Gerade 40 Minuten für einen Parkplatz gesucht', 'Habt ihr den neuen Pink-Lambo am Boulevard gesehen?', 'Lunch-Date abgesagt, also shoppen', 'Wer hat die Story von Valentina gesehen? 👀'],
     abend: ['Sunset im Papillong, ich bin schon da', 'Wer kommt mit ins Borchert?', 'Outfit-Check: schwarzes Kleid oder das Satin?', 'Rooftop im Adlong, Musik ist mega', 'Hat jemand einen Tisch im Scorpius Berlin?', 'Feierabend! Endlich', 'Die Skyline glüht heute pink', 'Aperitivo bei Huggo\'s, Platz ist noch frei'],
     nacht: ['Grill Royale ist heute komplett eskaliert', 'Wer ist noch wach?', 'Ich kann nicht schlafen, schaue Reels von Kliniken 😅', 'Uber kommt nicht, ich lauf jetzt heim', 'Afterparty bei wem?', 'Die Neonlichter im Hafen sind so schön nachts', 'Morgen bereue ich das', 'Ich hör nur noch den Bass vom Grill Royale']
@@ -18,7 +18,7 @@ window.GLOW_CHAT = {
     ['Wer geht mit zum Pilates?', ['Ich, aber erst Kaffee', 'Mein Rücken sagt nein', 'Klar, 8 Uhr am Strand?']],
     ['Tiffanny oder Rolecks zuerst?', ['Ring. Immer zuerst der Ring', 'Uhr, die trägst du jeden Tag', 'Beides, man lebt nur einmal']],
     ['Kennt ihr Dr. Ricco und Dr. Nico?', ['Deren Praxis hat 900k Follower', 'Die Klinik im Tower holt auf', 'Ich hab bei denen 3 Monate Wartezeit']],
-    ['Ist die Promenade heute voll?', ['Komplett, Parkplätze null', 'Geht noch, am Yachtclub ist Platz', 'Nimm ein Uber']],
+    ['Ist das East Side Ufer heute voll?', ['Komplett, Parkplätze null', 'Geht noch, am Scorpius ist Platz', 'Nimm ein Uber']],
     ['Was zieht ihr ins Borchert an?', ['Schwarzes Satin', 'Blazer und Jeans, lässig', 'Was Zahra so hergibt 😂']]
   ],
   // Antworten auf dich: Themen mit Stichwörtern

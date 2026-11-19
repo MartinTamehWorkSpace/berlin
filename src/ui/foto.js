@@ -5,10 +5,10 @@ let fotoBereit = 0;
 function fotoMachen() { if (T < fotoBereit) { toast(`Nächstes Foto in ${Math.ceil(fotoBereit - T)} Sekunden`); return } fotoBereit = T + 60;
   // Ort: Gebäude, in dem oder vor dem man steht, sonst die Straße
   const nah = INNEN || B.find(b => Math.hypot(ICH.x - (b.x + 2), ICH.y - (b.y + 4.4)) < 2.2);
-  const ort = nah ? nah.title : (ICH.y > 41 ? 'Promenade' : 'Berlin City');
+  const ort = nah ? nah.title : (ICH.y > 41 ? 'East Side Ufer' : 'Berlin City');
   const h = stunde(), goldeneStunde = h > 17.5 && h < 20 ? 1.6 : (h > 21 || h < 5) ? 1.2 : 1;
   const schmuck = (ICH.acc || []).length, tasche = ICH.bagK ? WS.KATALOG.find(i => i.id === ICH.bagK) : null;
-  const faktor = (FOTO_ORTE[ort] || (ort === 'Promenade' ? 1.7 : 1)) * goldeneStunde;
+  const faktor = (FOTO_ORTE[ort] || (ort === 'East Side Ufer' ? 1.7 : 1)) * goldeneStunde;
   const fol = Math.round((40 + ST.stil / 25 + schmuck * 25 + (tasche ? tasche.rang / 3 : 0)) * faktor);
   ST.follower = (ST.follower || 0) + fol; ST.stil += 2; save(); hud(); setTimeout(() => ereignis('foto'));
   fotoZeigen(ort, fol, goldeneStunde > 1.4) }

@@ -1,8 +1,8 @@
 // Berlin City 3D · strand.js · Die Wasserfront: Holzpromenade (Palmen kommen aus S über leben.js), Terrassen über dem Wasser für Borchert, Huggo's, Papillong und Grill Royale,
 // Scorpius Berlin als Pool-Party (Pool, DJ, tanzende Gäste, Daybeds, Bar). Stilvoll in Teak, Creme und Marine. Nachts warmes Licht über den Terrassen.
 import * as THREE from 'three';
-import { M } from './haeuser.js?v=1795049814';
-import { neueFigur, einkleiden, tanzen } from './leben.js?v=1795049814';
+import { M } from './haeuser.js?v=1795050164';
+import { neueFigur, einkleiden, tanzen } from './leben.js?v=1795050164';
 const std = (c, o = {}) => new THREE.MeshStandardMaterial(Object.assign({ color: c, roughness: .6 }, o));
 const TEAK = std('#a9744a', { roughness: .7 }), TEAK_HELL = std('#c89a6a', { roughness: .75 }), CREME = std('#f5efe4', { roughness: .8 }), WEISS = std('#fbfaf7', { roughness: .5 }),
   MARINE = std('#1d2b44', { roughness: .5 }), CHROM = std('#e6eaee', { metalness: 1, roughness: .2 }), STAMM = std('#8a6a4a', { roughness: .9 }),
