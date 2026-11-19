@@ -36,7 +36,7 @@ export function graffiti(szene) { grauMachen(szene); const g = new THREE.Group()
   st(new THREE.BoxGeometry(17.6, 1.6, 4.8), sand, 0, 10.6, 0); st(new THREE.BoxGeometry(12, 1.6, 3.6), sand, 0, 12.2, 0);
   const wagen = st(new THREE.BoxGeometry(2.4, 1.2, 1.6), gruen, 0, 13.6, 0); for (let i = 0; i < 4; i++) { st(new THREE.BoxGeometry(.5, 1.3, 1.6), gruen, -1.8 + i * 1.2, 13.7, -1.3); st(new THREE.BoxGeometry(.35, .7, .4), gruen, -1.8 + i * 1.2, 14.6, -1.95) }
   st(new THREE.CylinderGeometry(.18, .18, 2.2, 8), gruen, 0, 15.2, .2); st(new THREE.SphereGeometry(.45, 10, 8), gruen, 0, 16.5, .2);
-  const bahn = sBahn(g); const tram = strassenbahn(g); spaetis(g); ryotei(g, mats); strassenbild(g); weltzeituhr(g); oberbaum(g); buddyBaeren(g); const streife = polizei(g);
+  const bahn = sBahn(g); const tram = strassenbahn(g); spaetis(g); ryotei(g, mats); strassenbild(g); weltzeituhr(g); oberbaum(g); buddyBaeren(g); doener(g); const streife = polizei(g);
   /* Zielringe der Karriere: gelb pulsierende Ringe an Deal-Ecken oder Hotspots */
   const ringe = {}, ringMat = new THREE.MeshBasicMaterial({ color: '#ffb21a', transparent: true, opacity: .7, depthWrite: false });
   const zielringe = () => { if (typeof ORTE === 'undefined' || typeof ST === 'undefined') return; const ids = ST.karriere === 'dealer' ? ['goerli', 'raw', 'kotti'] : ST.karriere === 'influ' ? ['tor', 'alex', 'ufer', 'berg', 'scorp', 'kadeve'] : [];
@@ -149,3 +149,15 @@ function strassenbahn(g) { const z0 = 17 * M + 1.5, x0 = -2 * M, x1 = 42 * M, st
   const c = document.createElement('canvas'); c.width = 128; c.height = 48; const x = c.getContext('2d'); x.fillStyle = '#111'; x.fillRect(0, 0, 128, 48); x.fillStyle = '#ffb21a'; x.font = '700 30px Arial'; x.textAlign = 'center'; x.fillText('M10', 64, 35);
   const t = new THREE.CanvasTexture(c); t.colorSpace = THREE.SRGBColorSpace; const anz = new THREE.Mesh(new THREE.PlaneGeometry(1.4, .5), new THREE.MeshBasicMaterial({ map: t, toneMapped: false })); anz.position.set(-3.02, 2.4, 0); anz.rotation.y = -Math.PI / 2; tram.add(anz);
   let u = 0; return dt => { u += dt * 5; const L = x1 - x0 - 20, p = u % (2 * L), xx = p < L ? p : 2 * L - p; tram.position.set(x0 + xx, 0, z0); tram.rotation.y = p < L ? 0 : Math.PI } }
+/* Dönerbude „Mostafas Gemüsekebap“ mit Schlange (Vorbild: die Bude am Mehringdamm). Position: window.DOENER für den Knopf in karriere.js */
+function doener(g) { const x = 9 * M + 1.8, z = 25 * M + 1.8; window.DOENER = { x: x / M, y: z / M + 1.6 }; const b = new THREE.Group(); b.position.set(x, 0, z); g.add(b);
+  const st = (geo, m, px, py, pz) => { const o = new THREE.Mesh(geo, m); o.position.set(px, py, pz); o.castShadow = true; b.add(o); return o };
+  st(new THREE.BoxGeometry(3.2, 2.6, 2.2), new THREE.MeshStandardMaterial({ color: '#e9e1d2', roughness: .8 }), 0, 1.3, 0); st(new THREE.BoxGeometry(3.4, .2, 2.6), new THREE.MeshStandardMaterial({ color: '#1f6f3a' }), 0, 2.7, .1);
+  st(new THREE.BoxGeometry(2.6, 1, .1), new THREE.MeshStandardMaterial({ color: '#1b2430', emissive: '#ffd9a0', emissiveIntensity: .4 }), 0, 1.6, 1.12);
+  const c = document.createElement('canvas'); c.width = 512; c.height = 96; const t = c.getContext('2d'); t.fillStyle = '#1f6f3a'; t.fillRect(0, 0, 512, 96); t.fillStyle = '#fff'; t.font = '900 46px Arial'; t.textAlign = 'center'; t.fillText('MOSTAFAS GEMÜSEKEBAP', 256, 64);
+  const tx = new THREE.CanvasTexture(c); tx.colorSpace = THREE.SRGBColorSpace; const sch = new THREE.Mesh(new THREE.PlaneGeometry(3.2, .6), new THREE.MeshBasicMaterial({ map: tx, toneMapped: false })); sch.position.set(0, 3.15, 1.25); b.add(sch);
+  const spiess = st(new THREE.CylinderGeometry(.18, .28, .9, 10), new THREE.MeshStandardMaterial({ color: '#a8562a', roughness: .7 }), .9, 1.6, .9);
+  /* Schlange aus wartenden Leuten, alle dunkel angezogen */
+  const kl = ['#16171a', '#2b2d31', '#3b3f2f', '#2c3a4f', '#4a1e24'];
+  for (let i = 0; i < 9; i++) { const p = new THREE.Group(); p.position.set(-.6 + Math.sin(i * .7) * .25, 0, 2 + i * .75); b.add(p); const k = new THREE.Mesh(new THREE.CapsuleGeometry(.22, .8, 4, 8), new THREE.MeshStandardMaterial({ color: kl[i % 5] })); k.position.y = .75; p.add(k);
+    const h = new THREE.Mesh(new THREE.SphereGeometry(.17, 8, 6), new THREE.MeshStandardMaterial({ color: ['#e4b997', '#c48f6b', '#8d5b3d', '#f3d5bf'][i % 4] })); h.position.y = 1.45; p.add(h) } }

@@ -134,3 +134,8 @@ setTimeout(function frage() { if (typeof ST === 'undefined' || !document.getElem
 function liveGehen() { const k = kst(), t = Date.now(); if ((k.pause.live || 0) > t) return toast(`Wieder live in ${dauer(Math.ceil((k.pause.live - t) / 1000))}`); if ((ST.energie ?? 70) < 15) return toast('Zu müde zum Streamen. Schlaf erst.');
   const h = typeof stunde === 'function' ? stunde() : 20, faktor = h >= 19 || h < 2 ? 2 : h >= 12 ? 1.2 : .6, fol = Math.round((150 + (k.m.influ || 0) * 300) * faktor * (.7 + Math.random() * .6));
   k.pause.live = t + 180000; ST.energie = Math.max(0, (ST.energie ?? 70) - 12); ST.follower = (ST.follower || 0) + fol; k.posts++; banner('🔴 LIVE', h >= 19 || h < 2 ? 'Prime Time, alle schauen zu' : 'Stream läuft', `+${fol.toLocaleString('de-DE')} Follower`); missionPruefen(); save(); hud() }
+
+/* Döner am Mostafa: überall in der Stadt, unabhängig von der Karriere. Energie für die Nacht */
+setInterval(() => { if (typeof ICH === 'undefined' || !window.DOENER) return; const leiste = aktionsLeiste(); let d = document.getElementById('bDoener');
+  if (!d) { d = document.createElement('button'); d.id = 'bDoener'; d.className = 'anlegen'; d.textContent = '🥙 Gemüsekebap · 7 € · Energie +30'; d.onclick = () => { if (ST.geld < 7) return toast('7 € hast du nicht mal?'); ST.geld -= 7; ST.energie = Math.min(100, (ST.energie ?? 70) + 30); banner('🥙 MOSTAFAS', 'Nach 20 Minuten Schlange: der beste Döner der Stadt', 'Energie +30'); save(); hud() }; leiste.append(d) }
+  const st = document.getElementById('start'); d.hidden = !!INNEN || (st && !st.hidden) || Math.hypot(ICH.x - DOENER.x, ICH.y - DOENER.y) > 2.6 }, 500);
