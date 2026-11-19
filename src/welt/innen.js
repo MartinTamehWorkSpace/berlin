@@ -314,10 +314,15 @@ function klubGespraech(p){const L=klubListe(p),d=L[p.klub%L.length],b=INNEN;
       const zu=document.createElement('button');zu.className='big';zu.textContent='Zurück in den Club';zu.onclick=()=>zeigeEtage(b);c2.append(zu)};
     cb.append(bt)}
   const w2=document.createElement('button');w2.className='big test';w2.textContent='Weitergehen';w2.onclick=()=>zeigeEtage(b);cb.append(w2)}
-// Antippen im Club: steht jemand an der Stelle, wird er angesprochen statt hingelaufen
-window.klubAntippen=(wx2,wy2)=>{const b=INNEN;if(!b||!b.innen)return false;let best=null,bd=.55;
-  for(const q of b.innen){if(q.klub==null)continue;const dd=Math.hypot(q.x-wx2,q.y-wy2);if(dd<bd){bd=dd;best=q}}
-  if(!best)return false;document.getElementById('card').hidden=false;klubGespraech(best);return true};
+// Antippen im Club: zuerst auf dem Bildschirm pruefen (da steht die Figur), sonst ueber den Bodenpunkt
+function klubOeffnen(p){document.getElementById('card').hidden=false;klubGespraech(p);return true}
+window.klubAntippen=(wx2,wy2,cx,cy)=>{const b=INNEN;if(!b||!b.innen)return false;
+  const leute=b.innen.filter(q=>q.klub!=null);if(!leute.length)return false;
+  if(cx!=null&&typeof pt==='function'){const px=cx*DPR,py=cy*DPR;let best=null,bd=1e9;
+    for(const q of leute){const[ax,ay]=pt(q.x,q.y,11);const d=Math.hypot(ax-px,ay-py);if(d<bd){bd=d;best=q}}
+    if(best&&bd<26*Z)return klubOeffnen(best)}
+  let best=null,bd=.75;for(const q of leute){const d=Math.hypot(q.x-wx2,q.y-wy2);if(d<bd){bd=d;best=q}}
+  return best?klubOeffnen(best):false};
 // Tanzen: die eigene Figur tanzt sichtbar, auch fuer alle Mitspieler im Raum
 function klubBereich(cb,b){const E=etagen(b);if(E[0].a!=='berghain')return;
   const h=document.createElement('h4');h.textContent='Im Club';cb.append(h);
@@ -326,4 +331,10 @@ function klubBereich(cb,b){const E=etagen(b);if(E[0].a!=='berghain')return;
   t.onclick=()=>{ICH.tanzBis=Date.now()+30000;if(typeof PARTY!=='undefined'&&PARTY)PARTY.tanzBis=ICH.tanzBis;
     ST.follower=(ST.follower||0)+15;ST.energie=Math.max(0,(ST.energie??70)-5);save();hud();toast('Du tanzt. Alle im Raum sehen es.');zeigeEtage(b)};
   cb.append(t);
-  const hin=document.createElement('p');hin.className='hin';hin.textContent='Tippe jemanden im Raum an, um ihn anzusprechen. Jede Person sagt etwas anderes.';cb.append(hin)}
+  const hin=document.createElement('p');hin.className='hin';hin.textContent='Tippe jemanden im Raum an oder nimm die Liste. Jede Person sagt etwas anderes.';cb.append(hin);
+  const leute=(b.innen||[]).filter(q=>q.klub!=null);
+  if(leute.length){const h2=document.createElement('h4');h2.textContent='Ansprechen';cb.append(h2);
+    const nah=leute.map(q=>[Math.hypot(q.x-ICH.x,q.y-ICH.y),q]).sort((a,c)=>a[0]-c[0]).slice(0,8);
+    const gesehen=new Set();
+    for(const[,q]of nah){const L=klubListe(q),d=L[q.klub%L.length];if(gesehen.has(d.n))continue;gesehen.add(d.n);
+      const bt=document.createElement('button');bt.className='big test';bt.style.marginTop='5px';bt.textContent=`${d.n} · ${d.t}`;bt.onclick=()=>klubGespraech(q);cb.append(bt)}}}

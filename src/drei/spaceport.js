@@ -2,8 +2,8 @@
 // Kugeltanks, Wasserturm, Schild. Nachts angestrahlt (nur leuchtende Flächen, keine echten Lichter). Zur Viertelstunde nach jeder vollen Stunde startet die Rakete
 // mit Feuer und Rauch und steht danach wieder auf der Rampe. Antippen zeigt den Ausblick: Mond und Mars, für Milliardäre, noch gesperrt.
 import * as THREE from 'three';
-import { M } from './haeuser.js?v=1795050942';
-import { namensSchild } from './leben.js?v=1795050942';
+import { M } from './haeuser.js?v=1795051072';
+import { namensSchild } from './leben.js?v=1795051072';
 const std = (c, o = {}) => new THREE.MeshStandardMaterial(Object.assign({ color: c, roughness: .5 }, o));
 export function spaceport(szene) { const g = new THREE.Group(), x0 = 87 * M, z0 = 6 * M; g.position.set(x0, 0, z0); szene.add(g);
   const BETON = std('#bdb9b2', { roughness: .95 }), STAHL = std('#3a3f47', { metalness: .7, roughness: .4 }), EDEL = std('#d7dbe0', { metalness: 1, roughness: .18 }), SCHWARZ = std('#16171a', { roughness: .6 });

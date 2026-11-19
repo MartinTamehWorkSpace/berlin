@@ -8,18 +8,18 @@ import { EffectComposer } from 'three/addons/postprocessing/EffectComposer.js';
 import { RenderPass } from 'three/addons/postprocessing/RenderPass.js';
 import { UnrealBloomPass } from 'three/addons/postprocessing/UnrealBloomPass.js';
 import { OutputPass } from 'three/addons/postprocessing/OutputPass.js';
-import { graffiti } from './graffiti.js?v=1795050942';
-import { M, NEON, FENSTER, GLAS, baueHaeuser, box, std, durchsicht } from './haeuser.js?v=1795050942';
-import { menschen, verkehr, stadtmoebel, autosLaden } from './leben.js?v=1795050942';
-import { fahrbahn, pflaster, sand, blase, rasen } from './texturen.js?v=1795050942';
-import { praxis } from './praxis.js?v=1795050942';
-import { wohnung } from './wohnung.js?v=1795050942';
-import { boote, helis } from './wasser.js?v=1795050942';
-import { feuerwerk } from './feuerwerk.js?v=1795050942';
-import { strand } from './strand.js?v=1795050942';
-import { flughafen } from './flughafen.js?v=1795050942';
-import { arena } from './arena.js?v=1795050942';
-import { spaceport } from './spaceport.js?v=1795050942';
+import { graffiti } from './graffiti.js?v=1795051072';
+import { M, NEON, FENSTER, GLAS, baueHaeuser, box, std, durchsicht } from './haeuser.js?v=1795051072';
+import { menschen, verkehr, stadtmoebel, autosLaden } from './leben.js?v=1795051072';
+import { fahrbahn, pflaster, sand, blase, rasen } from './texturen.js?v=1795051072';
+import { praxis } from './praxis.js?v=1795051072';
+import { wohnung } from './wohnung.js?v=1795051072';
+import { boote, helis } from './wasser.js?v=1795051072';
+import { feuerwerk } from './feuerwerk.js?v=1795051072';
+import { strand } from './strand.js?v=1795051072';
+import { flughafen } from './flughafen.js?v=1795051072';
+import { arena } from './arena.js?v=1795051072';
+import { spaceport } from './spaceport.js?v=1795051072';
 let PRAXIS = null, WOHNUNG = null, inWohnungJetzt = false;
 
 const handy = innerWidth < 760;
@@ -166,7 +166,7 @@ document.getElementById('zin').onclick = () => zoom(.75); document.getElementByI
 // ---------- Antippen: wie im 2D-Spiel (Haus = hingehen, Figur = Setcard, eigenes Auto = ein- und aussteigen) ----------
 const ray = new THREE.Raycaster(), maus = new THREE.Vector2(), bodenEbene = new THREE.Plane(new THREE.Vector3(0, 1, 0), 0); let runter = null;
 /* Gehen in Gebäuden: Boden antippen, die Figur läuft hin (wird auch von der 2D-Fläche aus bedienung.js gerufen, die drinnen obenauf liegt) */
-window.innenTippen = (cx, cy) => { if (!INNEN) return; maus.set(cx / innerWidth * 2 - 1, -cy / innerHeight * 2 + 1); ray.setFromCamera(maus, kamera); const boden = new THREE.Vector3(); if (ray.ray.intersectPlane(new THREE.Plane(new THREE.Vector3(0, 1, 0), 0), boden)) { const b = INNEN; const wx2 = boden.x / M, wy2 = boden.z / M; if (typeof window.klubAntippen === 'function' && window.klubAntippen(wx2, wy2)) return; ICH.innenZiel = [Math.min(b.x + 3.75, Math.max(b.x + .25, wx2)), Math.min(b.y + 3.75, Math.max(b.y + .25, wy2))] } };
+window.innenTippen = (cx, cy) => { if (!INNEN) return; maus.set(cx / innerWidth * 2 - 1, -cy / innerHeight * 2 + 1); ray.setFromCamera(maus, kamera); const boden = new THREE.Vector3(); if (ray.ray.intersectPlane(new THREE.Plane(new THREE.Vector3(0, 1, 0), 0), boden)) { const b = INNEN; const wx2 = boden.x / M, wy2 = boden.z / M; if (typeof window.klubAntippen === 'function' && window.klubAntippen(wx2, wy2, cx, cy)) return; ICH.innenZiel = [Math.min(b.x + 3.75, Math.max(b.x + .25, wx2)), Math.min(b.y + 3.75, Math.max(b.y + .25, wy2))] } };
 leinwand.addEventListener('pointerdown', e => { runter = [e.clientX, e.clientY]; zieh = [e.clientX, e.clientY] });
 // In der Praxis: Ziehen dreht die Kamera um dich, Scrollen zoomt, Tippen läuft oder handelt
 let zieh = null; leinwand.addEventListener('pointermove', e => { if (!zieh) return; if (inWohnungJetzt && WOHNUNG) { WOHNUNG.drehen(e.clientX - zieh[0]); zieh = [e.clientX, e.clientY]; return } if (typeof KLINIK === 'undefined' || !KLINIK.offen || !PRAXIS) return; PRAXIS.drehen(e.clientX - zieh[0]); zieh = [e.clientX, e.clientY] });
