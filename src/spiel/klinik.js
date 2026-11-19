@@ -241,6 +241,6 @@ function klinikZeichnen() { const root = document.getElementById('klinik'); if (
 document.querySelectorAll('#klinik [data-ktab]').forEach(b => b.onclick = () => { KLINIK.tab = b.dataset.ktab; klinikZeichnen() });
 document.querySelector('#klinik .zu').onclick = klinikZu;
 document.querySelector('#klinik .klappe').onclick = () => document.getElementById('klinik').classList.toggle('eingeklappt');
-document.getElementById('bKlinik').onclick = () => klinikAuf('praxis');
+document.getElementById('bKlinik').onclick = () => { if (typeof karriereZeigen === 'function') karriereZeigen(); else klinikAuf('praxis') }; /* Berlin: Karrieren ersetzen die Klinik als Hauptspiel, die Klinik bleibt im Alex Tower */
 // Zähler am Knopf, auch wenn das Fenster zu ist
 setInterval(() => { if (!document.getElementById('start').hidden) return; klinikWeiter(); const s = klinikStatus(); const b = document.getElementById('bKlinik'); if (b) b.dataset.n = s.n || '' }, 3000);

@@ -69,11 +69,11 @@ function wellenKarte(n, seed) { const c = document.createElement('canvas'); c.wi
   x.putImageData(bild, 0, 0); const t = new THREE.CanvasTexture(c); t.wrapS = t.wrapT = THREE.RepeatWrapping; t.anisotropy = 8; return t }
 const WELLEN = wellenKarte(256, 7);
 // Echte Spiegelung: Himmel, Häuser und die Lichter der Promenade spiegeln sich im Wasser (eigene Spiegelkamera, am Mobilgerät in halber Auflösung)
-const wasser = new Water(new THREE.PlaneGeometry(1600, 600), { textureWidth: handy ? 192 : 320, textureHeight: handy ? 192 : 320, waterNormals: WELLEN, sunDirection: new THREE.Vector3(.3, 1, .2).normalize(), sunColor: '#fff2dc', waterColor: '#16a3bd', distortionScale: 2.6, fog: !!szene.fog });
+const wasser = new Water(new THREE.PlaneGeometry(1600, 600), { textureWidth: handy ? 192 : 320, textureHeight: handy ? 192 : 320, waterNormals: WELLEN, sunDirection: new THREE.Vector3(.3, 1, .2).normalize(), sunColor: '#fff2dc', waterColor: '#2e4a4c', distortionScale: 2.6, fog: !!szene.fog });
 wasser.material.uniforms.size.value = 3.5; { const spiegeln = wasser.onBeforeRender; let n = 0; wasser.onBeforeRender = function (...a) { if (n++ % 3 === 0) spiegeln.apply(this, a) } } /* Spiegelbild nur jedes 3. Bild neu: kaum sichtbar, spart viel */ wasser.rotation.x = -Math.PI / 2; wasser.position.set(21 * M, -.6, 43 * M + 300); szene.add(wasser);
 // Günstiges Wasser ohne Spiegelkamera (Wellenkarte, Glanz): Standard auf dem Mobilgerät und sobald das Spiel ruckelt
 const WELLEN2 = WELLEN.clone(); WELLEN2.repeat.set(80, 30);
-const wasserBillig = new THREE.Mesh(new THREE.PlaneGeometry(1600, 600), new THREE.MeshStandardMaterial({ color: '#138aa3', roughness: .12, metalness: .35, normalMap: WELLEN2, normalScale: new THREE.Vector2(.6, .6), envMapIntensity: 1.5 }));
+const wasserBillig = new THREE.Mesh(new THREE.PlaneGeometry(1600, 600), new THREE.MeshStandardMaterial({ color: '#2b4547', roughness: .12, metalness: .35, normalMap: WELLEN2, normalScale: new THREE.Vector2(.6, .6), envMapIntensity: 1.5 }));
 wasserBillig.rotation.x = -Math.PI / 2; wasserBillig.position.set(21 * M, -.6, 43 * M + 300); /* fest im Meer: vorher lag die Fläche auf Bodenhöhe unter der ganzen Stadt und flackerte überall blau */ szene.add(wasserBillig);
 // Automatische Qualität: misst laufend die Bilder pro Sekunde. Unter 40 wird Stufe für Stufe abgeschaltet: Spiegelung, Auflösung, Schatten und Leuchten.
 const QUAL = { stufe: 0, zeit: 0, bilder: 0, bps: 60 };
