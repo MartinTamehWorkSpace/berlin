@@ -40,7 +40,8 @@ export function graffiti(szene) { grauMachen(szene); const g = new THREE.Group()
   /* Zielringe der Karriere: gelb pulsierende Ringe an Deal-Ecken oder Hotspots */
   const ringe = {}, ringMat = new THREE.MeshBasicMaterial({ color: '#ffb21a', transparent: true, opacity: .7, depthWrite: false });
   const zielringe = () => { if (typeof ORTE === 'undefined' || typeof ST === 'undefined') return; const ids = ST.karriere === 'dealer' ? ['goerli', 'raw', 'kotti'] : ST.karriere === 'influ' ? ['tor', 'alex', 'ufer', 'berg', 'scorp', 'kadeve'] : [];
-    for (const k in ringe) ringe[k].visible = ids.includes(k); for (const id of ids) { let r = ringe[id]; if (!r) { const q = ORTE[id].p(); if (!q) continue; r = new THREE.Mesh(new THREE.RingGeometry(1.6, 2.1, 40), ringMat); r.rotation.x = -Math.PI / 2; r.position.set(q.x * M, .12, q.y * M); g.add(r); ringe[id] = r } }
+    if (ST.karriere === 'gastro' && ST.gastro && typeof lokalPos === 'function') for (const id of Object.keys(ST.gastro)) ids.push('l_' + id);
+    for (const k in ringe) ringe[k].visible = ids.includes(k); for (const id of ids) { let r = ringe[id]; if (!r) { const q = id.startsWith('l_') ? lokalPos(id.slice(2)) : ORTE[id].p(); if (!q) continue; r = new THREE.Mesh(new THREE.RingGeometry(1.6, 2.1, 40), ringMat); r.rotation.x = -Math.PI / 2; r.position.set(q.x * M, .12, q.y * M); g.add(r); ringe[id] = r } }
     ringMat.opacity = .45 + Math.sin(performance.now() / 300) * .3 };
   return { weiter(dt = .016) { bahn(dt); streife(); zielringe() } } }
 /* S-Bahn auf dem Viadukt am Nordrand: Ziegelbögen, Gleis, rot-gelber Zug pendelt hin und her */
