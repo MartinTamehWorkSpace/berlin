@@ -36,8 +36,8 @@ export function graffiti(szene) { grauMachen(szene); const g = new THREE.Group()
   st(new THREE.BoxGeometry(17.6, 1.6, 4.8), sand, 0, 10.6, 0); st(new THREE.BoxGeometry(12, 1.6, 3.6), sand, 0, 12.2, 0);
   const wagen = st(new THREE.BoxGeometry(2.4, 1.2, 1.6), gruen, 0, 13.6, 0); for (let i = 0; i < 4; i++) { st(new THREE.BoxGeometry(.5, 1.3, 1.6), gruen, -1.8 + i * 1.2, 13.7, -1.3); st(new THREE.BoxGeometry(.35, .7, .4), gruen, -1.8 + i * 1.2, 14.6, -1.95) }
   st(new THREE.CylinderGeometry(.18, .18, 2.2, 8), gruen, 0, 15.2, .2); st(new THREE.SphereGeometry(.45, 10, 8), gruen, 0, 16.5, .2);
-  const bahn = sBahn(g); spaetis(g); ryotei(g, mats); strassenbild(g);
-  return { weiter(dt = .016) { bahn(dt) } } }
+  const bahn = sBahn(g); spaetis(g); ryotei(g, mats); strassenbild(g); weltzeituhr(g); const streife = polizei(g);
+  return { weiter(dt = .016) { bahn(dt); streife() } } }
 /* S-Bahn auf dem Viadukt am Nordrand: Ziegelbögen, Gleis, rot-gelber Zug pendelt hin und her */
 function sBahn(g) { const y0 = -2.6 * M, x0 = -34 * M, x1 = 58 * M, H = 6.5, ziegel = new THREE.MeshStandardMaterial({ color: '#7a4a3a', roughness: .95 }), dunkel = new THREE.MeshStandardMaterial({ color: '#2a2b2f', roughness: .7 });
   const deck = new THREE.Mesh(new THREE.BoxGeometry(x1 - x0, 1.2, 5.5), ziegel); deck.position.set((x0 + x1) / 2, H, y0); deck.castShadow = deck.receiveShadow = true; g.add(deck);
@@ -92,3 +92,22 @@ function strassenbild(g) { const r = zufall(99), gruen = new THREE.MeshStandardM
   const rad = new THREE.MeshStandardMaterial({ color: '#2b2d31', metalness: .6, roughness: .4 });
   for (let n = 0; n < 16; n++) { const [x, z] = ecke(Math.floor(r() * 5), Math.floor(r() * 5), (r() - .5) * 3, 1.9 + r() * .3); const f = new THREE.Group(); f.position.set(x, 0, z); f.rotation.y = r() * .4; g.add(f);
     for (const sx of [-.45, .45]) { const ring = new THREE.Mesh(new THREE.TorusGeometry(.33, .03, 6, 16), rad); ring.position.set(sx, .36, 0); f.add(ring) } const rahmen = new THREE.Mesh(new THREE.BoxGeometry(.9, .05, .05), new THREE.MeshStandardMaterial({ color: ['#c8211b', '#16171a', '#e9e1d2', '#2c3a4f'][n % 4] })); rahmen.position.set(0, .55, 0); rahmen.rotation.z = .2; f.add(rahmen) } }
+/* Weltzeituhr am Alexanderplatz: hier wählt man die Karriere (karriere.js zeigt den Knopf, wenn man davor steht) */
+function weltzeituhr(g) { const x = (PLAZA.x + 2) * M, z = (PLAZA.y + 2) * M, stahl = new THREE.MeshStandardMaterial({ color: '#b9bec4', metalness: .9, roughness: .3 });
+  const saeule = new THREE.Mesh(new THREE.CylinderGeometry(.35, .5, 4, 12), stahl); saeule.position.set(x, 2, z); g.add(saeule);
+  const c = document.createElement('canvas'); c.width = 512; c.height = 64; const t = c.getContext('2d'); const st = ['BERLIN', 'NEW YORK', 'TOKIO', 'PARIS', 'MOSKAU', 'RIO', 'KAIRO', 'SYDNEY'];
+  t.fillStyle = '#e9e1d2'; t.fillRect(0, 0, 512, 64); st.forEach((n, i) => { t.fillStyle = ['#c8211b', '#1452a0', '#e6a01a', '#2b7a3d'][i % 4]; t.fillRect(i * 64, 0, 62, 64); t.fillStyle = '#fff'; t.font = '700 11px Arial'; t.textAlign = 'center'; t.fillText(n, i * 64 + 31, 38) });
+  const tx = new THREE.CanvasTexture(c); tx.colorSpace = THREE.SRGBColorSpace; const ring = new THREE.Mesh(new THREE.CylinderGeometry(2, 2, 1.2, 8, 1, true), new THREE.MeshStandardMaterial({ map: tx, side: THREE.DoubleSide, roughness: .6 })); ring.position.set(x, 4.6, z); g.add(ring);
+  const deckel = new THREE.Mesh(new THREE.CylinderGeometry(2.05, 2.05, .12, 8), stahl); deckel.position.set(x, 5.25, z); g.add(deckel); const atom = new THREE.Group(); atom.position.set(x, 6.4, z); g.add(atom);
+  for (let i = 0; i < 3; i++) { const o = new THREE.Mesh(new THREE.TorusGeometry(.8, .04, 6, 24), stahl); o.rotation.set(i * 1.05, i * .7, 0); atom.add(o) } const k = new THREE.Mesh(new THREE.SphereGeometry(.2, 10, 8), stahl); atom.add(k) }
+/* Streifenwagen: Berliner Polizei in Blau-Silber, Blaulicht blinkt bei Fahndung. Positionen kommen aus karriere.js (window.POLIZEI) */
+function polizei(g) { const autos = [], silber = new THREE.MeshStandardMaterial({ color: '#d9dde2', metalness: .6, roughness: .35 }), blau = new THREE.MeshStandardMaterial({ color: '#1452a0', roughness: .4 }), glas = new THREE.MeshStandardMaterial({ color: '#1a2230', metalness: .5, roughness: .1 });
+  const l1 = new THREE.MeshStandardMaterial({ color: '#2a6bff', emissive: '#2a6bff', emissiveIntensity: 0 }), l2 = l1.clone();
+  for (let i = 0; i < 4; i++) { const a = new THREE.Group(); g.add(a); const k = new THREE.Mesh(new THREE.BoxGeometry(4.2, .9, 1.9), silber); k.position.y = .7; k.castShadow = true; a.add(k);
+    const streif = new THREE.Mesh(new THREE.BoxGeometry(4.22, .25, 1.92), blau); streif.position.y = .75; a.add(streif); const dach = new THREE.Mesh(new THREE.BoxGeometry(2.2, .7, 1.7), glas); dach.position.set(-.2, 1.45, 0); a.add(dach);
+    const b1 = new THREE.Mesh(new THREE.BoxGeometry(.3, .18, .6), l1); b1.position.set(-.2, 1.9, -.35); a.add(b1); const b2 = new THREE.Mesh(new THREE.BoxGeometry(.3, .18, .6), l2); b2.position.set(-.2, 1.9, .35); a.add(b2);
+    for (const [rx, rz] of [[-1.4, -.95], [1.4, -.95], [-1.4, .95], [1.4, .95]]) { const r = new THREE.Mesh(new THREE.CylinderGeometry(.38, .38, .25, 12), new THREE.MeshStandardMaterial({ color: '#111' })); r.rotation.x = Math.PI / 2; r.position.set(rx, .38, rz); a.add(r) }
+    a.userData.alt = null; autos.push(a) }
+  return () => { const P = window.POLIZEI; if (!P) return; const t = performance.now() / 1000; let blink = false;
+    P.forEach((p, i) => { const a = autos[i]; if (!a) return; const nx = p.x * M, nz = p.y * M; if (a.userData.alt) { const dx = nx - a.userData.alt[0], dz = nz - a.userData.alt[1]; if (Math.abs(dx) + Math.abs(dz) > .01) a.rotation.y = Math.atan2(-dz, dx) } a.userData.alt = [nx, nz]; a.position.set(nx, 0, nz); if (p.blau > 0) blink = true });
+    l1.emissiveIntensity = blink && Math.sin(t * 14) > 0 ? 4 : 0; l2.emissiveIntensity = blink && Math.sin(t * 14) <= 0 ? 4 : 0 } }

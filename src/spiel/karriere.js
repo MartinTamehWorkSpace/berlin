@@ -33,7 +33,7 @@ const MISSIONEN = {
 const kst = () => { ST.kar = ST.kar || { deals: 0, serie: 0, umsatz: 0, orte: {}, laeden: 0, kassen: 0, events: 0, viral: 0, posts: 0, m: { dealer: 0, gastro: 0, influ: 0 }, pause: {} }; return ST.kar };
 const nahAn = (o, r = 2.2) => { const p = ORTE[o] && ORTE[o].p(); return p && !INNEN && Math.hypot(ICH.x - p.x, ICH.y - p.y) < r };
 const gastroProMin = () => LAEDEN.filter(l => ST.gastro && ST.gastro[l.id]).reduce((s, l) => s + l.proMin, 0);
-function rangVon(k) { const m = kst().m[k] || 0, R = KARRIEREN[k].raenge; return R[Math.min(R.length - 1, Math.floor(m * R.length / (MISSIONEN[k].length + 1)))] }
+function karRang(k) { const m = kst().m[k] || 0, R = KARRIEREN[k].raenge; return R[Math.min(R.length - 1, Math.floor(m * R.length / (MISSIONEN[k].length + 1)))] }
 
 /* ---------- Polizei: 4 Streifenwagen fahren auf den Straßen, bei Fahndung jagt der nächste dich ---------- */
 const POLIZEI = Array.from({ length: 4 }, (_, i) => ({ x: 1 + 8 * (i + 1), y: 1 + 8 * ((i * 2) % 4 + 1), ziel: null, jagd: false, blau: 0 }));
@@ -61,7 +61,7 @@ function content(o) { const k = kst(), t = Date.now(); if ((k.pause['c_' + o] ||
   const viral = Math.random() < .12, fol = Math.round((200 + (k.m.influ || 0) * 400) * (viral ? 25 : 1) * (.7 + Math.random() * .6));
   k.pause['c_' + o] = t + 90000; k.orte[o] = 1; k.posts++; if (viral) k.viral++; ST.follower = (ST.follower || 0) + fol; ST.geld += Math.round(fol * 2.5); ICH.tanzBis = Date.now() + 6000;
   banner(viral ? '🔥 VIRAL' : '📸 CONTENT', `${ORTE[o].n}${viral ? ': Dein Video explodiert' : ''}`, `+${fol.toLocaleString('de-DE')} Follower · +${euro(Math.round(fol * 2.5))}`); missionPruefen(); save(); hud() }
-function kasseLeeren(l) { ST.gastroKasse = ST.gastroKasse || {}; const seit = Math.min(240, (Date.now() - (ST.gastroKasse[l.id] || ST.gastro[l.id])) / 60000), geld = Math.round(seit * l.proMin);
+function gastroKasse(l) { ST.gastroKasse = ST.gastroKasse || {}; const seit = Math.min(240, (Date.now() - (ST.gastroKasse[l.id] || ST.gastro[l.id])) / 60000), geld = Math.round(seit * l.proMin);
   if (geld < 1) return toast('Die Kasse ist noch leer'); ST.gastroKasse[l.id] = Date.now(); ST.geld += geld; kst().kassen++; banner('💶 KASSE', `${l.t}: Abend gut gelaufen`, `+${euro(geld)}`); missionPruefen(); save(); hud() }
 function lokalKaufen(l) { if (ST.geld < l.preis) return toast('Dafür reicht dein Geld nicht'); ST.geld -= l.preis; ST.gastro = ST.gastro || {}; ST.gastro[l.id] = Date.now(); kst().laeden = Object.keys(ST.gastro).length;
   banner('🍽️ GEKAUFT', `${l.t} gehört jetzt dir`, `+${euro(l.proMin)} pro Minute`); missionPruefen(); save(); hud() }
@@ -70,11 +70,11 @@ function promiAbend(l) { const kosten = 150000; if (ST.geld < kosten) return toa
 
 /* ---------- Missionen ---------- */
 function missionPruefen() { const k = kst(), kar = ST.karriere; if (!kar) return; const L = MISSIONEN[kar];
-  while (k.m[kar] < L.length && L[k.m[kar]].ok(k)) { const m = L[k.m[kar]]; k.m[kar]++; ST.geld += m.lohn; banner('✅ MISSION', m.t, `+${euro(m.lohn)} · ${rangVon(kar)}`) } }
+  while (k.m[kar] < L.length && L[k.m[kar]].ok(k)) { const m = L[k.m[kar]]; k.m[kar]++; ST.geld += m.lohn; banner('✅ MISSION', m.t, `+${euro(m.lohn)} · ${karRang(kar)}`) } }
 setInterval(() => { if (typeof ST !== 'undefined' && ST.karriere) missionPruefen() }, 3000);
 
 /* ---------- Fenster: Karriere wählen und Überblick ---------- */
-function karriereZeigen() { const kar = ST.karriere, cb = panel(kar ? `${KARRIEREN[kar].ic} ${KARRIEREN[kar].n} · ${rangVon(kar)}` : '🕰️ Weltzeituhr · Wähl deine Karriere'); const k = kst();
+function karriereZeigen() { const kar = ST.karriere, cb = panel(kar ? `${KARRIEREN[kar].ic} ${KARRIEREN[kar].n} · ${karRang(kar)}` : '🕰️ Weltzeituhr · Wähl deine Karriere'); const k = kst();
   const absatz = t => { const p = document.createElement('p'); p.className = 'hin'; p.textContent = t; cb.append(p) }, knopf = (t, f, aus) => { const b = document.createElement('button'); b.className = 'big test'; b.style.marginTop = '5px'; b.textContent = t; b.disabled = !!aus; b.onclick = f; cb.append(b) };
   if (!kar) { absatz('Am Alexanderplatz entscheidest du, wer du in Berlin sein willst. Du kannst später wechseln, dein Fortschritt bleibt.');
     for (const [id, K] of Object.entries(KARRIEREN)) knopf(`${K.ic} ${K.n} · ${K.t}`, () => { ST.karriere = id; save(); banner('NEUE KARRIERE', `${K.ic} ${K.n}`, K.raenge[0]); karriereZeigen() }); return }
@@ -97,9 +97,9 @@ setInterval(() => { if (typeof ICH === 'undefined' || typeof ST === 'undefined')
   else if (kar === 'dealer') { const o = ['goerli', 'raw', 'kotti'].find(o => nahAn(o)); if (o) { t = `💊 Deal · ${ORTE[o].n}`; f = () => deal(o) } }
   else if (kar === 'influ') { const o = ['tor', 'alex', 'ufer', 'berg', 'scorp', 'kadeve'].find(o => nahAn(o, 2.6)); if (o) { t = `📸 Content drehen · ${ORTE[o].n}`; f = () => content(o) } }
   else if (kar === 'gastro' && ST.gastro) { const l = LAEDEN.find(l => ST.gastro[l.id] && (INNEN ? INNEN.title === l.t : (() => { const p = haus(l.t); return p && Math.hypot(ICH.x - p.x, ICH.y - p.y) < 2.4 })()));
-    if (l) { t = `💶 Kasse leeren · ${l.t}`; f = () => kasseLeeren(l); let e = document.getElementById('bPromi'); if (!e) { e = document.createElement('button'); e.id = 'bPromi'; e.className = 'anlegen'; leiste.append(e) } e.textContent = '🥂 Promi-Abend · 150.000 €'; e.hidden = false; e.onclick = () => promiAbend(l) } }
+    if (l) { t = `💶 Kasse leeren · ${l.t}`; f = () => gastroKasse(l); let e = document.getElementById('bPromi'); if (!e) { e = document.createElement('button'); e.id = 'bPromi'; e.className = 'anlegen'; leiste.append(e) } e.textContent = '🥂 Promi-Abend · 150.000 €'; e.hidden = false; e.onclick = () => promiAbend(l) } }
   const pr = document.getElementById('bPromi'); if (pr && !(kar === 'gastro' && f)) pr.hidden = true;
   b.hidden = !f; if (f) { b.textContent = t; b.onclick = f }
   /* Fahndungssterne und Karriere oben in der Leiste */
   let c = document.getElementById('hKar'); if (!c) { const hud0 = document.querySelector('.hud'); if (!hud0) return; const d = document.createElement('div'); d.className = 'chip karriere'; d.innerHTML = '<span>Karriere</span><b id="hKar"></b>'; d.style.pointerEvents = 'auto'; d.style.cursor = 'pointer'; d.onclick = karriereZeigen; hud0.append(d); c = document.getElementById('hKar') }
-  c.textContent = kar ? `${KARRIEREN[kar].ic} ${rangVon(kar)}${ST.fahndung ? ' ' + '★'.repeat(ST.fahndung) : ''}` : 'Wählen'; c.style.color = ST.fahndung ? '#ff3b3b' : '' }, 250);
+  c.textContent = kar ? `${KARRIEREN[kar].ic} ${karRang(kar)}${ST.fahndung ? ' ' + '★'.repeat(ST.fahndung) : ''}` : 'Wählen'; c.style.color = ST.fahndung ? '#ff3b3b' : '' }, 250);

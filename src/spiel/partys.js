@@ -22,7 +22,7 @@ function partyGaeste(b, stock, L) { if (eigeneWohnung(b, stock) && !eingeladen()
 // Einrichtung je Art in der 2D-Innenansicht
 function partyEinrichtung(b, x, y, add, K) { const e = etagen(b)[b.stock || 0]; if (e.a !== 'home') return; const p = partyFuer(b, b.stock || 0);
   if (p.art === 'dj') { K(1.4, .35, 1.4, .5, 10, '#16171a'); for (let i = 0; i < 3; i++) for (let j = 0; j < 3; j++) add('f', 1 + i * .7, 2.3 + j * .6, () => top4(x + 1 + i * .7, y + 2.3 + j * .6, .65, .55, .4, `hsl(${(i * 50 + j * 80 + T * 120) % 360},80%,${55 + 15 * Math.sin(T * 7 + i + j)}%)`)) }
-  if (p.art === 'bar') { K(.4, .45, 2.6, .5, 11, '#2a2218'); K(.45, .5, 2.5, .4, .6, '#e6c76a', 11); for (let i = 0; i < 6; i++) K(.55 + i * .4, .5, .12, .12, 5, ['#ff8fc7', '#ffd166', '#9fe8ff'][i % 3], 11.6) }
+  if (p.art === 'bar') { K(.4, .45, 2.6, .5, 11, '#2a2218'); K(.45, .5, 2.5, .4, .6, '#e6c76a', 11); for (let i = 0; i < 6; i++) K(.55 + i * .4, .5, .12, .12, 5, ['#ff6f9c', '#ffd166', '#9fe8ff'][i % 3], 11.6) }
   if (p.art === 'kueche') { K(1.1, 1.3, 1.8, .8, 10, '#f4f1ea'); K(1.15, 1.35, 1.7, .7, .5, '#2b2d33', 10); K(.3, .3, 3.2, .45, 18, '#e9e4dc') }
   if (p.art === 'dinner') { K(.7, 1.4, 2.6, .8, 8, '#7a5236'); for (let i = 0; i < 5; i++) { K(.85 + i * .5, 1.15, .25, .2, 6, '#f2eee8'); K(.85 + i * .5, 2.25, .25, .2, 6, '#f2eee8') } }
   if (p.art === 'beauty') { for (let i = 0; i < 3; i++) { K(.5 + i * 1.1, .4, .8, .45, 10, '#ffb3d1'); K(.6 + i * 1.1, .42, .6, .06, 7, '#fff7fb', 10) } }

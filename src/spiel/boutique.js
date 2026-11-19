@@ -103,7 +103,7 @@ function fundZeigen(t, set, unter) { const kopf = t.selten === 3 ? 'IKONE GEKAUF
 // Große Karte in der Bildmitte: Funde, Tagesbonus, Besuche. Mehrere warten hintereinander.
 const KARTEN = [];
 function karteZeigen(k) { KARTEN.push(k); if (KARTEN.length === 1) karteNaechste() }
-function karteNaechste() { const k = KARTEN[0], el = document.getElementById('fund'); if (!el) return; if (!k) { el.hidden = true; return } el.replaceChildren(); el.style.setProperty('--selten', k.farbe || '#ff8fc7');
+function karteNaechste() { const k = KARTEN[0], el = document.getElementById('fund'); if (!el) return; if (!k) { el.hidden = true; return } el.replaceChildren(); el.style.setProperty('--selten', k.farbe || '#ff6f9c');
   const ok = el_('button', null, k.knopf || 'Weiter'); ok.onclick = () => { KARTEN.shift(); if (k.danach) k.danach(); karteNaechste(); if (BOUT.tab) boutiqueZeichnen() };
   el.append(el_('b', null, k.kopf)); if (k.bild) el.append(k.bild); el.append(el_('strong', null, k.titel)); if (k.sub) el.append(el_('span', null, k.sub)); if (k.inhalt) el.append(k.inhalt); el.append(el_('em', null, k.unter || ''), ok); el.hidden = false; save(); hud() }
 

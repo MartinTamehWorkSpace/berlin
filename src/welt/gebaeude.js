@@ -36,7 +36,7 @@ function podium(b){const p=b.pod,f=b,top=b.ph;
       F(f,0,4,z1-1.4,z1,'#05070a')}
     g.strokeStyle='rgba(0,0,0,.6)';g.lineWidth=Math.max(.6,.6*Z);g.beginPath();
     for(let i=0;i<=8;i++){const[a,c]=side==='L'?pt(f.x+i*.5,f.y+4,0):pt(f.x+4,f.y+4-i*.5,0);const[d,e]=side==='L'?pt(f.x+i*.5,f.y+4,top-PAR):pt(f.x+4,f.y+4-i*.5,top-PAR);g.moveTo(a,c);g.lineTo(d,e)}g.stroke();
-    F(f,0,4,top-PAR,top,grad(f,side,top-PAR,top,'#2a2e34','#050608'));F(f,0,4,top-PAR,top-PAR+.9,'#ff7eb6');F(f,0,4,top-1,top,'#ff7eb6');
+    F(f,0,4,top-PAR,top,grad(f,side,top-PAR,top,'#2a2e34','#050608'));F(f,0,4,top-PAR,top-PAR+.9,'#ff5a8f');F(f,0,4,top-1,top,'#ff5a8f');
     sheen(f,side,0,top);edges(f,side,0,top)}
   // Ladenschilder auf der Fassade
   const gross=b.tow||p.fl>=2;for(const[side,u0,u1,br]of p.shops){if(gross&&GLOW[br])continue;faceT(f,side,(u0+u1)/2,top-PAR/2-.5);brand(br,(u1-u0)*35.78*.86,11);g.setTransform(1,0,0,1,0,0)}
@@ -87,10 +87,10 @@ function tower(b){const t=b.tow;let f={x:b.x+t.ox,y:b.y+t.oy,w:t.w,d:t.d};let z0
   if(t.tier){fL(f,0,f.w,z1-1,z1+1,t.crown);fR(f,0,f.d,z1-1,z1+1,t.crown);top4(f.x,f.y,f.w,f.d,z1,'#4a5a64');
     const i=t.tier.ins;f={x:f.x+i,y:f.y+i,w:f.w-2*i,d:f.d-2*i};z0=z1;z1=z0+t.tier.fl*FH;glassFace(f,'L',z0,z1,t.kind);glassFace(f,'R',z0,z1,t.kind)}
   // leuchtende Krone
-  fL(f,0,f.w,z1-4,z1,'#0a0c0f');fR(f,0,f.d,z1-4,z1,'#06080a');fL(f,0,f.w,z1-1,z1,'#ff7eb6');fR(f,0,f.d,z1-1,z1,'#e0609c');
+  fL(f,0,f.w,z1-4,z1,'#0a0c0f');fR(f,0,f.d,z1-4,z1,'#06080a');fL(f,0,f.w,z1-1,z1,'#ff5a8f');fR(f,0,f.d,z1-1,z1,'#e0609c');
   if(t.kind==='res'&&(b.x+b.y)%16!==3){top4(f.x,f.y,f.w,f.d,z1,'#ece6dd');top4(f.x+.5,f.y+.5,f.w-1,1.6,z1,'#ffffff');const pg=g.createLinearGradient(...pt(f.x+.6,f.y+.6,z1),...pt(f.x+f.w-.6,f.y+2,z1));pg.addColorStop(0,'#4fd6e6');pg.addColorStop(1,'#1d9db8');top4(f.x+.6,f.y+.6,f.w-1.2,1.4,z1,pg);
     for(let i=0;i<3;i++){const[a,c]=pt(f.x+.9+i*.8,f.y+1.1,z1);g.fillStyle=`rgba(255,255,255,${.3+.3*Math.sin(T*2+i)})`;g.fillRect(a-3*Z,c,6*Z,.8*Z)}
-    for(let i=0;i<3;i++)kiste(f.x+.6+i*.9,f.y+2.5,.6,.25,2,i%2?'#ff7eb6':'#f4efe6',z1);solar(f.x+.4,f.y+3,f.w-.8,f.d-3.4,z1)}
+    for(let i=0;i<3;i++)kiste(f.x+.6+i*.9,f.y+2.5,.6,.25,2,i%2?'#ff5a8f':'#f4efe6',z1);solar(f.x+.4,f.y+3,f.w-.8,f.d-3.4,z1)}
   else solar(f.x,f.y,f.w,f.d,z1);
   if(t.spire){const[a,c]=pt(f.x+f.w/2,f.y+f.d/2,z1),[d,e]=pt(f.x+f.w/2,f.y+f.d/2,z1+90);g.strokeStyle='#cfd8de';g.lineWidth=2*Z;g.beginPath();g.moveTo(a,c);g.lineTo(d,e);g.stroke();
     g.fillStyle=`rgba(255,80,80,${.5+.5*Math.sin(T*3)})`;g.beginPath();g.arc(d,e,2.4*Z,0,7);g.fill()}
@@ -102,7 +102,7 @@ const WERBUNG=[
  {bg:['#1a0c18','#3a1430'],rand:'#ff4fa3',marke:'GLOW CITY',titel:'Black Card',zeile:'Valentina hat sie. Und du?',f:'#ffffff',bild:'valentina'},
  {bg:['#0e1f22','#0b2e33'],rand:'#81d8d0',marke:'TIFFANNY & CO.',titel:'Diamant 3 Karat',zeile:'Warteliste 21 Tage',f:'#e9fbf9',bild:'diamant'},
  {bg:['#f4f6f7','#dfe6ea'],rand:'#9fb6bf',marke:'DR. GLATT',titel:'Dein bester Glow',zeile:'Botox ab 390 € · fast ausgebucht',f:'#1d2b33',bild:'flakon'},
- {bg:['#140c12','#2a0f1d'],rand:'#ff7eb6',marke:'LAMBORGIA',titel:'Furioso in Rosa',zeile:'Jetzt bei Spree Motors',f:'#ffffff',bild:'auto4'},
+ {bg:['#140c12','#2a0f1d'],rand:'#ff5a8f',marke:'LAMBORGIA',titel:'Furioso in Rosa',zeile:'Jetzt bei Spree Motors',f:'#ffffff',bild:'auto4'},
  {bg:['#0a2a2c','#064046'],rand:'#2fe0d2',marke:'SCORPIUS',titel:'Sunset Club',zeile:'Jacht-Charter ab 2.500 €',f:'#ffffff',bild:'sonne'}];
 const TAFELN=new Set(['Scorpius Berlin','Villa Palms','Borchert',"Ryotei 398",'Papillong','Grill Royale','Kiez Gym','Health Hub','Markthalle Zehn']);
 function werbeBild(w,x0,y0,bw,bh){g.save();g.beginPath();g.rect(x0,y0,bw,bh);g.clip();
@@ -117,7 +117,7 @@ function werbeBild(w,x0,y0,bw,bh){g.save();g.beginPath();g.rect(x0,y0,bw,bh);g.c
     for(let i=0;i<4;i++){const a=T*1.5+i*1.6;g.fillStyle=`rgba(255,255,255,${.5+.5*Math.sin(T*4+i)})`;g.beginPath();g.arc(Math.cos(a)*r*.7,Math.sin(a)*r*.5-r*.3,bh*.02,0,7);g.fill()}g.restore()}
   else if(w.bild==='flakon'){g.save();g.translate(cx,cy);const h=bh*.55;const gr=g.createLinearGradient(-h*.3,0,h*.3,0);gr.addColorStop(0,'#cfdde4');gr.addColorStop(.5,'#ffffff');gr.addColorStop(1,'#a9bec9');
     g.fillStyle=gr;g.beginPath();g.roundRect(-h*.28,-h*.15,h*.56,h*.62,h*.08);g.fill();g.fillStyle='#e6c76a';g.fillRect(-h*.1,-h*.32,h*.2,h*.17);g.fillStyle='#1d2b33';g.font=`600 ${h*.09}px Inter`;g.textAlign='center';g.fillText('GLOW',0,h*.2);g.restore()}
-  else if(w.bild==='sonne'){const gr=g.createLinearGradient(0,y0,0,y0+bh);gr.addColorStop(0,'#ff7eb6');gr.addColorStop(.55,'#ffd166');gr.addColorStop(.56,'#2fe0d2');gr.addColorStop(1,'#064046');g.fillStyle=gr;g.fillRect(x0,y0,bw,bh);
+  else if(w.bild==='sonne'){const gr=g.createLinearGradient(0,y0,0,y0+bh);gr.addColorStop(0,'#ff5a8f');gr.addColorStop(.55,'#ffd166');gr.addColorStop(.56,'#2fe0d2');gr.addColorStop(1,'#064046');g.fillStyle=gr;g.fillRect(x0,y0,bw,bh);
     g.fillStyle='#fff3c4';g.beginPath();g.arc(cx,y0+bh*.55,bh*.22,Math.PI,0);g.fill();g.fillStyle='rgba(6,64,70,.9)';for(let i=0;i<4;i++)g.fillRect(x0,y0+bh*(.6+i*.09),bw,bh*.025)}
   g.restore()}
 function tafel(b){if(!TAFELN.has(b.title))return;const z0=(b.topZ||b.ph),bw=3.5,bh=40,f={x:b.x+.25,y:b.y+.9,w:bw,d:0},zl=z0+10;
@@ -147,7 +147,7 @@ function eingang(b){const x=b.x+1.45,y=b.y+4,w=1.1,z=GF-5;const d={x,y,w,d:.38};
   const[lx,ly]=pt(x+w/2,y+.2,z-2);g.save();g.globalCompositeOperation='lighter';g.globalAlpha=.5;g.drawImage(glut('#ffd9a0'),lx-16*Z,ly-6*Z,32*Z,22*Z);g.restore();
   for(const u of[-.3,w+.05]){const k={x:x+u,y:y+.08,w:.25,d:.25};fL(k,0,.25,0,4,'#f4efe6');fR(k,0,.25,0,4,'#ddd6cc');top4(k.x,k.y,.25,.25,4,'#3f6b3a');const[px,py]=pt(k.x+.12,k.y+.12,4);g.fillStyle='#4f8a46';g.beginPath();g.arc(px,py-2*Z,3.4*Z,0,7);g.fill()}}
 // Große Leuchtreklame: pro Laden ein Markenemblem über den Schaufenstern, leuchtend
-const GLOW={arena:'#ff8fc7',jets:'#e6c76a',tif:'#81d8d0',seph:'#ffffff',vic:'#ff8fc7',lulu:'#ff5a5a',spa:'#e6c76a',salon:'#f4efe6',apfel:'#ffffff',nicky:'#2fe0d2',bout:'#ff4fa3',motors:'#e8eef5',sac:'#e8d5a8',prado:'#e8d5a8',shan:'#ffffff',zahra:'#ffffff',doug:'#9ad8c8',star:'#4fd19a',klinik:'#cfe8f5',lab:'#ff8a80',mehr:'#ffffff',mcf:'#ffd400',ross:'#ff5a6e',dn:'#ffc94d',lid:'#ffd400',borch:'#e8d5a8',hug:'#ffb3b3',riva:'#bfe0ff',boot:'#b9a6ff'};
+const GLOW={arena:'#ff6f9c',jets:'#e6c76a',tif:'#81d8d0',seph:'#ffffff',vic:'#ff6f9c',lulu:'#ff5a5a',spa:'#e6c76a',salon:'#f4efe6',apfel:'#ffffff',nicky:'#2fe0d2',bout:'#ff4fa3',motors:'#e8eef5',sac:'#e8d5a8',prado:'#e8d5a8',shan:'#ffffff',zahra:'#ffffff',doug:'#9ad8c8',star:'#4fd19a',klinik:'#cfe8f5',lab:'#ff8a80',mehr:'#ffffff',mcf:'#ffd400',ross:'#ff5a6e',dn:'#ffc94d',lid:'#ffd400',borch:'#e8d5a8',hug:'#ffb3b3',riva:'#bfe0ff',boot:'#b9a6ff'};
 function bigSigns(b){const p=b.pod;let za,zb;
   if(b.tow){za=b.ph+3;zb=b.ph+2*FH-3}else if(p.fl>=2){za=GF+2;zb=b.ph-PAR-2}else return;
   for(const[side,u0,u1,br]of p.shops){if(!GLOW[br])continue;const f={x:b.x,y:b.y,w:4,d:4};const w=(u1-u0)*35.78*.84,h=Math.min(zb-za,w*.42);
@@ -186,7 +186,7 @@ function brand(k,w,h){g.textAlign='center';g.textBaseline='middle';
    case'spa':plate('#f4efe6','#e6c76a');txt('Spree Spa','italic 500 S Bodoni Moda','#5a4a2a',1);break;
    case'salon':plate('#16171a','#e6c76a');txt('SALON BLOND','600 S Inter','#f2e2b8',3);break;
    case'apfel':plate('#f4f5f7','#c9ccd1');txt('Apfel Store','600 S Inter','#1d1d1f');break;
-   case'arena':plate('#0d0e12','#ff8fc7');txt('SPREE ARENA','800 S Inter','#ffffff',3);break;
+   case'arena':plate('#0d0e12','#ff6f9c');txt('SPREE ARENA','800 S Inter','#ffffff',3);break;
    case'jets':plate('#16171a','#e6c76a');txt('TEMPELHOFF','700 S Inter','#e6c76a',3);break;
    case'nicky':plate('#2fe0d2','#ffffff');txt('Scorpius Berlin','400 S Yellowtail','#073b3a');break;
    case'bout':plate('#ff4fa3','#ffffff');txt('Boutique '+((typeof ST!=='undefined'&&ST.profil&&ST.profil.handle)||'Glow'),'italic 500 S Bodoni Moda','#ffffff',.5);break;

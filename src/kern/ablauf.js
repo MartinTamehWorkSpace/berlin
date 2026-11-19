@@ -92,7 +92,7 @@ function radar(){const r=Math.min(78,innerWidth*.16)*DPR,cx=r+18*DPR,cy=H-r-74*D
   for(let k=0;k<6;k++){mq(8*k,-1,8*k+2,42,'#d8d4dc');mq(-1,8*k,43,8*k+2,'#d8d4dc')}
   B.forEach(b=>mq(b.x+.3,b.y+.3,b.x+3.7,b.y+3.7,'#4a4458'));
   for(const h of HELIS)if(h.p){const[a,b]=m(h.p.x,h.p.y);g.fillStyle='#fff';g.beginPath();g.arc(a,b,3*DPR,0,7);g.fill()}
-  if(typeof AFFAERE!=='undefined'&&AFFAERE.an)for(const q of P)if(q.nachbar){const[a,b]=m(q.x,q.y);g.fillStyle='#ff8fc7';g.font=`${10*DPR}px sans-serif`;g.textAlign='center';g.textBaseline='middle';g.fillText('♥',a,b)}
+  if(typeof AFFAERE!=='undefined'&&AFFAERE.an)for(const q of P)if(q.nachbar){const[a,b]=m(q.x,q.y);g.fillStyle='#ff6f9c';g.font=`${10*DPR}px sans-serif`;g.textAlign='center';g.textBaseline='middle';g.fillText('♥',a,b)}
   const[px,py]=m(ICH.x,ICH.y);g.fillStyle='#ff4fa3';g.beginPath();g.moveTo(px,py-6*DPR);g.lineTo(px+4.5*DPR,py+4*DPR);g.lineTo(px-4.5*DPR,py+4*DPR);g.fill();
   g.restore();g.strokeStyle='rgba(255,255,255,.85)';g.lineWidth=3*DPR;g.beginPath();g.arc(cx,cy,r,0,7);g.stroke();g.strokeStyle='#ff4fa3';g.lineWidth=1.5*DPR;g.beginPath();g.arc(cx,cy,r+3*DPR,0,7);g.stroke()}
 function ampelZ(o){const[x,y]=pt(o.x,o.y);const s=Z;g.strokeStyle='#1b1c20';g.lineWidth=1.6*s;g.beginPath();g.moveTo(x,y);g.lineTo(x,y-30*s);g.stroke();
@@ -113,7 +113,7 @@ function cafe(o){const[x,y]=pt(o.x,o.y);const s=Z;g.fillStyle='rgba(0,0,0,.15)';
   g.fillStyle=o.farbe;g.beginPath();g.moveTo(x-13*s,y-20*s);g.quadraticCurveTo(x,y-31*s,x+13*s,y-20*s);g.lineTo(x+13*s,y-19*s);g.lineTo(x-13*s,y-19*s);g.fill();
   g.fillStyle='rgba(255,255,255,.18)';g.beginPath();g.moveTo(x-13*s,y-20*s);g.quadraticCurveTo(x-5*s,y-28*s,x,y-29*s);g.lineTo(x-2*s,y-20*s);g.fill()}
 function beet(o){const w=o.quer?.8:.25,d=o.quer?.25:.8;const f={x:o.x,y:o.y,w,d};fL(f,0,w,0,3,'#e9e2d8');fR(f,0,d,0,3,'#d6cec3');top4(o.x,o.y,w,d,3,'#4f7a42');
-  for(let i=0;i<5;i++){const[px,py]=pt(o.x+(o.quer?.1+i*.15:.12),o.y+(o.quer?.12:.1+i*.15),4);g.fillStyle=['#ff7eb6','#ffd166','#ffffff','#ff4fa3','#c8b6e2'][i];g.beginPath();g.arc(px,py,1.3*Z,0,7);g.fill()}}
+  for(let i=0;i<5;i++){const[px,py]=pt(o.x+(o.quer?.1+i*.15:.12),o.y+(o.quer?.12:.1+i*.15),4);g.fillStyle=['#ff5a8f','#ffd166','#ffffff','#ff4fa3','#c8b6e2'][i];g.beginPath();g.arc(px,py,1.3*Z,0,7);g.fill()}}
 function bank(o){const f={x:o.x,y:o.y,w:.18,d:.6};fL(f,0,.18,2,3,'#7a5236');fR(f,0,.6,2,3,'#6a4630');top4(o.x,o.y,.18,.6,3,'#9a6a46');const r={x:o.x-.05,y:o.y,w:.05,d:.6};fR(r,0,.6,3,6,'#7a5236');
   for(const v of[.08,.5]){const[px,py]=pt(o.x+.09,o.y+v,0);g.fillStyle='#2a2b30';g.fillRect(px-.6*Z,py-2*Z,1.2*Z,2*Z)}}
 const DRAW={tree,palm,fount,yacht,lamp,ampel:ampelZ,schirm,meinejacht:meineJacht,cafe,beet,bank};
