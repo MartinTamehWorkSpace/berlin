@@ -2,7 +2,7 @@
 // dazu der Fernsehturm-Kopf auf dem Alex Tower (Kugel mit Antenne, rotes Blinklicht) und ein paar Spätis an Straßenecken.
 // Nur Texturen und leuchtende Flächen, keine echten Lichter (Tempo-Regel aus CLAUDE.md).
 import * as THREE from 'three';
-import { M } from './haeuser.js?v=1795049639';
+import { M } from './haeuser.js?v=1795049691';
 
 const SPRUECHE = ['BERLIN', 'KREUZBERG 36', 'SPREE', 'KIEZ', 'LOVE', 'TECHNO', 'NEUKÖLLN', 'FHAIN', '030', 'BÄM', 'NO SLEEP', 'SPÄTI', 'MITTE', 'WEDDING', 'KATER', 'ROSA', 'ARM ABER SEXY', 'U8', 'BOOM'];
 const FARBEN = [['#ff2fa0', '#ffd36b'], ['#2fe0d2', '#16171a'], ['#ffd400', '#ff2a2a'], ['#9b5cff', '#2fe0d2'], ['#39d353', '#16171a'], ['#ff7a1a', '#ffffff'], ['#ffffff', '#ff2fa0']];

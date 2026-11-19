@@ -16,5 +16,8 @@ for f in glob.glob('src/**/*.js',recursive=True):
   t=open(f).read();n=re.sub(r"(from\s+'\./[^'?]+\.js)(\?v=\d+)?'",lambda m:m.group(1)+'?v='+v+"'",t)
   if n!=t:open(f,'w').write(n)
 PY
+if grep -rln "^<<<<<<< \|^>>>>>>> " index.html src werkzeug 2>/dev/null | grep . ; then
+  echo "ABBRUCH: Konfliktmarker in den Dateien oben. Erst aufloesen, dann neu hochladen."; exit 1
+fi
 sh werkzeug/pruefen.sh | tail -1
 git add -A && git commit -qm "${1:-Update} (Version $V)" && git push -q && echo "HOCHGELADEN, Version $V"

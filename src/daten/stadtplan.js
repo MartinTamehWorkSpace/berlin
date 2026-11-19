@@ -34,22 +34,12 @@ mk(4,1,{title:'Penthouse Mitte',pod:{fl:1,shops:[['L',0,4,'star']]},tow:{fl:13,k
 mk(4,2,{title:'Lofts Kreuzberg',pod:{fl:2,shops:[['L',0,4,'apfel']]},tow:{fl:11,kind:'res',crown:'#8fe3f0'}});
 // Die eigene Boutique der Spielerin: jede sieht hier ihre eigene, Antippen öffnet Regale und Kasse
 mk(4,3,{title:'Deine Boutique',meins:'boutique',pod:{fl:2,style:'deko',farbe:'#ffc6dd',neon:'#ff4fa3',shops:[['L',0,4,'bout'],['R',0,4,'bout']]}});
-<<<<<<< Updated upstream
 // Spree Arena: Konzerthalle im Westen, das Stadion baut src/drei/arena.js
 mk(-3,1,{title:'Spree Arena',pod:{fl:2,style:'deko',farbe:'#2a2f3a',neon:'#ff8fc7',shops:[['L',0,4,'arena'],['R',0,4,'arena']]}});
 // Berghain: Betonkoloss neben der Spree Arena, ehemaliges Heizkraftwerk, kein Schild an der Fassade
-mk(-3,2,{title:'Berghain',pod:{fl:5,style:'beton',farbe:'#8a8781',neon:'#ff3b2f',shops:[['L',0,4,'berg'],['R',0,4,'berg']]}});
+mk(-3,2,{title:'Berghain',pod:{fl:8,style:'beton',farbe:'#8a8781',neon:'#ff3b2f',shops:[['L',0,4,'berg'],['R',0,4,'deal']]}});
 // Flughafen Tempelhoff: Privatterminal östlich der Stadt, Landebahn und Vorfeld baut src/drei/flughafen.js
 mk(6,1,{title:'Flughafen Tempelhoff',pod:{fl:2,style:'deko',farbe:'#eef3f6',neon:'#e6c76a',shops:[['L',0,4,'jets'],['R',0,4,'jets']]}});
 mk(4,4,{title:'Scorpius Berlin',pod:{fl:2,style:'deko',farbe:'#ffe0cc',neon:'#2fe0d2',shops:[['L',0,4,'nicky'],['R',0,4,'nicky']]}});
-=======
-// Luba Arena: Konzerthalle im Westen, das Stadion baut src/drei/arena.js
-mk(-3,1,{title:'Luba Arena',pod:{fl:2,style:'deko',farbe:'#2a2f3a',neon:'#ff8fc7',shops:[['L',0,4,'arena'],['R',0,4,'arena']]}});
-// Berghain: Betonkoloss neben der Luba Arena, ehemaliges Heizkraftwerk, kein Schild an der Fassade
-mk(-3,2,{title:'Berghain',pod:{fl:8,style:'beton',farbe:'#8a8781',neon:'#ff3b2f',shops:[['L',0,4,'berg'],['R',0,4,'deal']]}});
-// Glow Airport: Privatterminal östlich der Stadt, Landebahn und Vorfeld baut src/drei/flughafen.js
-mk(6,1,{title:'Glow Airport',pod:{fl:2,style:'deko',farbe:'#eef3f6',neon:'#e6c76a',shops:[['L',0,4,'jets'],['R',0,4,'jets']]}});
-mk(4,4,{title:'Nicky Beach Yachtclub',pod:{fl:2,style:'deko',farbe:'#ffe0cc',neon:'#2fe0d2',shops:[['L',0,4,'nicky'],['R',0,4,'nicky']]}});
->>>>>>> Stashed changes
 B.sort((a,b)=>(a.x+a.y)-(b.x+b.y));
 const PARK=lot(2,0),PLAZA=lot(1,1);
