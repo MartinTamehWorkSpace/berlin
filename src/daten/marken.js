@@ -28,6 +28,7 @@ const BR={
  spa:{n:'Spree Spa',t:'Massagen und Facials. Füllt Energie und Glow.',fx:[]},
  salon:{n:'Salon Blond',t:'Friseur. Neue Haare, neuer Glow.',fx:[]},
  apfel:{n:'Apfel Store',t:'Smartphones und Laptops. Bessere Kamera, mehr Follower.',fx:[]},
+ deal:{n:'Der Dealer am Klo',t:'Steht seit drei Uhr an derselben Kachel und sagt zu allem ja. Bezahlt wird bar, gewechselt wird nicht.',fx:[['Tuetchen Mehl','80 €'],['Herzchen','25 €']]},
  berg:{n:'Berghain',t:'Techno in einem alten Heizkraftwerk. Kein Schild, keine Fotos, lange Schlange. Wer reinkommt, bleibt bis Montag. Unten laeuft die Fetischnacht: Dresscode Leder, Latex oder Haut, Handykameras werden an der Tuer abgeklebt.',fx:[['Durchtanzen bis Montag','Follower +200 · Schlaf −40 · Stil +8'],['An der Tuer abgewiesen','Laune −15 · Follower +5'],['Panorama Bar','Laune +12 · Schlaf −10'],['Darkroom: in den Mund pinkeln lassen','50 € · Laune +20 · Stil −25 · Mundwasser nicht inklusive'],['Kaefig fuer eine Stunde','80 € · Follower +40 · Laune +10'],['Im Harnisch durch die Nacht','Stil +15 · Laune +8 · 120 €']]},
  arena:{n:'Spree Arena',t:'Die große Halle an der Spree in Friedrichshain. Heute Abend ausverkauft, außer für dich.',fx:[]},
  jets:{n:'Flughafen Tempelhoff',t:'Der alte Zentralflughafen, jetzt nur für Privatjets. Vier Glowstream-Jets auf dem Vorfeld, einer davon vielleicht bald deiner.',fx:[]},

@@ -183,6 +183,30 @@ window.GLOW_WIRTSCHAFT = (() => {
     { id: 'daybed',    kat: 'konsum', rang: 10, laden: 'nicky', name: 'Daybed am Pool',      preis: 250, energie: 15, follower: 120, stil: 4 },
     { id: 'charter',   kat: 'konsum', rang: 30, laden: 'nicky', name: 'Jacht-Charter, 4 Stunden', preis: 2500, energie: 20, follower: 600, stil: 12 },
     { id: 'sunset',    kat: 'konsum', rang: 40, laden: 'nicky', name: 'Sunset-Segeltörn',    preis: 480, energie: 10, follower: 180, stil: 5 },
+    // ---------- Berghain ----------
+    // Zum Anziehen: die Sachen bleiben an der Figur sichtbar, drinnen wie draussen
+    { id: 'berg-harness', kat: 'mode', rang: 800, laden: 'berg', name: 'Lederharnisch',        preis: 240,  stil: 30, look: { outfit: 'leder', muster: 'harness', c2: '#0d0d10' }, farben: ['#0d0d10', '#3a0d0d', '#1b2430'] },
+    { id: 'berg-latex',   kat: 'mode', rang: 810, laden: 'berg', name: 'Latexkleid',           preis: 390,  stil: 36, look: { outfit: 'kleid', muster: 'latex', c2: '#0d0d10' }, farben: ['#0d0d10', '#8c0f1a', '#2a2a32'] },
+    { id: 'berg-netz',    kat: 'mode', rang: 820, laden: 'berg', name: 'Netzanzug',            preis: 150,  stil: 22, look: { outfit: 'leder', muster: 'netz', c2: '#0d0d10' }, farben: ['#0d0d10', '#2b2b30'] },
+    { id: 'berg-hose',    kat: 'mode', rang: 830, laden: 'berg', name: 'Lacklederhose',        preis: 320,  stil: 28, look: { outfit: 'leder', muster: 'lack', c2: '#0d0d10' }, farben: ['#0d0d10', '#1a1a22'] },
+    // Zum Machen: einmal zahlen, Wirkung sofort
+    { id: 'berg-ticket',  kat: 'konsum', rang: 10, laden: 'berg', name: 'Ganze Nacht durch',        preis: 25,  energie: -25, follower: 200, stil: 8 },
+    { id: 'berg-dark',    kat: 'konsum', rang: 20, laden: 'berg', name: 'Darkroom, eine Runde',     preis: 50,  energie: -10, follower: 30,  stil: -5 },
+    { id: 'berg-pisse',   kat: 'konsum', rang: 30, laden: 'berg', name: 'In den Mund pinkeln lassen', preis: 50, energie: -8, follower: 15, stil: -25 },
+    { id: 'berg-kaefig',  kat: 'konsum', rang: 40, laden: 'berg', name: 'Eine Stunde im Käfig',     preis: 80,  energie: -12, follower: 60,  stil: 4 },
+    { id: 'berg-sling',   kat: 'konsum', rang: 50, laden: 'berg', name: 'Sling, dreissig Minuten',  preis: 150, energie: -20, follower: 45,  stil: 2 },
+    { id: 'berg-wachs',   kat: 'konsum', rang: 60, laden: 'berg', name: 'Wachs auf den Rücken',     preis: 60,  energie: -6,  follower: 25,  stil: 3 },
+    { id: 'berg-fisting', kat: 'konsum', rang: 70, laden: 'berg', name: 'Lab.oratory, Vollprogramm',preis: 220, energie: -35, follower: 120, stil: -10 },
+    { id: 'berg-klo',     kat: 'konsum', rang: 80, laden: 'berg', name: 'Kabine zu zweit',          preis: 0,   energie: -10, follower: 10 },
+    { id: 'berg-mate',    kat: 'konsum', rang: 90, laden: 'berg', name: 'Club-Mate an der Theke',   preis: 4,   energie: 12 },
+    { id: 'berg-sticker', kat: 'konsum', rang: 95, laden: 'berg', name: 'Kamerasticker an der Tür', preis: 0,   stil: 2 },
+    // ---------- Der Dealer am Klo ----------
+    { id: 'deal-mehl',    kat: 'konsum', rang: 10, laden: 'deal', name: 'Tütchen Mehl',             preis: 80,  energie: 35, follower: 20, stil: -4 },
+    { id: 'deal-herz',    kat: 'konsum', rang: 20, laden: 'deal', name: 'Herzchen',                 preis: 25,  energie: 40, follower: 30, stil: -2 },
+    { id: 'deal-tropfen', kat: 'konsum', rang: 30, laden: 'deal', name: 'Tropfen für Montag',       preis: 40,  energie: 25 },
+    { id: 'deal-poppers', kat: 'konsum', rang: 40, laden: 'deal', name: 'Fläschchen aus der Hosentasche', preis: 15, energie: 10, stil: -3 },
+    { id: 'deal-kaugummi',kat: 'konsum', rang: 50, laden: 'deal', name: 'Kaugummi gegen das Zähneknirschen', preis: 2, energie: 4 },
+    { id: 'deal-wasser',  kat: 'konsum', rang: 60, laden: 'deal', name: 'Leitungswasser, 5 €',      preis: 5,   energie: 15 },
     { id: 'tower',     kat: 'konsum', rang: 20, laden: 'nicky', name: 'Champagner-Turm',     preis: 900, energie: -10, follower: 400, stil: 8 },
     // Beauty: schnell, aber nicht billig
     { id: 'botox',    kat: 'beauty', rang: 100, name: 'Botox Stirn',      preis: 390,  stil: 8 },

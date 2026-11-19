@@ -1,6 +1,9 @@
 // Berlin City · innen.js · wird als klassisches Skript in index.html geladen (gemeinsamer globaler Bereich, Reihenfolge zählt)
 // ---------- Innenansicht: Haus wird bis aufs Erdgeschoss aufgeschnitten ----------
-function etagen(b){const E=[{n:'Erdgeschoss',a:art(b),k:(b.pod.shops.map(s=>s[3]))}];if(!b.tow)return E;
+function etagen(b){const E=[{n:'Erdgeschoss',a:art(b),k:(b.pod.shops.map(s=>s[3]))}];
+  // Berghain: zwei Raeume, Haupthalle und Darkroom hinter dem Vorhang
+  if(E[0].a==='berghain'){E[0].n='Haupthalle';E[0].t='Tanzflaeche, Theke, Dealer';E.push({n:'Darkroom',a:'darkroom',k:E[0].k,t:'Hinter dem Vorhang'});return E}
+  if(!b.tow)return E;
   const hoch=b.tow.fl+1;if(b.top==='home')E.push({n:`${hoch}. Stock`,a:'home',k:['home'],t:'Deine Wohnung'});
   else if(b.top==='work')E.push({n:'5. Stock',a:'buero',k:['work'],t:'Dein Büro'});
   else if(b.top==='hotel'){E.push({n:'1. Stock',a:'mode',k:['designer'],t:'Designer-Etage'});E.push({n:`${hoch}. Stock`,a:'resto',k:['hotel'],t:'Rooftop-Bar'})}
@@ -13,23 +16,30 @@ function zeigeEtage(b){const E=etagen(b),e=E[b.stock||0];offen=b;const cb=docume
   if(e.k.includes('hotel')){const h=document.createElement('h4');h.textContent='Rooftop-Bar';const box=document.createElement('div');box.style.cssText='display:flex;flex-direction:column;gap:5px;margin-top:6px';box.append(...WS.KATALOG.filter(VERKAUF.hotel).map(zeile));cb.append(h,box)}
   if(e.a==='home'&&b.top==='home'){const hw=document.createElement('h4');hw.textContent='Einrichten';const bx=document.createElement('div');bx.style.cssText='display:flex;flex-direction:column;gap:5px;margin-top:6px';bx.append(...WS.KATALOG.filter(i=>i.kat==='wohnen').sort((a,c)=>a.rang-c.rang).map(zeile));cb.append(hw,bx);const sl=document.createElement('button');sl.className='big';sl.textContent='Schlafen: Energie auf 100';sl.onclick=()=>{ST.energie=100;save();toast('Ausgeschlafen. Energie 100');};cb.append(sl)}
   if(e.nachbar&&typeof nachbarZuHause==='function')nachbarZuHause(cb,e.nachbar);if(typeof partyBereich==='function')partyBereich(cb,b);
-  if(E.length>1){const h=document.createElement('h4');h.textContent='Aufzug';cb.append(h);E.forEach((x,i)=>{const bt=document.createElement('button');bt.className='big test';bt.style.marginTop='5px';bt.textContent=`${i===(b.stock||0)?'● ':''}${x.n}${x.t?' · '+x.t:''}`;bt.disabled=i===(b.stock||0);bt.onclick=()=>aufzug(b,i);cb.append(bt)})}
+  if(E.length>1){const h=document.createElement('h4');h.textContent=E[0].a==='berghain'?'Wohin im Club':'Aufzug';cb.append(h);E.forEach((x,i)=>{const bt=document.createElement('button');bt.className='big test';bt.style.marginTop='5px';bt.textContent=`${i===(b.stock||0)?'● ':''}${x.n}${x.t?' · '+x.t:''}`;bt.disabled=i===(b.stock||0);bt.onclick=()=>aufzug(b,i);cb.append(bt)})}
   const raus=document.createElement('button');raus.className='big test';raus.textContent='Haus verlassen';raus.onclick=verlassen;cb.append(raus)}
 let AUFZUG=0;
-function aufzug(b,i){AUFZUG=1;toast(`Aufzug fährt in: ${etagen(b)[i].n}`);setTimeout(()=>{b.stock=i;b.innen=innenLeute(b);ICH.x=b.x+2;ICH.y=b.y+3.1;zeigeEtage(b);AUFZUG=0},900)}
+function aufzug(b,i){const cl=etagen(b)[0].a==='berghain';AUFZUG=cl?0:1;toast(`${cl?'Du gehst in':'Aufzug fährt in'}: ${etagen(b)[i].n}`);setTimeout(()=>{b.stock=i;b.innen=innenLeute(b);ICH.x=b.x+2;ICH.y=b.y+3.1;zeigeEtage(b);AUFZUG=0},900)}
 function betreten(b){if(b.meins==='boutique'){boutiqueAuf('laden');return}if(b.haupt){klinikAuf('praxis');return}if(typeof ortPanel==='function'&&ortPanel(b))return;setTimeout(()=>ereignis('betreten',{b}));INNEN=b;b.stock=0;ICH.x=b.x+2;ICH.y=b.y+3.1;ICH.idle=1;ICH.path=[];
   ZIEL={cx:wx(b.x+2,b.y+2),cy:wy(b.x+2,b.y+2,0)-20,z:Math.min(3.4,Math.max(2,innerWidth/420))*DPR};
   if(b.top==='home'){b.stock=etagen(b).length-1;toast('Aufzug fährt nach oben in deine Wohnung')}b.innen=innenLeute(b);const c=document.getElementById('card');c.hidden=false;document.getElementById('hint').hidden=true;zeigeEtage(b)}
 function verlassen(){const b=INNEN;if(!b)return;INNEN=null;const[tx,ty]=tuer(b);ICH.x=tx;ICH.y=ty;ZIEL={cx:wx(tx,ty),cy:wy(tx,ty,0)-40,z:(innerWidth<600?1.1:1.6)*DPR};document.getElementById('card').hidden=true;offen=null}
 const art=b=>{const k=b.top==='home'?'home':(b.pod.shops[0]||[])[3]||'res';return{prado:'mode',shan:'mode',zahra:'mode',doug:'beauty',star:'cafe',ross:'markt',dn:'markt',lid:'markt',mehr:'markt',sac:'taschen',motors:'autos',klinik:'klinik',lab:'klinik',mcf:'gym',borch:'resto',hug:'resto',riva:'resto',boot:'club',work:'buero',home:'home',tif:'juwel',seph:'mode',vic:'mode',lulu:'mode',spa:'klinik',salon:'klinik',apfel:'buero',nicky:'club',berg:'berghain',bout:'mode',jets:'buero',arena:'club'}[k]||'home'};
 function innenLeute(b){const a=etagen(b)[b.stock||0].a,L=[];const e0=etagen(b)[b.stock||0];
-  const team=CHAR_P.filter(p=>p.ort&&e0.k.includes(p.ort));team.forEach((p,i)=>{p.x=b.x+3.1-i*.7;p.y=b.y+.9+i*.25;p.idle=1;L.push(p)});const rolle={klinik:['Dr. Glatt','#ffffff',1],gym:['Trainer','#16171a',0],autos:['Verkäufer','#1d1e24',0],buero:['Kollegin','#3d405b',0],home:['',null,0],berg:['Türsteher','#0d0d0f',0]}[e0.k.includes('berg')?'berg':a]||['Verkäuferin','#16171a',0];
+  const team=CHAR_P.filter(p=>p.ort&&e0.k.includes(p.ort));team.forEach((p,i)=>{p.x=b.x+3.1-i*.7;p.y=b.y+.9+i*.25;p.idle=1;L.push(p)});const rolle={klinik:['Dr. Glatt','#ffffff',1],gym:['Trainer','#16171a',0],autos:['Verkäufer','#1d1e24',0],buero:['Kollegin','#3d405b',0],home:['',null,0],berg:['Türsteher','#0d0d0f',0],darkroom:['',null,0]}[a==='darkroom'?'darkroom':e0.k.includes('berg')?'berg':a]||['Verkäuferin','#16171a',0];
   if(rolle[0]&&!team.length){const st=human({});Object.assign(st,{x:b.x+3.1,y:b.y+.9,idle:1,top:rolle[1],leg:'#16171a',coat:rolle[2],star:1,name:rolle[0],sz:1.05});if(rolle[0]==='Dr. Glatt'){st.hair='#cfc9c0';st.hs=3}L.push(st)}
   // Bei Nachbarn zu Hause: die Person selbst und zwei Gäste, je nach Tag eine andere Szene
   if(e0.nachbar){const echt=P.find(p=>p.nachbarId===e0.nachbar);if(echt){const n=human({});Object.assign(n,{x:b.x+2.4,y:b.y+1.6,idle:1,skin:echt.skin,hair:echt.hair,top:echt.top,leg:echt.leg,c1:echt.c1,w:echt.w,dress:echt.dress,frisur:echt.frisur,name:echt.name,sz:1.05});L.push(n)}
     for(let i=0;i<2;i++){const k=human({});Object.assign(k,{x:b.x+1+i*1.3,y:b.y+2.6,idle:1,ph:i+3});L.push(k)}}
   if(a==='home'&&typeof partyGaeste==='function')partyGaeste(b,b.stock||0,L);
-  const berg=e0.k.includes('berg');for(let i=0;i<(a==='home'?0:berg?16:3);i++){const k=human({});Object.assign(k,berg?{x:b.x+.5+(i%4)*.85+Math.random()*.2,y:b.y+.6+Math.floor(i/4)*.75+Math.random()*.2,idle:1,ph:i*1.7,top:['#0d0d0f','#1b1b1f','#2a2a2e','#3a0c0c'][i%4],leg:'#0d0d0f',dress:0,tanzt:1}:{x:b.x+.8+i*1.1,y:b.y+2+(i%2)*.8,idle:1,ph:i});if(i===1)k.bagK=['lady','speedi','birkinn'][Math.floor(Math.random()*3)];L.push(k)}return L}
+  if(a==='darkroom'){for(let i=0;i<7;i++){const k=human({});Object.assign(k,{x:b.x+.5+(i%3)*1.2+Math.random()*.3,y:b.y+.8+Math.floor(i/3)*1.1+Math.random()*.3,idle:1,ph:i*2.1,top:'#0a0a0c',leg:'#0a0a0c',skin:'#2b2521',hair:'#0a0a0c',dress:0,w:i%3?1:0,sz:.96});L.push(k)}return L}
+  const berg=e0.k.includes('berg');
+  if(berg){// volle Tanzflaeche: 26 Leute, die meisten Frauen, alle in Schwarz
+    for(let i=0;i<26;i++){const k=human({});Object.assign(k,{x:b.x+.35+(i%6)*.62+Math.random()*.22,y:b.y+.55+Math.floor(i/6)*.62+Math.random()*.22,idle:1,ph:i*1.7,
+      top:['#0d0d0f','#1b1b1f','#2a2a2e','#3a0c0c'][i%4],leg:'#0d0d0f',dress:i%5===0?1:0,w:i%4?1:0,hs:i%4,tanzt:1,sz:.9+Math.random()*.2});L.push(k)}
+    const dl=human({});Object.assign(dl,{x:b.x+3.45,y:b.y+3.6,idle:1,ph:3,top:'#171a1f',leg:'#15151a',coat:1,dress:0,w:0,star:1,name:'Dealer',sz:1.05});L.push(dl);return L}
+  for(let i=0;i<(a==='home'?0:3);i++){const k=human({});Object.assign(k,{x:b.x+.8+i*1.1,y:b.y+2+(i%2)*.8,idle:1,ph:i});if(i===1)k.bagK=['lady','speedi','birkinn'][Math.floor(Math.random()*3)];L.push(k)}
+  return L}
 function kiste(x,y,w,d,h,c,z0=0){const f={x,y,w,d};fL(f,0,w,z0,z0+h,sh(c,.92));fR(f,0,d,z0,z0+h,sh(c,.72));top4(x,y,w,d,z0+h,sh(c,1.08))}
 function einrichtung(b){const a=etagen(b)[b.stock||0].a,x=b.x,y=b.y,O=[];const add=(t,ox,oy,f)=>O.push({x:x+ox,y:y+oy,f});
   const K=(ox,oy,w,d,h,c,z)=>add('k',ox+w/2,oy+d/2,()=>kiste(x+ox,y+oy,w,d,h,c,z));
@@ -89,15 +99,24 @@ function einrichtung(b){const a=etagen(b)[b.stock||0].a,x=b.x,y=b.y,O=[];const a
       add('p',u,v,()=>{const d=Math.max(0,Math.sin(T*1.6+i*2.2))*.09;m.y-=d;person(m);m.y+=d})});
     // Nebel zieht knapp ueber dem Boden durch
     add('f',2,2.05,()=>{for(let i=0;i<3;i++){const[px,py]=pt(x+1+i*1.05,y+1.7+((T*.18+i*.5)%2.1),2);g.fillStyle='rgba(198,204,214,.065)';g.beginPath();g.ellipse(px,py,27*Z,7*Z,0,0,7);g.fill()}})}
+  else if(a==='darkroom'){
+    // Fast kein Licht: Nischen mit Matratzen, Trennwaende, Sling, Bank, rote Funzeln
+    K(.18,.4,.14,3.2,30,'#08080a');K(2.0,.28,1.9,.12,30,'#08080a');
+    for(let i=0;i<3;i++)K(.3,.5+i*1.15,.55,.85,5,'#141318');
+    K(2.3,1.5,.12,.12,26,'#46433f');K(3.3,1.5,.12,.12,26,'#46433f');K(2.3,2.4,.12,.12,26,'#46433f');K(3.3,2.4,.12,.12,26,'#46433f');
+    K(2.44,1.64,.86,.76,.2,'#201d1b',12);
+    add('g',2.85,2.0,()=>{for(const[u,v]of[[2.36,1.56],[3.36,1.56],[2.36,2.46],[3.36,2.46]]){const[ax,ay]=pt(x+u,y+v,26),[bx2,by2]=pt(x+u,y+v,12.3);g.strokeStyle='rgba(150,148,142,.5)';g.lineWidth=.7*Z;g.beginPath();g.moveTo(ax,ay);g.lineTo(bx2,by2);g.stroke()}});
+    K(3.5,2.9,.38,1,9,'#17161a');
+    for(const[u,v]of[[.62,.34],[3.3,.6],[1.25,3.5]])add('g',u,v,()=>{const[px,py]=pt(x+u,y+v,24);g.fillStyle='rgba(190,26,16,.12)';g.beginPath();g.arc(px,py,13*Z,0,7);g.fill();g.fillStyle=`rgba(230,60,40,${.4+.2*Math.sin(T*1.5+u)})`;g.beginPath();g.arc(px,py,2.4*Z,0,7);g.fill()})}
   else if(a==='buero'){for(let i=0;i<2;i++)for(let j=0;j<3;j++){K(.5+i*1.6,.5+j*1.1,1.1,.5,11,'#f4f1ea');K(.7+i*1.6,.55+j*1.1,.5,.06,7,'#1d2a36',11)}}
   else if(b.top==='home'){const own=WS.KATALOG.filter(i=>i.kat==='wohnen'&&ST.besitz[i.id]);if(!own.some(i=>i.id==='w-bett'))K(2.4,.4,1.4,1.6,6,'#d9d2c8');if(!own.some(i=>i.id==='w-sofa'))K(.4,2.6,1.6,.6,6,'#9a9aa2');
     for(const i of own){if(!i.platz)continue;const[u,v,w,d,h,z]=i.platz;K(u,v,w,d,h,i.farbe,z||0);if(i.id==='w-bett'){K(u,v,w,.12,24,'#d8c39a');K(u+w-.08,v,.08,d,24,'#d8c39a');K(u+.1,v+.2,w-.2,.3,3,'#ff7eb6',h)}if(i.id==='w-sofa')K(u,v,w,.18,13,i.farbe);if(i.id==='w-bar')add('g',u+.25,v+.4,()=>{const[px,py]=pt(x+u+.25,y+v+.4,16);g.drawImage(glut('#ffd166'),px-8*Z,py-8*Z,16*Z,16*Z)});if(i.id==='w-aquarium')add('f',u,v,()=>{for(let k=0;k<5;k++){const[px,py]=pt(x+u+.06,y+v+.2+((T*.3+k*.3)%1.4),8+k*3);g.fillStyle=['#ffd166','#ff7eb6','#7ef7ff'][k%3];g.fillRect(px,py,3*Z,1.5*Z)}})}}
   else{K(.4,.4,1.6,2.1,8,'#f2eee8');K(.4,.4,1.6,.25,16,'#c9b48a');K(2.4,.4,1.4,.6,9,'#8a8f96');K(2.6,2,.9,.9,7,'#c9b48a');K(3.4,3.3,.35,.35,22,'#4b5d4f')}
   if(typeof partyEinrichtung==='function')partyEinrichtung(b,x,y,add,K);
   return O}
-function innen(b){const x=b.x,y=b.y,WH=58;const ee=etagen(b)[b.stock||0];const k=ee.k.find(v=>v!=='res')||(ee.a==='home'?'home':null);const BERG=k==='berg',T=performance.now()/1000;
+function innen(b){const x=b.x,y=b.y;const ee=etagen(b)[b.stock||0];const k=ee.k.find(v=>v!=='res')||(ee.a==='home'?'home':null);const DARK=ee.a==='darkroom',BERG=k==='berg'&&!DARK,T=performance.now()/1000;const WH=k==='berg'?84:58;
   /* Berghain: Beton, Dunkelheit, Tanzfläche im Takt (128 BPM), rote Leuchtbänder, Stroboskop */
-  const PAL=BERG?['#16161a','#1e1e23','#2c2b2f','#232226','#ff3b2f','#b8261d']:['#efe6dc','#e6dbcf','#f4efe8','#dcd3c8','#ff7eb6','#e0609c'];const takt=Math.floor(T*128/60);
+  const PAL=DARK?['#09090b','#0c0c0e','#121214','#0e0e10','#8c1008','#5e0b05']:BERG?['#16161a','#1e1e23','#2c2b2f','#232226','#ff3b2f','#b8261d']:['#efe6dc','#e6dbcf','#f4efe8','#dcd3c8','#ff7eb6','#e0609c'];const takt=Math.floor(T*128/60);
   top4(x,y,4,4,0,PAL[0]);for(let i=0;i<4;i++)for(let j=0;j<4;j++){if((i+j)%2)top4(x+i,y+j,1,1,0,PAL[1]);if(BERG&&(i*7+j*3+takt)%5===0)top4(x+i+.05,y+j+.05,.9,.9,0,['rgba(255,59,47,.5)','rgba(255,18,10,.34)','rgba(240,244,250,.18)'][(i+j+takt)%3])}
   poly([pt(x,y,0),pt(x+4,y,0),pt(x+4,y,WH),pt(x,y,WH)],PAL[2]);poly([pt(x,y,0),pt(x,y+4,0),pt(x,y+4,WH),pt(x,y,WH)],PAL[3]);
   poly([pt(x,y,WH-6),pt(x+4,y,WH-6),pt(x+4,y,WH),pt(x,y,WH)],PAL[4]);poly([pt(x,y,WH-6),pt(x,y+4,WH-6),pt(x,y+4,WH),pt(x,y,WH)],PAL[5]);
@@ -107,6 +126,7 @@ function innen(b){const x=b.x,y=b.y,WH=58;const ee=etagen(b)[b.stock||0];const k
     for(let i=0;i<3;i++){const v=y+1.4+i*.9;poly([pt(x,v,26),pt(x,v+.52,26),pt(x,v+.52,50),pt(x,v,50)],'rgba(150,168,188,.11)')}}
   if(etagen(b).length>1){poly([pt(x,y+2.9,0),pt(x,y+3.7,0),pt(x,y+3.7,34),pt(x,y+2.9,34)],'#9aa3ad');poly([pt(x,y+3.28,0),pt(x,y+3.32,0),pt(x,y+3.32,34),pt(x,y+3.28,34)],'#5a636d');poly([pt(x,y+3.1,38),pt(x,y+3.5,38),pt(x,y+3.5,42),pt(x,y+3.1,42)],AUFZUG?'#ff4fa3':'#2fe0d2')}
   if(k&&!BERG){const[cx,cy]=pt(x+2,y,WH-20);const s=Math.min(Z/DPR,2)*DPR;g.setTransform(s*.9,s*.45,0,s,cx,cy);brand(k,120,22);g.setTransform(1,0,0,1,0,0)}
+  if(DARK){const[gx,gy]=pt(x+2,y+2,6);const gr2=g.createRadialGradient(gx,gy,2,gx,gy,70*Z);gr2.addColorStop(0,'rgba(190,24,14,.22)');gr2.addColorStop(1,'rgba(0,0,0,0)');g.fillStyle=gr2;g.beginPath();g.arc(gx,gy,70*Z,0,7);g.fill()}
   const O=einrichtung(b);const mitTanz=p=>()=>{const d=(p.tanzt||(p.tanzBis||0)>Date.now())?Math.abs(Math.sin(T*6.7+(p.ph||0)))*.12:0;p.y-=d;p.x-=d;person(p);p.y+=d;p.x+=d};
   const LIVE=typeof window.liveImRaum==='function'?window.liveImRaum(b):[];for(const p of[...(b.innen||[]),...LIVE])O.push({x:p.x,y:p.y,f:mitTanz(p)});O.push({x:ICH.x,y:ICH.y,f:mitTanz(ICH)});
   O.sort((a,c)=>(a.x+a.y)-(c.x+c.y)).forEach(o=>o.f());

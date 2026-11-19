@@ -23,6 +23,20 @@ export const MUSTER = {
   // Steppung mit Rauten, schwarzes Lammleder
   stepp: (farbe = '#121214') => leinwand(256, 256, (g) => { g.fillStyle = farbe; g.fillRect(0, 0, 256, 256); g.strokeStyle = 'rgba(255,255,255,.18)'; g.lineWidth = 3;
     for (let k = -256; k < 512; k += 42) { g.beginPath(); g.moveTo(k, 0); g.lineTo(k + 256, 256); g.moveTo(k + 256, 0); g.lineTo(k, 256); g.stroke() } }),
+  // Lederharnisch: schwarzes Leder mit hellen Riemen ueber der Brust
+  harness: () => leinwand(256, 256, (g) => { g.fillStyle = '#0d0d10'; g.fillRect(0, 0, 256, 256); g.strokeStyle = '#d9dce4'; g.lineWidth = 16; g.lineCap = 'round';
+    g.beginPath(); g.moveTo(40, 20); g.lineTo(190, 150); g.moveTo(216, 20); g.lineTo(66, 150); g.stroke(); g.lineWidth = 14; g.beginPath(); g.moveTo(16, 160); g.lineTo(240, 160); g.stroke();
+    g.fillStyle = '#9aa0ab'; for (const x of [70, 128, 186]) { g.beginPath(); g.arc(x, 160, 9, 0, 7); g.fill() } }),
+  // Latex: tiefschwarz mit harten Glanzkanten
+  latex: () => leinwand(256, 256, (g) => { g.fillStyle = '#0b0b0e'; g.fillRect(0, 0, 256, 256); const l = g.createLinearGradient(0, 0, 256, 256);
+    l.addColorStop(0, 'rgba(255,255,255,.42)'); l.addColorStop(.25, 'rgba(255,255,255,.03)'); l.addColorStop(.55, 'rgba(255,255,255,.34)'); l.addColorStop(.8, 'rgba(255,255,255,.02)'); l.addColorStop(1, 'rgba(255,255,255,.22)');
+    g.fillStyle = l; g.fillRect(0, 0, 256, 256) }),
+  // Netzanzug: grobes Rautennetz auf Haut
+  netz: () => leinwand(256, 256, (g) => { g.fillStyle = '#b98f74'; g.fillRect(0, 0, 256, 256); g.strokeStyle = '#111114'; g.lineWidth = 7;
+    for (let k = -256; k < 512; k += 30) { g.beginPath(); g.moveTo(k, 0); g.lineTo(k + 256, 256); g.moveTo(k + 256, 0); g.lineTo(k, 256); g.stroke() } }),
+  // Lackleder: schwarz mit einem harten Lichtstreifen
+  lack: () => leinwand(256, 256, (g) => { g.fillStyle = '#0d0d12'; g.fillRect(0, 0, 256, 256); const l = g.createLinearGradient(0, 0, 256, 0);
+    l.addColorStop(0, 'rgba(255,255,255,.05)'); l.addColorStop(.46, 'rgba(255,255,255,.5)'); l.addColorStop(.54, 'rgba(255,255,255,.5)'); l.addColorStop(1, 'rgba(255,255,255,.04)'); g.fillStyle = l; g.fillRect(0, 0, 256, 256) }),
   // Bouclé-Tweed in Rosa mit Goldfäden
   tweed: () => leinwand(256, 256, (g) => { g.fillStyle = '#f2a9c4'; g.fillRect(0, 0, 256, 256);
     for (let i = 0; i < 2600; i++) { g.fillStyle = ['#ffffff', '#d97aa0', '#ffd6e6', '#e6c76a'][i % 4]; g.globalAlpha = .55; g.fillRect(Math.random() * 256, Math.random() * 256, 3, 1.6) } g.globalAlpha = 1 }),
