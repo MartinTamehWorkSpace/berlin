@@ -8,6 +8,9 @@ const KARRIEREN = {
   influ: { n: 'Influencer', ic: '📸', t: 'Zeig dich an den richtigen Orten. Reichweite ist Macht.', raenge: ['Newcomer', 'Micro', 'Kiez-Ikone', 'Berlin-Star', 'Mega-Influencer'] } };
 /* Orte in Spielfeldern (x, y). Gebäude werden über ihren Titel gefunden, damit der Stadtplan frei bleibt */
 const haus = t => { const b = B.find(x => x.title === t); return b ? { x: b.x + 2, y: b.y + 4.6 } : null };
+/* Lokal über seinen Laden-Code finden (Titel des Hauses und Name des Lokals sind oft verschieden) */
+const lokalHaus = id => B.find(b => b.pod && b.pod.shops.some(s => s[3] === id));
+const lokalPos = id => { const b = lokalHaus(id); return b ? { x: b.x + 2, y: b.y + 4.6 } : null };
 const ORTE = {
   goerli: { n: 'Görlitzer Park', p: () => haus('Lofts Kreuzberg') }, raw: { n: 'RAW-Gelände', p: () => haus('Berghain') }, kotti: { n: 'Kottbusser Tor', p: () => haus('Platte Friedrichshain') },
   tor: { n: 'Brandenburger Tor', p: () => ({ x: PARK.x + 2, y: PARK.y + 4.4 }) }, alex: { n: 'Fernsehturm', p: () => haus('Alex Tower') }, ufer: { n: 'East Side Ufer', p: () => ({ x: 14, y: 42.4 }) },
@@ -96,7 +99,7 @@ setInterval(() => { if (typeof ICH === 'undefined' || typeof ST === 'undefined')
   if (!INNEN && Math.hypot(ICH.x - (PLAZA.x + 2), ICH.y - (PLAZA.y + 2)) < 3.5) { t = kar ? '🕰️ Karriere & Missionen' : '🕰️ Karriere wählen'; f = karriereZeigen }
   else if (kar === 'dealer') { const o = ['goerli', 'raw', 'kotti'].find(o => nahAn(o)); if (o) { t = `💊 Deal · ${ORTE[o].n}`; f = () => deal(o) } }
   else if (kar === 'influ') { const o = ['tor', 'alex', 'ufer', 'berg', 'scorp', 'kadeve'].find(o => nahAn(o, 2.6)); if (o) { t = `📸 Content drehen · ${ORTE[o].n}`; f = () => content(o) } }
-  else if (kar === 'gastro' && ST.gastro) { const l = LAEDEN.find(l => ST.gastro[l.id] && (INNEN ? INNEN.title === l.t : (() => { const p = haus(l.t); return p && Math.hypot(ICH.x - p.x, ICH.y - p.y) < 2.4 })()));
+  else if (kar === 'gastro' && ST.gastro) { const l = LAEDEN.find(l => ST.gastro[l.id] && (INNEN ? INNEN === lokalHaus(l.id) : (() => { const p = lokalPos(l.id); return p && Math.hypot(ICH.x - p.x, ICH.y - p.y) < 2.6 })()));
     if (l) { t = `💶 Kasse leeren · ${l.t}`; f = () => gastroKasse(l); let e = document.getElementById('bPromi'); if (!e) { e = document.createElement('button'); e.id = 'bPromi'; e.className = 'anlegen'; leiste.append(e) } e.textContent = '🥂 Promi-Abend · 150.000 €'; e.hidden = false; e.onclick = () => promiAbend(l) } }
   const pr = document.getElementById('bPromi'); if (pr && !(kar === 'gastro' && f)) pr.hidden = true;
   b.hidden = !f; if (f) { b.textContent = t; b.onclick = f }
