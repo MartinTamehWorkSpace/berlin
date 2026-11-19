@@ -114,8 +114,15 @@ function polizei(g) { const autos = [], silber = new THREE.MeshStandardMaterial(
     const b1 = new THREE.Mesh(new THREE.BoxGeometry(.3, .18, .6), l1); b1.position.set(-.2, 1.9, -.35); a.add(b1); const b2 = new THREE.Mesh(new THREE.BoxGeometry(.3, .18, .6), l2); b2.position.set(-.2, 1.9, .35); a.add(b2);
     for (const [rx, rz] of [[-1.4, -.95], [1.4, -.95], [-1.4, .95], [1.4, .95]]) { const r = new THREE.Mesh(new THREE.CylinderGeometry(.38, .38, .25, 12), new THREE.MeshStandardMaterial({ color: '#111' })); r.rotation.x = Math.PI / 2; r.position.set(rx, .38, rz); a.add(r) }
     a.userData.alt = null; autos.push(a) }
+  /* Hubschrauber ab 4 Sternen: kreist über dir, Suchscheinwerfer als heller Kegel */
+  const heli = new THREE.Group(); heli.visible = false; g.add(heli); const rumpf = new THREE.Mesh(new THREE.CapsuleGeometry(.9, 2.6, 6, 12), new THREE.MeshStandardMaterial({ color: '#1452a0', roughness: .4 })); rumpf.rotation.z = Math.PI / 2; heli.add(rumpf);
+  const heck = new THREE.Mesh(new THREE.BoxGeometry(3.2, .3, .3), silber); heck.position.x = -2.6; heli.add(heck); const rotor = new THREE.Mesh(new THREE.BoxGeometry(7, .06, .3), new THREE.MeshStandardMaterial({ color: '#111' })); rotor.position.y = 1.1; heli.add(rotor);
+  const kegel = new THREE.Mesh(new THREE.ConeGeometry(4, 26, 24, 1, true), new THREE.MeshBasicMaterial({ color: '#fff7d6', transparent: true, opacity: .16, blending: THREE.AdditiveBlending, depthWrite: false, side: THREE.DoubleSide })); kegel.position.y = -13; heli.add(kegel);
+  const fleck = new THREE.Mesh(new THREE.CircleGeometry(4, 28), new THREE.MeshBasicMaterial({ color: '#fff7d6', transparent: true, opacity: .25, depthWrite: false })); fleck.rotation.x = -Math.PI / 2; g.add(fleck); fleck.visible = false;
   return () => { const P = window.POLIZEI; if (!P) return; const t = performance.now() / 1000; let blink = false;
     P.forEach((p, i) => { const a = autos[i]; if (!a) return; const nx = p.x * M, nz = p.y * M; if (a.userData.alt) { const dx = nx - a.userData.alt[0], dz = nz - a.userData.alt[1]; if (Math.abs(dx) + Math.abs(dz) > .01) a.rotation.y = Math.atan2(-dz, dx) } a.userData.alt = [nx, nz]; a.position.set(nx, 0, nz); if (p.blau > 0) blink = true });
+    const hoch = typeof ST !== 'undefined' && (ST.fahndung || 0) >= 4 && typeof ICH !== 'undefined'; heli.visible = fleck.visible = hoch;
+    if (hoch) { const w = t * .5, hx = ICH.x * M + Math.cos(w) * 6, hz = ICH.y * M + Math.sin(w) * 6; heli.position.set(hx, 26, hz); heli.rotation.y = -w; rotor.rotation.y = t * 30; fleck.position.set(ICH.x * M + Math.sin(t * 1.3) * 1.5, .15, ICH.y * M + Math.cos(t * 1.1) * 1.5); kegel.lookAt(fleck.position); kegel.rotateX(Math.PI / 2) }
     l1.emissiveIntensity = blink && Math.sin(t * 14) > 0 ? 4 : 0; l2.emissiveIntensity = blink && Math.sin(t * 14) <= 0 ? 4 : 0 } }
 /* Oberbaumbrücke über die Spree: rote Ziegelbögen, zwei Türme mit Zinnen, oben die U-Bahn-Trasse in Gelb */
 function oberbaum(g) { const x0 = 2 * M, z0 = 44 * M, L = 40, ziegel = new THREE.MeshStandardMaterial({ color: '#8a3b2c', roughness: .95 }), hell = new THREE.MeshStandardMaterial({ color: '#b5654a', roughness: .9 });
