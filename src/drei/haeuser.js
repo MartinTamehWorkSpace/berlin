@@ -23,9 +23,12 @@ export function schildNeu(k) { delete SCHILD[k] }
 const MODUL = new THREE.MeshStandardMaterial({ color: '#1d2f5a', metalness: .45, roughness: .22 }), ATTIKA = std('#d5d8dc', { metalness: .5, roughness: .35 }), KIES = std('#b9b4ad', { roughness: 1 });
 const MODUL_GEO = new THREE.BoxGeometry(1.5, .06, .95);
 function solardach(eltern, w, d, y) { box(w, .2, d, KIES, 0, y, 0, eltern); for (const [ww, dd, x, z] of [[w, .35, 0, d / 2 - .17], [w, .35, 0, -d / 2 + .17], [.35, d, w / 2 - .17, 0], [.35, d, -w / 2 + .17, 0]]) box(ww, .7, dd, ATTIKA, x, y, z, eltern);
-  const sp = Math.max(1, Math.floor((w - 1.6) / 1.7)), re = Math.max(1, Math.floor((d - 1.6) / 1.45)); const im = new THREE.InstancedMesh(MODUL_GEO, MODUL, sp * re); const o = new THREE.Object3D(); let i = 0;
-  for (let a = 0; a < sp; a++) for (let b = 0; b < re; b++) { o.position.set(-((sp - 1) * 1.7) / 2 + a * 1.7, y + .45, -((re - 1) * 1.45) / 2 + b * 1.45); o.rotation.set(-.3, 0, 0); o.updateMatrix(); im.setMatrixAt(i++, o.matrix) }
-  im.castShadow = true; eltern.add(im) }
+  /* Berliner Flachdach (Martin 19.11.2026: weg von Miami-Solarfeldern): Teerpappe, ein Treppenhaus-Aufbau, Lüfter, Antenne, ab und zu eine Satellitenschüssel */
+  const teer = std('#2b2c2f', { roughness: 1 }), blech = std('#7c8086', { metalness: .6, roughness: .5 }), z = (eltern.uuid.charCodeAt(0) + eltern.uuid.charCodeAt(1)) % 7;
+  box(w - .7, .06, d - .7, teer, 0, y + .2, 0, eltern); box(2.2, 2.2, 2, std('#55585d', { roughness: .95 }), -w / 4, y + .2, -d / 4, eltern);
+  for (let i = 0; i < 2 + z % 3; i++) { const l = new THREE.Mesh(new THREE.CylinderGeometry(.35, .35, .7, 10), blech); l.position.set(w / 5 + i * 1.1 - 1, y + .55, d / 5); eltern.add(l) }
+  const ant = new THREE.Mesh(new THREE.CylinderGeometry(.03, .03, 3, 4), blech); ant.position.set(w / 3, y + 1.7, -d / 3); eltern.add(ant); for (let i = 0; i < 3; i++) { const q = new THREE.Mesh(new THREE.BoxGeometry(1 - i * .25, .04, .04), blech); q.position.set(w / 3, y + 2.4 + i * .35, -d / 3); eltern.add(q) }
+  if (z % 2) { const sch = new THREE.Mesh(new THREE.SphereGeometry(.55, 12, 6, 0, Math.PI * 2, 0, Math.PI / 3), std('#d9dde2', { metalness: .3, roughness: .4, side: THREE.DoubleSide })); sch.rotation.x = -1.1; sch.position.set(-w / 3, y + .9, d / 3); eltern.add(sch) } }
 
 // Schild auf einer Fassade: Seite 'L' liegt bei +Z (Spiel: y+4), Seite 'R' bei +X (Spiel: x+4)
 function schildAn(eltern, k, seite, u0, u1, y, hoehe, abstand) { const breite = (u1 - u0) * M * .86; const s = new THREE.Mesh(new THREE.PlaneGeometry(breite, Math.min(hoehe, breite * .24)), markenSchild(k));
