@@ -1,9 +1,8 @@
-// Berlin City · wetter.js · Wetter: meist Sonne, ab und zu tropischer Regen, nachts mit Wetterleuchten
-// Wechselt alle zwei Spielstunden. Regen dauert nie lange, wie in Miami.
+// Berlin · wetter.js · Berliner Wetter: oft grau, häufig Nieselregen, selten Gewitter. Wechselt alle zwei Spielstunden.
 const WETTER = { regen: 0, ziel: 0, naechste: UHR.min + 120, blitz: 0 };
 const TROPFEN = Array.from({ length: 260 }, (_, i) => ({ x: Math.random(), y: Math.random(), v: .8 + Math.random() * .6, l: .6 + Math.random() * .6 }));
 function wetterWeiter(dt) {
-  if (UHR.min > WETTER.naechste) { WETTER.naechste = UHR.min + 120; WETTER.ziel = Math.random() < .12 ? .6 + Math.random() * .4 : 0; if (WETTER.ziel) toast('Tropischer Regen zieht auf') }
+  if (UHR.min > WETTER.naechste) { WETTER.naechste = UHR.min + 120; const r = Math.random(); WETTER.ziel = r < .3 ? .25 + Math.random() * .2 : r < .4 ? .7 + Math.random() * .3 : 0; if (WETTER.ziel) toast(WETTER.ziel > .6 ? 'Platzregen über Berlin ☔' : 'Nieselregen. Typisch Berlin.') }
   WETTER.regen += (WETTER.ziel - WETTER.regen) * Math.min(1, dt * .4);
   const nachts = HIMMEL_JETZT.dunkel > .25; if (WETTER.regen > .5 && nachts && Math.random() < dt * .08) WETTER.blitz = 1; WETTER.blitz = Math.max(0, WETTER.blitz - dt * 3) }
 function wetterZeichnen() { const r = WETTER.regen; if (r < .02 && WETTER.blitz <= 0) return;
