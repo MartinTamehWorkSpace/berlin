@@ -94,7 +94,8 @@ export async function autosLaden() { const lader = new GLTFLoader();
       gltf.scene.traverse(o => { if (o.isMesh) { o.castShadow = true; if (o.material) o.material.envMapIntensity = 1.4 } }); MODELLE[i] = gltf.scene } catch (e) { console.warn('Automodell', i, e) } }));
   MODELLE_FERTIG = true }
 // Lackfarben je Stufe: Miami-bunt statt grau. Dein eigenes Auto behält seine Originalfarbe.
-const LACKE = { 1: ['#c8102e', '#1f4fa0', '#ff7eb6', '#f4efe6', '#ffd400', '#2fe0d2'], 2: ['#f4f5f7', '#111214', '#1d3557', '#8fe3f0', '#b3202a'], 3: ['#0d0d10', '#f2efe8', '#c9b48a', '#3a4a33'], 4: ['#ec96be', '#39d353', '#ffd400', '#ff6a00'], 5: [] };
+/* Berlin: realistische Lacke, viel Grau, Schwarz, Silber, Weiß, Taxi-Elfenbein, ein dunkles Blau */
+const LACKE = { 1: ['#2b2d31', '#c9ccd1', '#f2efe8', '#e6dcc0', '#1d2a3f', '#7c8086'], 2: ['#f4f5f7', '#111214', '#5c6066', '#1d3557', '#9aa0a6'], 3: ['#0d0d10', '#f2efe8', '#3a4a33', '#5c6066'], 4: ['#111214', '#c9ccd1', '#8a1c1c', '#1d2a3f'], 5: [] };
 const LICHTMAT = new Set(); let lackZaehler = 0;
 function neuesAuto(lvl, eigen) { const g = new THREE.Group(); const m = MODELLE[lvl] || MODELLE[2] || MODELLE[1];
   if (m) { const k = m.clone(); const pal = LACKE[lvl] || []; const farbe = !eigen && pal.length ? pal[lackZaehler++ % pal.length] : null;
