@@ -32,7 +32,7 @@ padding:0 max(16px,env(safe-area-inset-right,0px)) calc(12px + env(safe-area-ins
 .zoom button{font:400 14px var(--gta);letter-spacing:.04em;color:var(--ink);background:var(--panel);border:1px solid var(--kante);border-radius:3px;padding:10px 13px;cursor:pointer;white-space:nowrap}
 /* Menüleiste: jeder Knopf gleich groß, Icon über dem Wort, dunkles Glas mit feinem Goldrand */
 .bar button{flex:0 0 auto;box-sizing:border-box;width:86px;height:60px;padding:6px 4px 5px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;font:400 12px var(--gta);letter-spacing:.08em;text-transform:uppercase;color:#f6f3ee;background:linear-gradient(180deg,rgba(22,23,29,.94),rgba(8,9,12,.94));border:1px solid var(--kante);border-top:2px solid var(--neon);border-radius:3px;box-shadow:0 6px 18px rgba(0,0,0,.35),inset 0 1px 0 rgba(255,255,255,.08);cursor:pointer;white-space:nowrap;overflow:visible;transition:transform .12s,border-color .12s}
-.bar button::before{font-size:19px;line-height:1}.bar button:hover{transform:translateY(-3px);border-top-color:var(--amber);background:linear-gradient(180deg,rgba(40,20,30,.96),rgba(12,8,12,.96))}
+.bar button::before{font-size:19px;line-height:1;filter:grayscale(1) brightness(1.5) contrast(1.2)}#bKlinik::before{filter:none}.bar button:hover{transform:translateY(-3px);border-top-color:var(--amber);background:linear-gradient(180deg,rgba(40,20,30,.96),rgba(12,8,12,.96))}
 #bKlinik::before{content:'🕰️'}#bBout::before{content:'🛍️'}#bAlbum::before{content:'👜'}#bTag::before{content:'📅'}#bChat::before{content:'💬'}#bStadt::before{content:'🗺️'}#bRang::before{content:'🏆'}#bVote::before{content:'🗳️'}#bAufg::before{content:'✨'}#bFoto::before{content:'📸'}#bRadio::before{content:'📻'}
 button:focus-visible{outline:2px solid var(--cyan)}
 .zoom{position:fixed;right:max(16px,env(safe-area-inset-right,0px));top:calc(110px + env(safe-area-inset-top,0px));display:flex;flex-direction:column;gap:6px}
@@ -175,7 +175,7 @@ button:focus-visible{outline:2px solid var(--cyan)}
 body.in-klinik .karten,body.in-klinik .chat,body.in-klinik .xpLeiste,body.in-klinik .zoom{display:none}
 .bout.klinik{left:auto;right:max(16px,env(safe-area-inset-right,0px));top:calc(70px + env(safe-area-inset-top,0px));transform:none;width:min(470px,calc(100% - 32px));max-height:calc(100vh - 160px)}
 @media (max-width:560px){.bout.klinik{right:0;left:0;top:auto;bottom:0;width:100%;max-height:58vh;transform:none}}
-#bKlinik{position:relative;background:linear-gradient(180deg,rgba(31,181,165,.55),rgba(14,90,84,.9));border-color:rgba(127,240,228,.6)}
+#bKlinik{position:relative;background:linear-gradient(180deg,rgba(60,40,10,.95),rgba(20,14,6,.95));border-top-color:var(--amber)}
 #bKlinik[data-n]:not([data-n=""])::after{content:attr(data-n);position:absolute;top:-6px;right:-6px;min-width:18px;height:18px;border-radius:9px;background:#ff4fa3;color:#fff;font:800 11px/18px var(--body)}
 .klinik .tabs button[aria-pressed="true"]{background:#1fb5a5}
 .klinik .mentor{display:flex;gap:12px;align-items:center;padding:10px 12px;border-radius:4px;background:linear-gradient(135deg,rgba(47,224,210,.14),rgba(255,255,255,.03));border:1px solid rgba(47,224,210,.35)}
@@ -246,7 +246,7 @@ body.kino>*:not(canvas):not(.kinohinweis){visibility:hidden}.kinohinweis{positio
 .bout .freundin button:not(.cta){font:700 12px var(--body);color:var(--muted);background:rgba(255,255,255,.08);border:0;border-radius:9px;padding:9px 12px}
 @media (max-width:560px){.bout .tabs button{padding:8px 10px;font-size:12px}}
 #banner{z-index:21}#toast{z-index:25}
-#bBout{position:relative;background:linear-gradient(180deg,rgba(255,79,163,.55),rgba(120,16,76,.9));border-color:rgba(255,255,255,.6)}#bAlbum{position:relative}
+#bBout{position:relative}#bAlbum{position:relative}
 #bBout[data-n]:not([data-n=""])::after{content:attr(data-n);position:absolute;top:-6px;right:-6px;min-width:18px;height:18px;border-radius:9px;background:#e6c76a;color:#16171a;font:800 11px/18px var(--body)}
 .xpLeiste{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(84px + env(safe-area-inset-bottom,0px));display:flex;align-items:center;gap:8px;padding:5px 12px;border-radius:999px;background:rgba(14,15,20,.82);border:1px solid rgba(230,199,106,.35);font:600 10px var(--body);color:var(--muted);pointer-events:none;white-space:nowrap}
 .xpLeiste b{font:800 10px var(--body);letter-spacing:.16em;color:#e6c76a}.xpLeiste div{width:110px;height:6px;border-radius:3px;background:rgba(255,255,255,.12);overflow:hidden}.xpLeiste i{display:block;height:100%;background:linear-gradient(90deg,#ff4fa3,#e6c76a)}
