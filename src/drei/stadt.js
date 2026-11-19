@@ -8,17 +8,17 @@ import { EffectComposer } from 'three/addons/postprocessing/EffectComposer.js';
 import { RenderPass } from 'three/addons/postprocessing/RenderPass.js';
 import { UnrealBloomPass } from 'three/addons/postprocessing/UnrealBloomPass.js';
 import { OutputPass } from 'three/addons/postprocessing/OutputPass.js';
-import { M, NEON, FENSTER, GLAS, baueHaeuser, box, std, durchsicht } from './haeuser.js?v=1795048823';
-import { menschen, verkehr, stadtmoebel, autosLaden } from './leben.js?v=1795048823';
-import { fahrbahn, pflaster, sand, blase, rasen } from './texturen.js?v=1795048823';
-import { praxis } from './praxis.js?v=1795048823';
-import { wohnung } from './wohnung.js?v=1795048823';
-import { boote, helis } from './wasser.js?v=1795048823';
-import { feuerwerk } from './feuerwerk.js?v=1795048823';
-import { strand } from './strand.js?v=1795048823';
-import { flughafen } from './flughafen.js?v=1795048823';
-import { arena } from './arena.js?v=1795048823';
-import { spaceport } from './spaceport.js?v=1795048823';
+import { M, NEON, FENSTER, GLAS, baueHaeuser, box, std, durchsicht } from './haeuser.js?v=1795048919';
+import { menschen, verkehr, stadtmoebel, autosLaden } from './leben.js?v=1795048919';
+import { fahrbahn, pflaster, sand, blase, rasen } from './texturen.js?v=1795048919';
+import { praxis } from './praxis.js?v=1795048919';
+import { wohnung } from './wohnung.js?v=1795048919';
+import { boote, helis } from './wasser.js?v=1795048919';
+import { feuerwerk } from './feuerwerk.js?v=1795048919';
+import { strand } from './strand.js?v=1795048919';
+import { flughafen } from './flughafen.js?v=1795048919';
+import { arena } from './arena.js?v=1795048919';
+import { spaceport } from './spaceport.js?v=1795048919';
 let PRAXIS = null, WOHNUNG = null, inWohnungJetzt = false;
 
 const handy = innerWidth < 760;
@@ -164,12 +164,14 @@ document.getElementById('zin').onclick = () => zoom(.75); document.getElementByI
 
 // ---------- Antippen: wie im 2D-Spiel (Haus = hingehen, Figur = Setcard, eigenes Auto = ein- und aussteigen) ----------
 const ray = new THREE.Raycaster(), maus = new THREE.Vector2(), bodenEbene = new THREE.Plane(new THREE.Vector3(0, 1, 0), 0); let runter = null;
+/* Gehen in Gebäuden: Boden antippen, die Figur läuft hin (wird auch von der 2D-Fläche aus bedienung.js gerufen, die drinnen obenauf liegt) */
+window.innenTippen = (cx, cy) => { if (!INNEN) return; maus.set(cx / innerWidth * 2 - 1, -cy / innerHeight * 2 + 1); ray.setFromCamera(maus, kamera); const boden = new THREE.Vector3(); if (ray.ray.intersectPlane(new THREE.Plane(new THREE.Vector3(0, 1, 0), 0), boden)) { const b = INNEN; ICH.innenZiel = [Math.min(b.x + 3.75, Math.max(b.x + .25, boden.x / M)), Math.min(b.y + 3.75, Math.max(b.y + .25, boden.z / M))] } };
 leinwand.addEventListener('pointerdown', e => { runter = [e.clientX, e.clientY]; zieh = [e.clientX, e.clientY] });
 // In der Praxis: Ziehen dreht die Kamera um dich, Scrollen zoomt, Tippen läuft oder handelt
 let zieh = null; leinwand.addEventListener('pointermove', e => { if (!zieh) return; if (inWohnungJetzt && WOHNUNG) { WOHNUNG.drehen(e.clientX - zieh[0]); zieh = [e.clientX, e.clientY]; return } if (typeof KLINIK === 'undefined' || !KLINIK.offen || !PRAXIS) return; PRAXIS.drehen(e.clientX - zieh[0]); zieh = [e.clientX, e.clientY] });
 addEventListener('pointerup', () => zieh = null);
 leinwand.addEventListener('wheel', e => { if (inWohnungJetzt && WOHNUNG) return WOHNUNG.zoom(Math.exp(e.deltaY * .0012)); if (typeof KLINIK !== 'undefined' && KLINIK.offen && PRAXIS) PRAXIS.zoom(Math.exp(e.deltaY * .0012)) }, { passive: true });
-leinwand.addEventListener('pointerup', e => { if (!runter || Math.hypot(e.clientX - runter[0], e.clientY - runter[1]) > 6) return; if (inWohnungJetzt && WOHNUNG) { WOHNUNG.tippen(e.clientX, e.clientY); return } if (INNEN) { maus.set(e.clientX / innerWidth * 2 - 1, -e.clientY / innerHeight * 2 + 1); ray.setFromCamera(maus, kamera); const boden = new THREE.Vector3(); if (ray.ray.intersectPlane(new THREE.Plane(new THREE.Vector3(0, 1, 0), 0), boden)) { const b = INNEN, gx = Math.min(b.x + 3.75, Math.max(b.x + .25, boden.x / M)), gy = Math.min(b.y + 3.75, Math.max(b.y + .25, boden.z / M)); ICH.innenZiel = [gx, gy] } return } if (typeof KLINIK !== 'undefined' && KLINIK.offen) { if (PRAXIS) PRAXIS.tippen(e.clientX, e.clientY); return } maus.set(e.clientX / innerWidth * 2 - 1, -e.clientY / innerHeight * 2 + 1); ray.setFromCamera(maus, kamera);
+leinwand.addEventListener('pointerup', e => { if (!runter || Math.hypot(e.clientX - runter[0], e.clientY - runter[1]) > 6) return; if (inWohnungJetzt && WOHNUNG) { WOHNUNG.tippen(e.clientX, e.clientY); return } if (INNEN) { window.innenTippen(e.clientX, e.clientY); return } if (typeof KLINIK !== 'undefined' && KLINIK.offen) { if (PRAXIS) PRAXIS.tippen(e.clientX, e.clientY); return } maus.set(e.clientX / innerWidth * 2 - 1, -e.clientY / innerHeight * 2 + 1); ray.setFromCamera(maus, kamera);
   let haus = null, person = null, auto = false, boot = false; for (const t of ray.intersectObjects(szene.children, true)) { let o = t.object; if (!o.visible) continue; while (o && !o.userData.haus && !o.userData.p && !o.userData.meinAuto && !o.userData.meinBoot && !o.userData.jet && !o.userData.spaceport && o.parent) o = o.parent;
     if (o.userData.haus && o.userData.haus.drei && o.userData.haus.drei.userData.durch) continue;
     if (o.userData.spaceport) { if (typeof spaceportZeigen === 'function') spaceportZeigen(); return }
