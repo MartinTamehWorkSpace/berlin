@@ -118,3 +118,6 @@ setInterval(() => { if (typeof ICH === 'undefined' || typeof ST === 'undefined')
   /* Fahndungssterne und Karriere oben in der Leiste */
   let c = document.getElementById('hKar'); if (!c) { const hud0 = document.querySelector('.hud'); if (!hud0) return; const d = document.createElement('div'); d.className = 'chip karriere'; d.innerHTML = '<span>Karriere</span><b id="hKar"></b>'; d.style.pointerEvents = 'auto'; d.style.cursor = 'pointer'; d.onclick = karriereZeigen; hud0.append(d); c = document.getElementById('hKar') }
   c.textContent = kar ? `${KARRIEREN[kar].ic} ${karRang(kar)}${ST.fahndung ? ' ' + '★'.repeat(ST.fahndung) : ''}` : 'Wählen'; c.style.color = ST.fahndung ? '#ff3b3b' : '' }, 250);
+
+/* Oben in der Tagesleiste steht der Karriere-Rang statt „Praktikum“ */
+function tagTitel() { const k = ST.karriere; return k ? `${KARRIEREN[k].n} · ${karRang(k)}` : 'Neu in Berlin' }

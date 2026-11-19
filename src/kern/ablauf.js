@@ -126,7 +126,7 @@ function frame(now){const dt=Math.min(.05,(now-last)/1000);last=now;T+=dt;hdt=dt
   // Setcard folgt dem Fahrzustand: aussteigen zeigt wieder "rufen"
   {const z=`${!!ICH.faehrt}|${!!RUF}|${!!INNEN}`;if(z!==frame.z){frame.z=z;karten()}}
   verkehr(dt);for(const o of SCHIFFE){o.x+=o.v*dt*.6;if(o.x>X1-1)o.x=X0+1;if(o.x<X0+1)o.x=X1-1}
-  zeitWeiter(dt);wetterWeiter(dt);eventsWeiter(dt);if((frame.u=(frame.u||0)+dt)>1){frame.u=0;const k=WS.lohnStufe(ST.tage);document.getElementById('hTag').textContent=`TAG ${ST.tage+1} · ${k.titel.toUpperCase()} · ${uhrText()}`}
+  zeitWeiter(dt);wetterWeiter(dt);eventsWeiter(dt);if((frame.u=(frame.u||0)+dt)>1){frame.u=0;const k=WS.lohnStufe(ST.tage);document.getElementById('hTag').textContent=`TAG ${ST.tage+1} · ${(typeof tagTitel==='function'?tagTitel():k.titel).toUpperCase()} · ${uhrText()}`}
   // 3D-Stadt (src/drei): zeichnet alles außer Innenräumen. Die 2D-Fläche bleibt darüber für Minikarte und Regen.
   // Bis die 3D-Stadt geladen ist (höchstens 6 Sekunden), keine 2D-Stadt zeichnen: sonst lädt sie alle Autobilder umsonst
   if(!INNEN&&!(window.DREI&&DREI.an)&&(frame.warte=(frame.warte||0)+dt)<6){g.clearRect(0,0,W,H);requestAnimationFrame(frame);return}

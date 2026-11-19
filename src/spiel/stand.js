@@ -18,7 +18,7 @@ addEventListener('pagehide',()=>{try{localStorage.setItem('berlin',JSON.stringif
 const euro=v=>v.toLocaleString('de-DE')+' €';
 const heute=()=>new Date().toISOString().slice(0,10);
 function hud(){const k=WS.lohnStufe(ST.tage);if(typeof karten==='function'&&document.getElementById('karten').children.length)setTimeout(()=>{karten();document.getElementById('hFol').textContent=(ST.follower||0).toLocaleString('de-DE');document.getElementById('hRang').textContent='#'+rangVon()});document.getElementById('hKonto').textContent=euro(Math.round(ST.geld));document.getElementById('hStil').textContent=(typeof glowScore==='function'?glowScore():ST.stil).toLocaleString('de-DE');
-  document.getElementById('hLohn').textContent=euro(WS.tageslohn(ST.tage,ST.serie));document.getElementById('hTag').textContent=`TAG ${ST.tage+1} · ${k.titel.toUpperCase()}${typeof uhrText==='function'?' · '+uhrText():''}`;
+  document.getElementById('hLohn').textContent=euro(WS.tageslohn(ST.tage,ST.serie));document.getElementById('hTag').textContent=`TAG ${ST.tage+1} · ${(typeof tagTitel==='function'?tagTitel():k.titel).toUpperCase()}${typeof uhrText==='function'?' · '+uhrText():''}`;
   // Outfit der eigenen Figur
   for(const[id,col]of Object.entries(ST.outfit)){const it=WS.KATALOG.find(i=>i.id===id);if(!it)continue;
     if(it.look)continue;if(/kleid/.test(id)){ICH.dress=1;ICH.top=col;ICH.leg=col}else if(/shirt|blazer|mantel/.test(id))ICH.top=col;else if(/jeans/.test(id))ICH.leg=col}
