@@ -20,7 +20,7 @@ function weg(ax,ay,bx,by){const c=(x,y)=>[Math.round((x-GX0)/GS-.5),Math.round((
   return out.filter((p,i)=>{if(i===0||i===out.length-1)return true;const a=out[i-1],b=out[i+1];return Math.abs((p[0]-a[0])*(b[1]-p[1])-(p[1]-a[1])*(b[0]-p[0]))>1e-6})}
 // Gehen und Fahren. Zu Fuß ist man langsam, im Auto schnell. Autos halten an roten Ampeln und hinter dem Vordermann, nur der fliegende Roadster nicht.
 const TEMPO={fuss:1.3,auto:7,roadster:11};
-function gehen(p,dt){if(INNEN)return;if(!p.path.length){p.idle=1;return}p.idle=0;const[tx,ty]=p.path[0];const dx=tx-p.x,dy=ty-p.y,d=Math.hypot(dx,dy),fl=p.faehrt&&p.auto&&p.auto.id==='roadster';
+function gehen(p,dt){if(INNEN){/* in Gebäuden: direkt zum angetippten Punkt laufen, innerhalb der Wände */const z=p.innenZiel;if(!z){p.idle=1;return}const dx=z[0]-p.x,dy=z[1]-p.y,d=Math.hypot(dx,dy);if(d<.05){p.innenZiel=null;p.idle=1;return}p.idle=0;const v=Math.min(d,1.6*dt);p.x+=dx/d*v;p.y+=dy/d*v;return}if(!p.path.length){p.idle=1;return}p.idle=0;const[tx,ty]=p.path[0];const dx=tx-p.x,dy=ty-p.y,d=Math.hypot(dx,dy),fl=p.faehrt&&p.auto&&p.auto.id==='roadster';
   let v=(fl?TEMPO.roadster:p.faehrt?TEMPO.auto:TEMPO.fuss*((ST.energie??80)<15?.6:1))*dt;
   if(p===ICH&&p.faehrt&&!fl){const ax=Math.abs(dx)>Math.abs(dy)?'x':'y',dir=(ax==='x'?dx:dy)>0?1:-1,t=ax==='x'?p.x:p.y,c=ax==='x'?p.y:p.x;p.fax=ax;p.fdir=dir;p.fc=c;
     const m=dir>0?Math.ceil((t-1.6)/8):Math.floor((t+1.6)/8),halte=dir>0?8*m-.4:8*m+2.4,dist=(halte-t)*dir;
