@@ -36,7 +36,7 @@ export function graffiti(szene) { grauMachen(szene); const g = new THREE.Group()
   st(new THREE.BoxGeometry(17.6, 1.6, 4.8), sand, 0, 10.6, 0); st(new THREE.BoxGeometry(12, 1.6, 3.6), sand, 0, 12.2, 0);
   const wagen = st(new THREE.BoxGeometry(2.4, 1.2, 1.6), gruen, 0, 13.6, 0); for (let i = 0; i < 4; i++) { st(new THREE.BoxGeometry(.5, 1.3, 1.6), gruen, -1.8 + i * 1.2, 13.7, -1.3); st(new THREE.BoxGeometry(.35, .7, .4), gruen, -1.8 + i * 1.2, 14.6, -1.95) }
   st(new THREE.CylinderGeometry(.18, .18, 2.2, 8), gruen, 0, 15.2, .2); st(new THREE.SphereGeometry(.45, 10, 8), gruen, 0, 16.5, .2);
-  const bahn = sBahn(g); const tram = strassenbahn(g); spaetis(g); ryotei(g, mats); strassenbild(g); weltzeituhr(g); oberbaum(g); buddyBaeren(g); doener(g); const streife = polizei(g);
+  const bahn = sBahn(g); const tram = strassenbahn(g); spaetis(g); ryotei(g, mats); strassenbild(g); weltzeituhr(g); oberbaum(g); buddyBaeren(g); doener(g); eastSide(g); const streife = polizei(g);
   /* Zielringe der Karriere: gelb pulsierende Ringe an Deal-Ecken oder Hotspots */
   const ringe = {}, ringMat = new THREE.MeshBasicMaterial({ color: '#ffb21a', transparent: true, opacity: .7, depthWrite: false });
   const zielringe = () => { if (typeof ORTE === 'undefined' || typeof ST === 'undefined') return; const ids = ST.karriere === 'dealer' ? ['goerli', 'raw', 'kotti'] : ST.karriere === 'influ' ? ['tor', 'alex', 'ufer', 'berg', 'scorp', 'kadeve'] : [];
@@ -161,3 +161,13 @@ function doener(g) { const x = 9 * M + 1.8, z = 25 * M + 1.8; window.DOENER = { 
   const kl = ['#16171a', '#2b2d31', '#3b3f2f', '#2c3a4f', '#4a1e24'];
   for (let i = 0; i < 9; i++) { const p = new THREE.Group(); p.position.set(-.6 + Math.sin(i * .7) * .25, 0, 2 + i * .75); b.add(p); const k = new THREE.Mesh(new THREE.CapsuleGeometry(.22, .8, 4, 8), new THREE.MeshStandardMaterial({ color: kl[i % 5] })); k.position.y = .75; p.add(k);
     const h = new THREE.Mesh(new THREE.SphereGeometry(.17, 8, 6), new THREE.MeshStandardMaterial({ color: ['#e4b997', '#c48f6b', '#8d5b3d', '#f3d5bf'][i % 4] })); h.position.y = 1.45; p.add(h) } }
+/* East Side Gallery: Mauerstück am Spreeufer, Segmente mit eigenen Bildern (frei gestaltet: Farbfelder, Köpfe, Tauben, Sprüche) */
+function mauerBild(nr) { const r = zufall(nr * 17 + 3), c = document.createElement('canvas'); c.width = 256; c.height = 256; const x = c.getContext('2d');
+  const P = [['#ffd400', '#1452a0', '#c8211b'], ['#2fe0d2', '#ff2f7d', '#16171a'], ['#f4efe6', '#2b7a3d', '#ffb21a'], ['#9b5cff', '#ffd36b', '#16171a'], ['#ff7a1a', '#ffffff', '#1d2a3f']][nr % 5];
+  x.fillStyle = P[0]; x.fillRect(0, 0, 256, 256); for (let i = 0; i < 6; i++) { x.fillStyle = P[1 + i % 2]; x.globalAlpha = .8; x.beginPath(); x.arc(r() * 256, r() * 256, 20 + r() * 70, 0, 7); x.fill() } x.globalAlpha = 1;
+  x.fillStyle = P[2]; x.font = '900 34px Impact, Arial Black'; x.textAlign = 'center'; x.fillText(['FREIHEIT', 'WIND OF CHANGE', 'NIE WIEDER', 'LIEBE', 'TEAR DOWN', 'ZUSAMMEN'][nr % 6], 128, 230);
+  for (let i = 0; i < 3; i++) { x.strokeStyle = 'rgba(0,0,0,.25)'; x.lineWidth = 2; x.beginPath(); x.moveTo(i * 85 + 85, 0); x.lineTo(i * 85 + 85, 256); x.stroke() }
+  const t = new THREE.CanvasTexture(c); t.colorSpace = THREE.SRGBColorSpace; return t }
+function eastSide(g) { const z = 41.4 * M, beton = new THREE.MeshStandardMaterial({ color: '#c9c6c0', roughness: .95 });
+  for (let i = 0; i < 12; i++) { const x = (1 + i * 2.6) * M; const w = new THREE.Mesh(new THREE.BoxGeometry(2.55 * M, 3.6, .35), [beton, beton, beton, beton, new THREE.MeshStandardMaterial({ map: mauerBild(i), roughness: .9 }), beton]); w.position.set(x, 1.8, z); w.castShadow = true; g.add(w);
+    const kappe = new THREE.Mesh(new THREE.CylinderGeometry(.3, .3, 2.55 * M, 10), beton); kappe.rotation.z = Math.PI / 2; kappe.position.set(x, 3.65, z); g.add(kappe) } }
