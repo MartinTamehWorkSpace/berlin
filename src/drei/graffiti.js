@@ -86,7 +86,8 @@ function strassenbild(g) { const r = zufall(99), gruen = new THREE.MeshStandardM
     const fuss = new THREE.Mesh(new THREE.CylinderGeometry(.85, .9, .3, 20), gruen); fuss.position.set(x, .15, z); g.add(fuss); const d = new THREE.Mesh(new THREE.CylinderGeometry(.5, .9, .5, 20), gruen); d.position.set(x, 3.45, z); g.add(d) }
   /* U-Bahn-Eingänge: Treppe in den Boden, Geländer, blauer Würfel mit U */
   const U = new THREE.MeshBasicMaterial({ map: uSchild(), toneMapped: false });
-  for (let n = 0; n < 5; n++) { const [x, z] = ecke(Math.floor(r() * 5), Math.floor(r() * 5), -1.7, 1.7); const loch = new THREE.Mesh(new THREE.BoxGeometry(1.4, .05, 2.6), new THREE.MeshStandardMaterial({ color: '#0b0b0d' })); loch.position.set(x, .06, z); g.add(loch);
+  window.UBAHN = []; const NAMEN = ['Kottbusser Tor', 'Alexanderplatz', 'Warschauer Straße', 'Hermannplatz', 'Schlesisches Tor'];
+  const UECKEN = [[2, 4], [1, 1], [4, 3], [0, 4], [3, 0]]; for (let n = 0; n < 5; n++) { const [x, z] = ecke(UECKEN[n][0], UECKEN[n][1], -1.7, 1.7); window.UBAHN.push({ n: NAMEN[n], x: x / M + .9, y: z / M }); const loch = new THREE.Mesh(new THREE.BoxGeometry(1.4, .05, 2.6), new THREE.MeshStandardMaterial({ color: '#0b0b0d' })); loch.position.set(x, .06, z); g.add(loch);
     for (const sx of [-.75, .75]) { const gel = new THREE.Mesh(new THREE.BoxGeometry(.06, .9, 2.6), gruen); gel.position.set(x + sx, .5, z); g.add(gel) }
     const mast = new THREE.Mesh(new THREE.BoxGeometry(.08, 2.8, .08), grau); mast.position.set(x + .9, 1.4, z - 1.4); g.add(mast); const w = new THREE.Mesh(new THREE.BoxGeometry(.6, .6, .6), U); w.position.set(x + .9, 3.1, z - 1.4); g.add(w) }
   /* Ampelmännchen-Ampeln an jeder zweiten Kreuzung */
