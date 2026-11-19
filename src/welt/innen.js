@@ -2,7 +2,7 @@
 // ---------- Innenansicht: Haus wird bis aufs Erdgeschoss aufgeschnitten ----------
 function etagen(b){const E=[{n:'Erdgeschoss',a:art(b),k:(b.pod.shops.map(s=>s[3]))}];
   // Berghain: zwei Raeume, Haupthalle und Darkroom hinter dem Vorhang
-  if(E[0].a==='berghain'){E[0].n='Haupthalle';E[0].t='Tanzflaeche, Theke, Dealer';E.push({n:'Darkroom',a:'darkroom',k:E[0].k,t:'Hinter dem Vorhang'});return E}
+  if(E[0].a==='berghain'){E[0].n='Haupthalle';E[0].t='Tanzfläche, Theke, Dealer';E.push({n:'Darkroom',a:'darkroom',k:E[0].k,t:'Hinter dem Vorhang'});return E}
   if(!b.tow)return E;
   const hoch=b.tow.fl+1;if(b.top==='home')E.push({n:`${hoch}. Stock`,a:'home',k:['home'],t:'Deine Wohnung'});
   else if(b.top==='work')E.push({n:'5. Stock',a:'buero',k:['work'],t:'Dein Büro'});
@@ -32,7 +32,8 @@ function innenLeute(b){const a=etagen(b)[b.stock||0].a,L=[];const e0=etagen(b)[b
   if(e0.nachbar){const echt=P.find(p=>p.nachbarId===e0.nachbar);if(echt){const n=human({});Object.assign(n,{x:b.x+2.4,y:b.y+1.6,idle:1,skin:echt.skin,hair:echt.hair,top:echt.top,leg:echt.leg,c1:echt.c1,w:echt.w,dress:echt.dress,frisur:echt.frisur,name:echt.name,sz:1.05});L.push(n)}
     for(let i=0;i<2;i++){const k=human({});Object.assign(k,{x:b.x+1+i*1.3,y:b.y+2.6,idle:1,ph:i+3});L.push(k)}}
   if(a==='home'&&typeof partyGaeste==='function')partyGaeste(b,b.stock||0,L);
-  if(a==='darkroom'){for(let i=0;i<7;i++){const k=human({});Object.assign(k,{x:b.x+.5+(i%3)*1.2+Math.random()*.3,y:b.y+.8+Math.floor(i/3)*1.1+Math.random()*.3,idle:1,ph:i*2.1,top:'#0a0a0c',leg:'#0a0a0c',skin:'#2b2521',hair:'#0a0a0c',dress:0,w:i%3?1:0,sz:.96});L.push(k)}return L}
+  if(a==='darkroom'){const platz=[[.55,.75],[.6,1.95],[.5,3.05],[1.75,.6],[2.0,3.3],[3.3,3.3],[2.55,1.75],[2.75,1.95],[1.5,2.5],[1.68,2.62]];
+    platz.forEach(([u,v],i)=>{const k=human({});Object.assign(k,{x:b.x+u,y:b.y+v,idle:1,ph:i*2.1,top:'#1b1b22',leg:'#15151b',skin:'#6b5b50',hair:'#14141a',dress:0,w:i%3?1:0,sz:.96});L.push(k)});return L}
   const berg=e0.k.includes('berg');
   if(berg){// volle Tanzflaeche: 26 Leute, die meisten Frauen, alle in Schwarz
     for(let i=0;i<26;i++){const k=human({});Object.assign(k,{x:b.x+.35+(i%6)*.62+Math.random()*.22,y:b.y+.55+Math.floor(i/6)*.62+Math.random()*.22,idle:1,ph:i*1.7,
