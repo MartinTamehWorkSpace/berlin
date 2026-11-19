@@ -1,7 +1,7 @@
 // Berlin · graffiti.js · Berlin-Look für die ganze Stadt: Graffitis und Paste-ups im Erdgeschoss fast jedes Hauses (Tags, Bubble-Letters, Kiez-Sprüche),
 // Nur Texturen und leuchtende Flächen, keine echten Lichter (Tempo-Regel aus CLAUDE.md).
 import * as THREE from 'three';
-import { M } from './haeuser.js?v=1795050164';
+import { M } from './haeuser.js?v=1795050299';
 
 const SPRUECHE = ['BERLIN', 'KREUZBERG 36', 'SPREE', 'KIEZ', 'LOVE', 'TECHNO', 'NEUKÖLLN', 'FHAIN', '030', 'BÄM', 'NO SLEEP', 'SPÄTI', 'MITTE', 'WEDDING', 'KATER', 'ROSA', 'ARM ABER SEXY', 'U8', 'BOOM'];
 const FARBEN = [['#ff2fa0', '#ffd36b'], ['#2fe0d2', '#16171a'], ['#ffd400', '#ff2a2a'], ['#9b5cff', '#2fe0d2'], ['#39d353', '#16171a'], ['#ff7a1a', '#ffffff'], ['#ffffff', '#ff2fa0']];
@@ -40,7 +40,37 @@ export function graffiti(szene) { grauMachen(szene); const g = new THREE.Group()
   st(new THREE.BoxGeometry(17.6, 1.6, 4.8), sand, 0, 10.6, 0); st(new THREE.BoxGeometry(12, 1.6, 3.6), sand, 0, 12.2, 0);
   const wagen = st(new THREE.BoxGeometry(2.4, 1.2, 1.6), gruen, 0, 13.6, 0); for (let i = 0; i < 4; i++) { st(new THREE.BoxGeometry(.5, 1.3, 1.6), gruen, -1.8 + i * 1.2, 13.7, -1.3); st(new THREE.BoxGeometry(.35, .7, .4), gruen, -1.8 + i * 1.2, 14.6, -1.95) }
   st(new THREE.CylinderGeometry(.18, .18, 2.2, 8), gruen, 0, 15.2, .2); st(new THREE.SphereGeometry(.45, 10, 8), gruen, 0, 16.5, .2);
-  return { weiter() {} } }
+  const bahn = sBahn(g); spaetis(g); platten(g);
+  return { weiter(dt = .016) { bahn(dt) } } }
+/* S-Bahn auf dem Viadukt am Nordrand: Ziegelbögen, Gleis, rot-gelber Zug pendelt hin und her */
+function sBahn(g) { const y0 = -2.6 * M, x0 = -34 * M, x1 = 58 * M, H = 6.5, ziegel = new THREE.MeshStandardMaterial({ color: '#7a4a3a', roughness: .95 }), dunkel = new THREE.MeshStandardMaterial({ color: '#2a2b2f', roughness: .7 });
+  const deck = new THREE.Mesh(new THREE.BoxGeometry(x1 - x0, 1.2, 5.5), ziegel); deck.position.set((x0 + x1) / 2, H, y0); deck.castShadow = deck.receiveShadow = true; g.add(deck);
+  for (let x = x0 + 4; x < x1; x += 9) { const p = new THREE.Mesh(new THREE.BoxGeometry(2.2, H, 5.2), ziegel); p.position.set(x, H / 2, y0); p.castShadow = true; g.add(p) }
+  for (const z of [-1, 1]) { const s = new THREE.Mesh(new THREE.BoxGeometry(x1 - x0, .15, .15), new THREE.MeshStandardMaterial({ color: '#9aa0a6', metalness: .9, roughness: .3 })); s.position.set((x0 + x1) / 2, H + .7, y0 + z * .75); g.add(s) }
+  const zug = new THREE.Group(); zug.position.set(x0, H + .6, y0); g.add(zug); const rot = new THREE.MeshStandardMaterial({ color: '#b3201c', roughness: .45 }), gelb = new THREE.MeshStandardMaterial({ color: '#f2b705', roughness: .45 });
+  const fenster = new THREE.MeshStandardMaterial({ color: '#1b2430', emissive: '#ffe7b0', emissiveIntensity: .25, roughness: .2 });
+  for (let i = 0; i < 4; i++) { const w = new THREE.Group(); w.position.x = i * 9.6; zug.add(w); const unten = new THREE.Mesh(new THREE.BoxGeometry(9.2, 1.6, 3), rot); unten.position.y = .9; w.add(unten);
+    const oben = new THREE.Mesh(new THREE.BoxGeometry(9.2, 1.4, 3), gelb); oben.position.y = 2.4; w.add(oben); for (const z of [-1.51, 1.51]) { const f = new THREE.Mesh(new THREE.BoxGeometry(8.4, .8, .05), fenster); f.position.set(0, 2.4, z); w.add(f) }
+    const dach = new THREE.Mesh(new THREE.BoxGeometry(9.2, .3, 2.8), dunkel); dach.position.y = 3.2; w.add(dach) }
+  const schild = new THREE.Mesh(new THREE.PlaneGeometry(4, 1.2), new THREE.MeshBasicMaterial({ map: schildTextur('S', 'S-BAHN · RINGBAHN'), toneMapped: false })); schild.position.set((x0 + x1) / 2, H + 2.6, y0 + 2.9); g.add(schild);
+  let t = 0; return dt => { t += dt; const L = x1 - x0 - 40, u = (t * 9) % (2 * L), x = u < L ? u : 2 * L - u; zug.position.x = x0 + 2 + x } }
+function schildTextur(gross, klein) { const c = document.createElement('canvas'); c.width = 512; c.height = 160; const x = c.getContext('2d'); x.fillStyle = '#0b6a2e'; x.fillRect(0, 0, 512, 160);
+  x.fillStyle = '#fff'; x.beginPath(); x.arc(80, 80, 58, 0, 7); x.fill(); x.fillStyle = '#0b6a2e'; x.font = '900 92px Arial'; x.textAlign = 'center'; x.textBaseline = 'middle'; x.fillText(gross, 80, 86);
+  x.fillStyle = '#fff'; x.font = '800 40px Arial'; x.textAlign = 'left'; x.fillText(klein, 160, 86); const t = new THREE.CanvasTexture(c); t.colorSpace = THREE.SRGBColorSpace; return t }
+/* Spätis an Straßenecken: kleiner Kiosk mit Leuchtschild, Getränkekiste und Bierbank davor */
+function spaetis(g) { const c = document.createElement('canvas'); c.width = 256; c.height = 64; const x = c.getContext('2d'); x.fillStyle = '#16171a'; x.fillRect(0, 0, 256, 64); x.font = '900 40px Arial'; x.textAlign = 'center'; x.fillStyle = '#ffd400'; x.shadowColor = '#ffd400'; x.shadowBlur = 12; x.fillText('SPÄTI 24/7', 128, 46);
+  const t = new THREE.CanvasTexture(c); t.colorSpace = THREE.SRGBColorSpace; const schild = new THREE.MeshBasicMaterial({ map: t, toneMapped: false }), wand = new THREE.MeshStandardMaterial({ color: '#5a5d61', roughness: .9 }), kiste = new THREE.MeshStandardMaterial({ color: '#1f6f3a', roughness: .7 }), holz = new THREE.MeshStandardMaterial({ color: '#8a6a4a' });
+  const r = zufall(7); let n = 0; for (const b of B) { if (b.haupt || n >= 9 || r() < .55) continue; n++; const k = new THREE.Group(); k.position.set((b.x - .45) * M, 0, (b.y - .45) * M); g.add(k);
+    const haus = new THREE.Mesh(new THREE.BoxGeometry(2.4, 2.6, 2.4), wand); haus.position.y = 1.3; haus.castShadow = true; k.add(haus); const s = new THREE.Mesh(new THREE.PlaneGeometry(2.3, .6), schild); s.position.set(0, 2.25, 1.22); k.add(s);
+    for (let i = 0; i < 3; i++) { const c2 = new THREE.Mesh(new THREE.BoxGeometry(.6, .35, .4), kiste); c2.position.set(-.8 + i * .5, .18 + (i === 2 ? .35 : 0), 1.6); k.add(c2) }
+    const bank = new THREE.Mesh(new THREE.BoxGeometry(2, .1, .45), holz); bank.position.set(0, .5, 2.6); k.add(bank) } }
+/* Plattenbau: Wohntürme bekommen das typische Raster aus Betonplatten mit kleinen Fenstern und Balkonen */
+function platten(g) { const c = document.createElement('canvas'); c.width = 256; c.height = 512; const x = c.getContext('2d'); x.fillStyle = '#b9b5ac'; x.fillRect(0, 0, 256, 512);
+  for (let r = 0; r < 16; r++) for (let s = 0; s < 6; s++) { const px = s * 42 + 4, py = r * 32 + 4; x.strokeStyle = '#8f8b83'; x.strokeRect(px, py, 40, 30); x.fillStyle = (r * 7 + s * 3) % 5 ? '#3a4048' : '#d9c48a'; x.fillRect(px + 10, py + 7, 20, 14); if (s % 3 === 1) { x.fillStyle = ['#c46a4a', '#7aa0b8', '#d8b04a'][r % 3]; x.fillRect(px + 2, py + 22, 36, 6) } }
+  const t = new THREE.CanvasTexture(c); t.colorSpace = THREE.SRGBColorSpace; t.wrapS = t.wrapT = THREE.RepeatWrapping; const m = new THREE.MeshStandardMaterial({ map: t, roughness: .95, polygonOffset: true, polygonOffsetFactor: -1 });
+  for (const b of B) { if (b.haupt || !b.drei || !(b.pod && b.pod.shops.some(s => s[3] === 'res'))) continue; const hh = (b.drei.userData.hoehe || 20) - 4, br = 4 * M - 1.4, cx = (b.x + 2) * M, cz = (b.y + 2) * M, halb = 2 * M - .25;
+    for (const seite of [0, 1]) { const mat = m.clone(); mat.map = t.clone(); mat.map.repeat.set(1, hh / 18); mat.map.needsUpdate = true; const w = new THREE.Mesh(new THREE.PlaneGeometry(br, hh), mat);
+      if (seite) { w.position.set(cx + halb + .08, hh / 2 + 3.5, cz); w.rotation.y = Math.PI / 2 } else w.position.set(cx, hh / 2 + 3.5, cz + halb + .08); g.add(w) } } }
 /* Ein Mural: großer Farbverlauf, Berliner Bär, Kreise, senkrechte Schrift */
 function muralTextur(nr) { const r = zufall(nr * 31 + 7), c = document.createElement('canvas'); c.width = 256; c.height = 768; const x = c.getContext('2d');
   const p = [['#ff2fa0', '#2fe0d2', '#ffd400'], ['#9b5cff', '#ff7a1a', '#ffffff'], ['#39d353', '#ff2a2a', '#16171a'], ['#2fe0d2', '#ffd36b', '#ff2fa0'], ['#ff7a1a', '#16171a', '#2fe0d2']][nr % 5];

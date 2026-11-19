@@ -1,9 +1,9 @@
 // Berlin City 3D · flughafen.js · Flughafen Tempelhoff östlich der Stadt: Zufahrt, Vorfeld, Landebahn mit Befeuerung, Hangar, Tower und vier Glowstream-Jets.
 // Gekaufte Jets stehen schwarz mit Goldstreifen, die anderen weiß mit Preisschild. Antippen deines Jets öffnet die Flugziele (src/spiel/jet.js).
 import * as THREE from 'three';
-import { M } from './haeuser.js?v=1795050164';
-import { namensSchild } from './leben.js?v=1795050164';
-import { parkplatz } from './parkplatz.js?v=1795050164';
+import { M } from './haeuser.js?v=1795050299';
+import { namensSchild } from './leben.js?v=1795050299';
+import { parkplatz } from './parkplatz.js?v=1795050299';
 const std = (c, o = {}) => new THREE.MeshStandardMaterial(Object.assign({ color: c, roughness: .5 }, o));
 const ASPHALT = std('#2a2c31', { roughness: .9 }), BETON = std('#c9c6c0', { roughness: .95 }), WEISS = std('#f6f6f4', { roughness: .25, metalness: .2 }), SCHWARZ = std('#0d0e12', { roughness: .2, metalness: .5 }),
   GOLD = std('#d9b44a', { roughness: .25, metalness: .8 }), GLAS = std('#0c1a26', { roughness: .05, metalness: .6 }), CHROM = std('#e8ecf0', { roughness: .15, metalness: 1 });
