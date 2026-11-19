@@ -1,7 +1,7 @@
 // Glow City 3D · wasser.js · Jachten (am Steg, fahrend, deine eigene) und drei Hubschrauber zwischen den Hochhausdächern
 import * as THREE from 'three';
-import { M } from './haeuser.js?v=1795048012';
-import { namensSchild, neueFigur, einkleiden, tanzen } from './leben.js?v=1795048012';
+import { M } from './haeuser.js?v=1795048374';
+import { namensSchild, neueFigur, einkleiden, tanzen } from './leben.js?v=1795048374';
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 // Echte Bootsmodelle aus Blender (werkzeug/boote_blender.py): Superjacht, Motorjacht, Speedboot. Bug zeigt nach +X.
 const BOOT_MODELL = {}, MODELL_DATEI = { gross: 'super', jacht: 'motor', speed: 'speed' }, MODELL_L = { gross: 32, jacht: 18, speed: 9 }, MODELL_H = { gross: 2.4, jacht: 1.7, speed: 1 };

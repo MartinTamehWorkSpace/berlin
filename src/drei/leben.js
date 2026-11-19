@@ -1,9 +1,9 @@
 // Glow City 3D · leben.js · Menschen (P), Autos (CARS, dein Auto, Uber), Ampeln, Laternen, Palmen aus S. Alles folgt dem laufenden Spiel.
 import * as THREE from 'three';
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
-import { M, box, std, neon } from './haeuser.js?v=1795048012';
-import { MUSTER } from './texturen.js?v=1795048012';
-import { tasche3d } from './taschen.js?v=1795048012';
+import { M, box, std, neon } from './haeuser.js?v=1795048374';
+import { MUSTER } from './texturen.js?v=1795048374';
+import { tasche3d } from './taschen.js?v=1795048374';
 
 const mat = (c, o = {}) => new THREE.MeshStandardMaterial(Object.assign({ color: c, roughness: .6 }, o));
 
@@ -68,12 +68,12 @@ export function menschen(szene) { const POOL = []; for (let i = 0; i < (innerWid
   const RINGE_ECHT = new Map();
   return { ich, ring, weiter(t, mitte, sichtweite) { bild++;
     // nächste Menschen zum Kamerapunkt bekommen eine Figur (Zuteilung alle 10 Bilder)
-    if (bild % 10 === 1) nah = P.filter(p => p !== ICH && Math.abs(p.x - mitte.x) < sichtweite && Math.abs(p.y - mitte.y) < sichtweite).sort((a, b) => (Math.hypot(a.x - mitte.x, a.y - mitte.y)) - (Math.hypot(b.x - mitte.x, b.y - mitte.y))).slice(0, POOL.length);
+    if (bild % 10 === 1) nah = P.filter(p => p !== ICH && !p.drin && Math.abs(p.x - mitte.x) < sichtweite && Math.abs(p.y - mitte.y) < sichtweite).sort((a, b) => (Math.hypot(a.x - mitte.x, a.y - mitte.y)) - (Math.hypot(b.x - mitte.x, b.y - mitte.y))).slice(0, POOL.length);
     const frei = POOL.filter(f => !f.userData.p || !nah.includes(f.userData.p)); const vergeben = new Set(POOL.map(f => f.userData.p).filter(Boolean));
     for (const f of POOL) if (f.userData.p && !nah.includes(f.userData.p)) { f.userData.p = null; f.visible = false }
     for (const p of nah) { if (vergeben.has(p)) continue; const f = frei.pop(); if (!f) break; f.userData.p = p; einkleiden(f, p); f.visible = true; f.scale.setScalar(1.2 * (p.sz || 1)) }
     for (const f of POOL) { const p = f.userData.p; if (!p) continue; const alt = vorher.get(p); const nx = p.x * M, nz = p.y * M; const dx = alt ? nx - alt[0] : 0, dz = alt ? nz - alt[1] : 0; vorher.set(p, [nx, nz]);
-      f.position.set(nx, 0, nz); if (Math.abs(dx) + Math.abs(dz) > .001) f.rotation.y = Math.atan2(dx, dz); gehen(f, t, Math.abs(dx) + Math.abs(dz) > .001);
+      f.position.set(nx, 0, nz); if (Math.abs(dx) + Math.abs(dz) > .001) f.rotation.y = Math.atan2(dx, dz); if ((p.tanzBis || 0) > Date.now()) f.position.y = tanzen(f, t, p.ph || 0); else gehen(f, t, Math.abs(dx) + Math.abs(dz) > .001);
       if (((p.star && p.name) || (p.nachbar && typeof AFFAERE !== 'undefined' && AFFAERE.an)) && p !== ICH) { let s = NAMEN.get(p); if (!s) { s = p.echt ? namensSchild('● LIVE · ' + p.name, 'rgba(24,160,96,.95)', '#ffffff') : p.nachbar ? namensSchild('💋 ' + p.nachbar, 'rgba(255,79,163,.92)', '#ffffff') : namensSchild(p.name); if (p.echt) s.scale.multiplyScalar(1.25); NAMEN.set(p, s); szene.add(s) } s.visible = true; s.position.set(nx, p.echt ? 3 : 2.7, nz) }
       // Echte Spielerinnen: grüner, pulsierender Ring am Boden, damit man sie unter den Bewohnern sofort erkennt
       if (p.echt) { let r = RINGE_ECHT.get(p); if (!r) { r = new THREE.Mesh(new THREE.RingGeometry(.55, .82, 32), new THREE.MeshBasicMaterial({ color: '#3ee08f', transparent: true })); r.rotation.x = -Math.PI / 2; RINGE_ECHT.set(p, r); szene.add(r) } r.visible = true; r.position.set(nx, .06, nz); r.material.opacity = .55 + Math.sin(t * 3 + p.ph) * .3 } }

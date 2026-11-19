@@ -2,11 +2,11 @@
 // Ränge in Stufen rundherum, offenes Dach mit weißem Ring, Bühne mit LED-Wand und Lichtrigg, Fans im Innenraum und auf den Rängen.
 // Nachts Lichtkegel in den Himmel, zur halben Stunde Konzertfinale mit Feuerwerk über der Arena (feuerwerk.js).
 import * as THREE from 'three';
-import { M } from './haeuser.js?v=1795048012';
-import { namensSchild } from './leben.js?v=1795048012';
-import { parkplatz } from './parkplatz.js?v=1795048012';
-import { feuerwerk } from './feuerwerk.js?v=1795048012';
-import { fahrbahn } from './texturen.js?v=1795048012';
+import { M } from './haeuser.js?v=1795048374';
+import { namensSchild } from './leben.js?v=1795048374';
+import { parkplatz } from './parkplatz.js?v=1795048374';
+import { feuerwerk } from './feuerwerk.js?v=1795048374';
+import { fahrbahn } from './texturen.js?v=1795048374';
 const std = (c, o = {}) => new THREE.MeshStandardMaterial(Object.assign({ color: c, roughness: .55 }, o));
 // Ellipsenring als flache Platte (für Ränge und Dachring)
 function ring(rx, rz, breite, dicke, mat) { const s = new THREE.Shape(); s.absellipse(0, 0, rx + breite, rz + breite, 0, Math.PI * 2); const loch = new THREE.Path(); loch.absellipse(0, 0, rx, rz, 0, Math.PI * 2, true); s.holes.push(loch);
