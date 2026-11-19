@@ -88,13 +88,16 @@ function radar(){const r=Math.min(78,innerWidth*.16)*DPR,cx=r+18*DPR,cy=H-r-74*D
   g.fillStyle='rgba(14,16,24,.88)';g.fillRect(cx-r,cy-r,2*r,2*r);
   const sc=r/36;const cxw=CX/32,cyw=CY/16;const m=(x,y)=>[cx+((x-y)-cxw)*sc*1.1,cy+((x+y)*.5-cyw*.5)*sc*1.1];
   const mq=(x0,y0,x1,y1,c)=>{g.beginPath();[m(x0,y0),m(x1,y0),m(x1,y1),m(x0,y1)].forEach(([a,b],i)=>i?g.lineTo(a,b):g.moveTo(a,b));g.closePath();g.fillStyle=c;g.fill()};
-  mq(-7,-7,49,43,'#3f5a3a');mq(-7,43,49,54,'#2c6d86');mq(-1,-1,43,42,'#6d6878');
-  for(let k=0;k<6;k++){mq(8*k,-1,8*k+2,42,'#d8d4dc');mq(-1,8*k,43,8*k+2,'#d8d4dc')}
-  B.forEach(b=>mq(b.x+.3,b.y+.3,b.x+3.7,b.y+3.7,'#4a4458'));
+  mq(-7,-7,49,43,'#22262a');mq(-7,43,49,54,'#24383b');mq(-1,-1,43,42,'#2b2e33');
+  for(let k=0;k<6;k++){mq(8*k,-1,8*k+2,42,'#5c6066');mq(-1,8*k,43,8*k+2,'#5c6066')}
+  B.forEach(b=>mq(b.x+.3,b.y+.3,b.x+3.7,b.y+3.7,'#16181c'));
+  /* Karriere-Ziele als gelbe Punkte, Polizei als blau-rot blinkende Punkte */
+  if(typeof ORTE!=='undefined'&&ST.karriere){const ids=ST.karriere==='dealer'?['goerli','raw','kotti']:ST.karriere==='influ'?['tor','alex','ufer','berg','scorp','kadeve']:[];for(const o of ids){const q=ORTE[o].p();if(!q)continue;const[a,b]=m(q.x,q.y);g.fillStyle='#ffb21a';g.beginPath();g.arc(a,b,3.5*DPR,0,7);g.fill()}}
+  if(window.POLIZEI)for(const q of window.POLIZEI){const[a,b]=m(q.x,q.y);g.fillStyle=(ST.fahndung&&Math.sin(T*12)>0)?'#ff2a2a':'#2a6bff';g.beginPath();g.arc(a,b,3*DPR,0,7);g.fill()}
   for(const h of HELIS)if(h.p){const[a,b]=m(h.p.x,h.p.y);g.fillStyle='#fff';g.beginPath();g.arc(a,b,3*DPR,0,7);g.fill()}
   if(typeof AFFAERE!=='undefined'&&AFFAERE.an)for(const q of P)if(q.nachbar){const[a,b]=m(q.x,q.y);g.fillStyle='#ff6f9c';g.font=`${10*DPR}px sans-serif`;g.textAlign='center';g.textBaseline='middle';g.fillText('♥',a,b)}
-  const[px,py]=m(ICH.x,ICH.y);g.fillStyle='#ff4fa3';g.beginPath();g.moveTo(px,py-6*DPR);g.lineTo(px+4.5*DPR,py+4*DPR);g.lineTo(px-4.5*DPR,py+4*DPR);g.fill();
-  g.restore();g.strokeStyle='rgba(255,255,255,.85)';g.lineWidth=3*DPR;g.beginPath();g.arc(cx,cy,r,0,7);g.stroke();g.strokeStyle='#ff4fa3';g.lineWidth=1.5*DPR;g.beginPath();g.arc(cx,cy,r+3*DPR,0,7);g.stroke()}
+  const[px,py]=m(ICH.x,ICH.y);g.fillStyle='#ffffff';g.beginPath();g.moveTo(px,py-6*DPR);g.lineTo(px+4.5*DPR,py+4*DPR);g.lineTo(px-4.5*DPR,py+4*DPR);g.fill();
+  g.restore();g.strokeStyle='rgba(255,255,255,.85)';g.lineWidth=3*DPR;g.beginPath();g.arc(cx,cy,r,0,7);g.stroke();g.strokeStyle=ST.fahndung?(Math.sin(T*8)>0?'#ff2a2a':'#2a6bff'):'#ff2f7d';g.lineWidth=2*DPR;g.beginPath();g.arc(cx,cy,r+3*DPR,0,7);g.stroke()}
 function ampelZ(o){const[x,y]=pt(o.x,o.y);const s=Z;g.strokeStyle='#1b1c20';g.lineWidth=1.6*s;g.beginPath();g.moveTo(x,y);g.lineTo(x,y-30*s);g.stroke();
   for(const[i,ax]of[[0,'y'],[1,'x']]){const l=ampel(o.kx,o.ky,ax);const bx=x+(i?5:-5)*s,by=y-30*s;g.fillStyle='#16171a';g.beginPath();g.roundRect(bx-2.4*s,by-8*s,4.8*s,12*s,1.5*s);g.fill();
     [['r',-5.5],['y',-1.8],['g',1.9]].forEach(([c,dy])=>{const an=l===c;g.fillStyle=an?{r:'#ff3b3b',y:'#ffc93b',g:'#3bff7a'}[c]:'rgba(255,255,255,.12)';g.beginPath();g.arc(bx,by+dy*s,1.3*s,0,7);g.fill();
