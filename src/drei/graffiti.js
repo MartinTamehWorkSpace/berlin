@@ -36,14 +36,14 @@ export function graffiti(szene) { grauMachen(szene); const g = new THREE.Group()
   st(new THREE.BoxGeometry(17.6, 1.6, 4.8), sand, 0, 10.6, 0); st(new THREE.BoxGeometry(12, 1.6, 3.6), sand, 0, 12.2, 0);
   const wagen = st(new THREE.BoxGeometry(2.4, 1.2, 1.6), gruen, 0, 13.6, 0); for (let i = 0; i < 4; i++) { st(new THREE.BoxGeometry(.5, 1.3, 1.6), gruen, -1.8 + i * 1.2, 13.7, -1.3); st(new THREE.BoxGeometry(.35, .7, .4), gruen, -1.8 + i * 1.2, 14.6, -1.95) }
   st(new THREE.CylinderGeometry(.18, .18, 2.2, 8), gruen, 0, 15.2, .2); st(new THREE.SphereGeometry(.45, 10, 8), gruen, 0, 16.5, .2);
-  const bahn = sBahn(g); spaetis(g); ryotei(g, mats); strassenbild(g); weltzeituhr(g); oberbaum(g); buddyBaeren(g); const streife = polizei(g);
+  const bahn = sBahn(g); const tram = strassenbahn(g); spaetis(g); ryotei(g, mats); strassenbild(g); weltzeituhr(g); oberbaum(g); buddyBaeren(g); const streife = polizei(g);
   /* Zielringe der Karriere: gelb pulsierende Ringe an Deal-Ecken oder Hotspots */
   const ringe = {}, ringMat = new THREE.MeshBasicMaterial({ color: '#ffb21a', transparent: true, opacity: .7, depthWrite: false });
   const zielringe = () => { if (typeof ORTE === 'undefined' || typeof ST === 'undefined') return; const ids = ST.karriere === 'dealer' ? ['goerli', 'raw', 'kotti'] : ST.karriere === 'influ' ? ['tor', 'alex', 'ufer', 'berg', 'scorp', 'kadeve'] : [];
     if (ST.karriere === 'gastro' && ST.gastro && typeof lokalPos === 'function') for (const id of Object.keys(ST.gastro)) ids.push('l_' + id);
     for (const k in ringe) ringe[k].visible = ids.includes(k); for (const id of ids) { let r = ringe[id]; if (!r) { const q = id.startsWith('l_') ? lokalPos(id.slice(2)) : ORTE[id].p(); if (!q) continue; r = new THREE.Mesh(new THREE.RingGeometry(1.6, 2.1, 40), ringMat); r.rotation.x = -Math.PI / 2; r.position.set(q.x * M, .12, q.y * M); g.add(r); ringe[id] = r } }
     ringMat.opacity = .45 + Math.sin(performance.now() / 300) * .3 };
-  return { weiter(dt = .016) { bahn(dt); streife(); zielringe() } } }
+  return { weiter(dt = .016) { bahn(dt); tram(dt); streife(); zielringe() } } }
 /* S-Bahn auf dem Viadukt am Nordrand: Ziegelbögen, Gleis, rot-gelber Zug pendelt hin und her */
 function sBahn(g) { const y0 = -2.6 * M, x0 = -34 * M, x1 = 58 * M, H = 6.5, ziegel = new THREE.MeshStandardMaterial({ color: '#7a4a3a', roughness: .95 }), dunkel = new THREE.MeshStandardMaterial({ color: '#2a2b2f', roughness: .7 });
   const deck = new THREE.Mesh(new THREE.BoxGeometry(x1 - x0, 1.2, 5.5), ziegel); deck.position.set((x0 + x1) / 2, H, y0); deck.castShadow = deck.receiveShadow = true; g.add(deck);
@@ -139,3 +139,13 @@ function buddyBaeren(g) { const r = zufall(31), STR = [1, 9, 17, 25, 33], F = [[
     teil(new THREE.BoxGeometry(1.4, .3, 1), m2, 0, .15, 0); teil(new THREE.CapsuleGeometry(.55, .9, 4, 10), m1, 0, 1.25, 0); teil(new THREE.SphereGeometry(.42, 12, 10), m1, 0, 2.4, 0);
     for (const s of [-1, 1]) { teil(new THREE.SphereGeometry(.14, 8, 6), m2, s * .3, 2.75, 0); teil(new THREE.CapsuleGeometry(.16, .7, 4, 8), m1, s * .72, 2.1, 0, s * -.5); teil(new THREE.CapsuleGeometry(.18, .5, 4, 8), m1, s * .28, .55, 0) }
     teil(new THREE.SphereGeometry(.22, 10, 8), m2, 0, 1.45, .45); teil(new THREE.SphereGeometry(.12, 8, 6), m2, 0, 2.33, .38) } }
+/* Straßenbahn M10: Schienen auf der Mittelachse einer Hauptstraße, gelbe Tram fährt hin und her */
+function strassenbahn(g) { const z0 = 17 * M + 1.5, x0 = -2 * M, x1 = 42 * M, stahl = new THREE.MeshStandardMaterial({ color: '#8a8f96', metalness: .9, roughness: .3 });
+  for (const dz of [-.7, .7]) { const sch = new THREE.Mesh(new THREE.BoxGeometry(x1 - x0, .06, .12), stahl); sch.position.set((x0 + x1) / 2, .09, z0 + dz); g.add(sch) }
+  const gelb = new THREE.MeshStandardMaterial({ color: '#f2c200', roughness: .45 }), grau = new THREE.MeshStandardMaterial({ color: '#d9dde2', roughness: .5 }), fen = new THREE.MeshStandardMaterial({ color: '#1b2430', emissive: '#ffe7b0', emissiveIntensity: .25, roughness: .2 });
+  const tram = new THREE.Group(); g.add(tram); for (let i = 0; i < 3; i++) { const w = new THREE.Group(); w.position.x = i * 6.2; tram.add(w); const k = new THREE.Mesh(new THREE.BoxGeometry(6, 2.4, 2.3), gelb); k.position.y = 1.5; k.castShadow = true; w.add(k);
+    const r = new THREE.Mesh(new THREE.BoxGeometry(6, .5, 2.32), grau); r.position.y = .45; w.add(r); for (const sz of [-1.16, 1.16]) { const f = new THREE.Mesh(new THREE.BoxGeometry(5.2, 1, .04), fen); f.position.set(0, 1.9, sz); w.add(f) } }
+  const bug = new THREE.Mesh(new THREE.BoxGeometry(.6, .1, .1), stahl); bug.position.set(6.2, 3.1, 0); tram.add(bug);
+  const c = document.createElement('canvas'); c.width = 128; c.height = 48; const x = c.getContext('2d'); x.fillStyle = '#111'; x.fillRect(0, 0, 128, 48); x.fillStyle = '#ffb21a'; x.font = '700 30px Arial'; x.textAlign = 'center'; x.fillText('M10', 64, 35);
+  const t = new THREE.CanvasTexture(c); t.colorSpace = THREE.SRGBColorSpace; const anz = new THREE.Mesh(new THREE.PlaneGeometry(1.4, .5), new THREE.MeshBasicMaterial({ map: t, toneMapped: false })); anz.position.set(-3.02, 2.4, 0); anz.rotation.y = -Math.PI / 2; tram.add(anz);
+  let u = 0; return dt => { u += dt * 5; const L = x1 - x0 - 20, p = u % (2 * L), xx = p < L ? p : 2 * L - p; tram.position.set(x0 + xx, 0, z0); tram.rotation.y = p < L ? 0 : Math.PI } }
