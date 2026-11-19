@@ -8,18 +8,18 @@ import { EffectComposer } from 'three/addons/postprocessing/EffectComposer.js';
 import { RenderPass } from 'three/addons/postprocessing/RenderPass.js';
 import { UnrealBloomPass } from 'three/addons/postprocessing/UnrealBloomPass.js';
 import { OutputPass } from 'three/addons/postprocessing/OutputPass.js';
-import { graffiti } from './graffiti.js?v=1795051294';
-import { M, NEON, FENSTER, GLAS, baueHaeuser, box, std, durchsicht } from './haeuser.js?v=1795051294';
-import { menschen, verkehr, stadtmoebel, autosLaden } from './leben.js?v=1795051294';
-import { fahrbahn, pflaster, sand, blase, rasen } from './texturen.js?v=1795051294';
-import { praxis } from './praxis.js?v=1795051294';
-import { wohnung } from './wohnung.js?v=1795051294';
-import { boote, helis } from './wasser.js?v=1795051294';
-import { feuerwerk } from './feuerwerk.js?v=1795051294';
-import { strand } from './strand.js?v=1795051294';
-import { flughafen } from './flughafen.js?v=1795051294';
-import { arena } from './arena.js?v=1795051294';
-import { spaceport } from './spaceport.js?v=1795051294';
+import { graffiti } from './graffiti.js?v=1795067735';
+import { M, NEON, FENSTER, GLAS, baueHaeuser, box, std, durchsicht } from './haeuser.js?v=1795067735';
+import { menschen, verkehr, stadtmoebel, autosLaden } from './leben.js?v=1795067735';
+import { fahrbahn, pflaster, sand, blase, rasen } from './texturen.js?v=1795067735';
+import { praxis } from './praxis.js?v=1795067735';
+import { wohnung } from './wohnung.js?v=1795067735';
+import { boote, helis } from './wasser.js?v=1795067735';
+import { feuerwerk } from './feuerwerk.js?v=1795067735';
+import { strand } from './strand.js?v=1795067735';
+import { flughafen } from './flughafen.js?v=1795067735';
+import { arena } from './arena.js?v=1795067735';
+import { spaceport } from './spaceport.js?v=1795067735';
 let PRAXIS = null, WOHNUNG = null, inWohnungJetzt = false;
 
 const handy = innerWidth < 760;
@@ -173,9 +173,9 @@ let zieh = null; leinwand.addEventListener('pointermove', e => { if (!zieh) retu
 addEventListener('pointerup', () => zieh = null);
 leinwand.addEventListener('wheel', e => { if (inWohnungJetzt && WOHNUNG) return WOHNUNG.zoom(Math.exp(e.deltaY * .0012)); if (typeof KLINIK !== 'undefined' && KLINIK.offen && PRAXIS) PRAXIS.zoom(Math.exp(e.deltaY * .0012)) }, { passive: true });
 leinwand.addEventListener('pointerup', e => { if (!runter || Math.hypot(e.clientX - runter[0], e.clientY - runter[1]) > 6) return; if (inWohnungJetzt && WOHNUNG) { WOHNUNG.tippen(e.clientX, e.clientY); return } if (INNEN) { window.innenTippen(e.clientX, e.clientY); return } if (typeof KLINIK !== 'undefined' && KLINIK.offen) { if (PRAXIS) PRAXIS.tippen(e.clientX, e.clientY); return } maus.set(e.clientX / innerWidth * 2 - 1, -e.clientY / innerHeight * 2 + 1); ray.setFromCamera(maus, kamera);
-  let haus = null, person = null, auto = false, boot = false; for (const t of ray.intersectObjects(szene.children, true)) { let o = t.object; if (!o.visible) continue; while (o && !o.userData.haus && !o.userData.p && !o.userData.meinAuto && !o.userData.meinBoot && !o.userData.jet && !o.userData.spaceport && o.parent) o = o.parent;
+  let haus = null, person = null, auto = false, boot = false; for (const t of ray.intersectObjects(szene.children, true)) { let o = t.object; if (!o.visible) continue; while (o && !o.userData.haus && !o.userData.p && !o.userData.meinAuto && !o.userData.meinBoot && !o.userData.jet && !o.userData.spaceport && !o.userData.yachtclub && o.parent) o = o.parent;
     if (o.userData.haus && o.userData.haus.drei && o.userData.haus.drei.userData.durch) continue;
-    if (o.userData.spaceport) { if (typeof spaceportZeigen === 'function') spaceportZeigen(); return }
+    if (o.userData.spaceport) { if (typeof spaceportZeigen === 'function') spaceportZeigen(); return } if (o.userData.yachtclub) { if (typeof yachtclubZeigen === 'function') yachtclubZeigen(); return }
     if (o.userData.jet) { if (ST.besitz[o.userData.jet]) jetZiele(); else { const t = B.find(b => b.title === 'Flughafen Tempelhoff'); if (t) laufeZu(t.x + 2, t.y + 2, t); toast('Dieser Jet ist zu verkaufen. Ab ins Terminal.') } return }
     if (o.userData.meinBoot) { boot = true; break } if (o.userData.meinAuto) { auto = true; break } if (o.userData.p) { person = o.userData.p; break } if (o.userData.haus) { haus = o.userData.haus; break } }
   const p = new THREE.Vector3(); ray.ray.intersectPlane(bodenEbene, p); const x = p.x / M, y = p.z / M; fokusPunkt = null; frei = false;

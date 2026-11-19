@@ -1,7 +1,7 @@
 // Berlin City 3D · haeuser.js · Häuser aus dem Stadtplan (B): Art déco, Glas mit Solardach, Alex Tower. Schilder kommen aus brand() des Spiels.
 // Ein Feld des Spiels = 3 Meter. Spiel-x wird 3D-X, Spiel-y wird 3D-Z.
 import * as THREE from 'three';
-import { glasfassade } from './texturen.js?v=1795051294';
+import { glasfassade } from './texturen.js?v=1795067735';
 
 export const M = 3;
 export const NEON = [], FENSTER = [], GLAS = []; // GLAS: Hochhausglas, nachts chromartig spiegelnd
@@ -36,7 +36,8 @@ function schildAn(eltern, k, seite, u0, u1, y, hoehe, abstand) { const breite = 
 const BERLIN_TOENE = ['#7b4a3c', '#5b5f63', '#a58d6a', '#3f4a3f', '#8a7f72', '#6e3b34', '#2f3237', '#9a8f80', '#5a4636', '#46505a'];
 function deko(b, gr) { const p = b.pod, w = 4 * M - .8, d = w, stock = p.fl, h = 4.4 + (stock - 1) * 3.6 + .8;
   const ton = p.farbe && /^#1[0-9a-f]/i.test(p.farbe) ? p.farbe : BERLIN_TOENE[Math.abs(Math.round(b.x * 7 + b.y * 13)) % BERLIN_TOENE.length];
-  const m = std(ton, { roughness: .9 }), gesims = std('#26282c', { roughness: .8 }), sockel = std('#3a3b3e', { roughness: .95 });
+  const boho = b.title === 'Scorpius Berlin'; /* Boho wie Scorpios: weißer Kalk, Holzbalken, Stroh, Naturstein */
+  const m = std(boho ? '#f3ede2' : ton, { roughness: .95 }), gesims = std(boho ? '#9c7a55' : '#26282c', { roughness: .85 }), sockel = std(boho ? '#d6cab3' : '#3a3b3e', { roughness: .95 });
   box(w, h, d, m, 0, 0, 0, gr); box(w + .15, 1, d + .15, sockel, 0, 0, 0, gr);
   for (const [sx, sz] of [[1, 1], [-1, 1], [1, -1]]) box(.9, h + .6, .9, m, sx * (w / 2 - .45), 0, sz * (d / 2 - .45), gr);
   for (let i = 1; i <= stock; i++) box(w + .25, .35, d + .25, gesims, 0, 4.4 + (i - 1) * 3.6 - .17, 0, gr); box(w + .4, .6, d + .4, gesims, 0, h - .3, 0, gr);
@@ -45,6 +46,8 @@ function deko(b, gr) { const p = b.pod, w = 4 * M - .8, d = w, stock = p.fl, h =
   const schau = new THREE.MeshStandardMaterial({ color: '#15181b', emissive: '#ffb066', emissiveIntensity: .18, roughness: .08, metalness: .6 }); schau.userData.basis = .55; schau.userData.tag = .12; FENSTER.push(schau);
   box(w - 3, 2.8, .2, schau, 0, .9, d / 2 + .05, gr); box(.2, 2.8, d - 3, schau, w / 2 + .05, .9, 0, gr);
   const k = (p.shops[0] || [])[3]; if (k) { schildAn(gr, k, 'L', .4, 3.6, 3.95 + .6, 1.4, d / 2 + .12); schildAn(gr, k, 'R', .4, 3.6, 3.95 + .6, 1.4, w / 2 + .12) }
+  if (boho) { const holz = std('#8a6a4a', { roughness: .9 }), stroh = std('#cdb98e', { roughness: 1 }); for (let i = 0; i < 7; i++) box(.25, .25, d + 2.4, holz, -w / 2 + .6 + i * (w - 1.2) / 6, h - .1, 0, gr);
+    box(w + 2.4, .35, d + 2.4, stroh, 0, h + .15, 0, gr); for (const sx of [-1, 1]) box(.3, h, .3, holz, sx * (w / 2 + 1), 0, d / 2 + 1, gr); return h + .5 }
   solardach(gr, w - 1.2, d - 1.2, h); return h }
 
 // Beton: Koloss aus einem alten Heizkraftwerk, fast fensterlos, hohe schmale Schlitze, Treppenturm, rotes Licht über der Tür

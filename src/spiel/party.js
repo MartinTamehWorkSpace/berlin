@@ -17,3 +17,7 @@ function partyWeiter() { const leiste = aktionsLeiste(), karte = document.getEle
   let k = document.getElementById('bTanzen'); const nah = partyNah(); const alt = document.getElementById('nickyMenue'); if (alt) alt.remove();
   if (!k) { k = document.createElement('button'); k.id = 'bTanzen'; k.className = 'anlegen'; k.textContent = '🌴 Ins Scorpius'; k.onclick = () => { const b = B.find(x => x.title === 'Scorpius Berlin'); if (b) betreten(b) }; leiste.append(k) }
   k.hidden = !nah }
+
+/* Yachtclub Spreeblick: hier kauft man Boote (vorher im Scorpius, Martin 19.11.2026: zu viel neben den Club-Aktionen) */
+function yachtclubZeigen() { const cb = panel('⚓ Yachtclub Spreeblick · Boote kaufen'); const p = document.createElement('p'); p.className = 'hin'; p.textContent = 'Pfahlbau an der Spree, eigene Liegeplätze. Dein Boot liegt danach am Steg.'; cb.append(p);
+  const box = document.createElement('div'); box.style.cssText = 'display:flex;flex-direction:column;gap:5px;margin-top:6px'; box.append(...WS.KATALOG.filter(VERKAUF.yacht).sort((a, c) => a.rang - c.rang).map(zeile)); cb.append(box) }
