@@ -1,4 +1,4 @@
-// Berlin · live.js · Echte Spieler sehen sich live in der Stadt. Austausch über einen öffentlichen MQTT-Server (HiveMQ, kostenlos, ohne Netlify).
+// Berlin · mitspieler.js · Echte Spieler sehen sich live in der Stadt. Austausch über einen öffentlichen MQTT-Server (HiveMQ, kostenlos, ohne Netlify).
 // Jede Figur schickt 4 Mal pro Sekunde, wo sie steht. (Direkte Browserverbindung per Trystero/Nostr fand am 19.11.2026 keine Partner.)
 // Angezeigt werden die anderen als echte Figuren (ECHT aus konto.js) an ihrer echten Position, mit grünem LIVE-Ring.
 import mqtt from 'https://esm.sh/mqtt@5.10.1';
