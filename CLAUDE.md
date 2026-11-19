@@ -11,7 +11,8 @@ Lifestyle-Spiel in Berlin (eigene Kopie von Glow City, getrennt). Live: https://
 ## Was neu ist (Werkstatt 19.11.)
 - GTA-Look: Schrift Anton, Kanten statt Rundungen, Neonpink #ff2f7d und Amber #ffb21a. Logo BERLIN 030.
 - Karrieren statt Klinik als Hauptspiel: src/spiel/karriere.js (Dealer mit Polizei und Fahndungssternen, Gastro-Boss mit Lokalen und Ausbauten, Influencer mit Hotspots und Kooperationen). Wahl an der Weltzeituhr am Alex oder unten über „Karriere“.
-- Stadtbild: src/drei/graffiti.js (Graffitis, Fernsehturm-Pavillon, Brandenburger Tor, S-Bahn, Spätis, Litfaßsäulen, U-Bahn, Ampelmännchen, Fahrräder, Weltzeituhr, Oberbaumbrücke, Polizeiwagen). Scorpius drinnen: src/welt/scorpius.js.
+- Stadtbild: src/drei/graffiti.js (Graffitis, Fernsehturm, Brandenburger Tor, Oberbaumbrücke, East Side Gallery, S-Bahn-Viadukt, Tram M10, Spätis, Litfaßsäulen, U-Bahn, Ampelmännchen, Fahrräder, Buddy Bären, Döner Mostafas, Weltzeituhr, Polizeiwagen, Fußstreife, Hubschrauber ab 4 Sternen, Zielringe). Häuser: Berliner Putz, Flachdächer mit Teerpappe. Gaslaternen, Linden, Beanies, gefärbte Haare, Autos in Berliner Lacken. Wetter mit Nieselregen.
+- Prüfen ohne Upload: Werkstatt-Kopie im Scratchpad mit python http.server (Port 8092), Tageszeit für Tests über window.TESTSTUNDE in der Kopie.
 
 (Unten die alte Anleitung aus Glow City, gilt sinngemäß weiter.)
 
