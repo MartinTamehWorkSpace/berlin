@@ -22,7 +22,7 @@ function wandTextur(nr) { const r = zufall(nr * 77 + 13), c = document.createEle
 function grauMachen(szene) { const fertig = new Set(), hsl = {};
   szene.traverse(o => { if (!o.isMesh || o.userData.spaceport) return; for (const m of [].concat(o.material)) { if (!m || fertig.has(m) || !m.color || m.isShaderMaterial) continue; fertig.add(m);
     if (m.emissive && m.emissiveIntensity > .5 && m.emissive.getHex()) continue; if (m.transparent && m.opacity < .6) continue;
-    m.color.getHSL(hsl); if (o.userData.haus) m.color.setHSL(hsl.h, hsl.s * .45, hsl.l * .8); else m.color.setHSL(hsl.h, hsl.s * .22, Math.min(.72, hsl.l * .82 + .04)) } }) }
+    m.color.getHSL(hsl); if (o.userData.haus) m.color.setHSL(hsl.h, hsl.s * .45, Math.min(.56, hsl.l * .74)); else m.color.setHSL(hsl.h, hsl.s * .22, Math.min(.58, hsl.l * .76 + .03)) } }) }
 export function graffiti(szene) { grauMachen(szene); const g = new THREE.Group(); szene.add(g); const mats = Array.from({ length: 10 }, (_, i) => new THREE.MeshStandardMaterial({ map: wandTextur(i), roughness: .95, polygonOffset: true, polygonOffsetFactor: -2 }));
   const r = zufall(42); let n = 0; const breite = 4 * M - 1.2;
   for (const b of B) { if (b.haupt || !b.drei || b.meins === 'boutique') continue; if (r() < .18) continue;

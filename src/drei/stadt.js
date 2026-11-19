@@ -139,7 +139,7 @@ function licht(mitte) { const h = Math.round(stunde() * 4) / 4, /* Sonne wandert
   const nacht = 1 - glatt(-6, 3, hoehe), gold = glatt(-2, 4, hoehe) * (1 - glatt(8, 22, hoehe));
   const raster = new THREE.Vector3(Math.round(mitte.x / 6) * 6, 0, Math.round(mitte.z / 6) * 6); /* Schatten springt in 6-m-Schritten statt bei jeder Bewegung zu zittern */ sonne.position.copy(sp).multiplyScalar(300).add(raster); sonne.target.position.copy(raster); sonne.intensity = 3.6 * glatt(-2, 6, hoehe); sonne.color.copy(farbe('#ffe6c8', '#ff9a6a', gold));
   halb.intensity = .28 + .27 * (1 - nacht); halb.color.copy(farbe('#b9d4ff', '#4a4f9e', nacht)); halb.groundColor.copy(farbe('#f0c9b8', '#2a1f3a', nacht));
-  renderer.toneMappingExposure = .41 - nacht * .07; sterne.material.opacity = nacht * .9; szene.fog.color.copy(farbe(farbe('#a7abb0', '#b9a99a', gold * .5).getStyle(), '#14161c', nacht));
+  renderer.toneMappingExposure = .34 - nacht * .02; sterne.material.opacity = nacht * .9; szene.fog.color.copy(farbe(farbe('#a7abb0', '#b9a99a', gold * .5).getStyle(), '#14161c', nacht));
   for (const m of NEON) m.emissiveIntensity = m.userData.basis * (.12 + nacht * .5); for (const m of FENSTER) { const pu = m.userData.puls; m.emissiveIntensity = (m.userData.tag || 0) + m.userData.basis * nacht * (pu ? 1 + pu * Math.sin(performance.now() / 1000 * 13.4 + (m.userData.ph || 0)) : 1) }
   bloom.strength = .18 + nacht * .28;
   // Laternenlicht: die nächsten Laternen leuchten wirklich
