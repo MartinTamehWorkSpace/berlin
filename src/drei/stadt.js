@@ -8,18 +8,18 @@ import { EffectComposer } from 'three/addons/postprocessing/EffectComposer.js';
 import { RenderPass } from 'three/addons/postprocessing/RenderPass.js';
 import { UnrealBloomPass } from 'three/addons/postprocessing/UnrealBloomPass.js';
 import { OutputPass } from 'three/addons/postprocessing/OutputPass.js';
-import { graffiti } from './graffiti.js?v=1795049691';
-import { M, NEON, FENSTER, GLAS, baueHaeuser, box, std, durchsicht } from './haeuser.js?v=1795049691';
-import { menschen, verkehr, stadtmoebel, autosLaden } from './leben.js?v=1795049691';
-import { fahrbahn, pflaster, sand, blase, rasen } from './texturen.js?v=1795049691';
-import { praxis } from './praxis.js?v=1795049691';
-import { wohnung } from './wohnung.js?v=1795049691';
-import { boote, helis } from './wasser.js?v=1795049691';
-import { feuerwerk } from './feuerwerk.js?v=1795049691';
-import { strand } from './strand.js?v=1795049691';
-import { flughafen } from './flughafen.js?v=1795049691';
-import { arena } from './arena.js?v=1795049691';
-import { spaceport } from './spaceport.js?v=1795049691';
+import { graffiti } from './graffiti.js?v=1795049805';
+import { M, NEON, FENSTER, GLAS, baueHaeuser, box, std, durchsicht } from './haeuser.js?v=1795049805';
+import { menschen, verkehr, stadtmoebel, autosLaden } from './leben.js?v=1795049805';
+import { fahrbahn, pflaster, sand, blase, rasen } from './texturen.js?v=1795049805';
+import { praxis } from './praxis.js?v=1795049805';
+import { wohnung } from './wohnung.js?v=1795049805';
+import { boote, helis } from './wasser.js?v=1795049805';
+import { feuerwerk } from './feuerwerk.js?v=1795049805';
+import { strand } from './strand.js?v=1795049805';
+import { flughafen } from './flughafen.js?v=1795049805';
+import { arena } from './arena.js?v=1795049805';
+import { spaceport } from './spaceport.js?v=1795049805';
 let PRAXIS = null, WOHNUNG = null, inWohnungJetzt = false;
 
 const handy = innerWidth < 760;
@@ -28,7 +28,7 @@ renderer.setPixelRatio(Math.min(devicePixelRatio, handy ? 1.2 : 1.4)); renderer.
 renderer.shadowMap.enabled = true; renderer.shadowMap.type = THREE.PCFSoftShadowMap; renderer.toneMapping = THREE.ACESFilmicToneMapping; renderer.toneMappingExposure = .42;
 const leinwand = renderer.domElement; leinwand.id = 'c3'; leinwand.style.cssText = 'position:fixed;inset:0;width:100%;height:100%;touch-action:none;cursor:grab';
 cv.parentNode.insertBefore(leinwand, cv); cv.style.position = 'fixed'; cv.style.inset = '0';
-const szene = new THREE.Scene(); szene.fog = new THREE.Fog('#c8b9d8', 140, 420);
+const szene = new THREE.Scene(); szene.fog = new THREE.Fog('#a7abb0', 110, 380); /* Berlin: grauer Dunst */
 const kamera = new THREE.PerspectiveCamera(40, innerWidth / innerHeight, 2, 3000); // Nahgrenze 2 statt 0,3: 7-mal genauere Tiefe, Böden flackern nicht mehr übereinander
 const steuer = new OrbitControls(kamera, leinwand); steuer.enableDamping = true; steuer.maxPolarAngle = Math.PI * .47; steuer.minPolarAngle = Math.PI * .06; steuer.minDistance = 7; steuer.maxDistance = 170; steuer.enablePan = true; steuer.screenSpacePanning = false; steuer.panSpeed = 1.4;
 // Bedienung (Martin, 17.11.2026): Ziehen dreht die Kamera um dich oder dein Boot, rechte Maustaste oder zwei Finger verschieben die Stadt, Scrollen zoomt
@@ -36,7 +36,7 @@ steuer.mouseButtons = { LEFT: THREE.MOUSE.PAN, MIDDLE: THREE.MOUSE.DOLLY, RIGHT:
 let frei = false; steuer.addEventListener('start', () => { if (typeof MEINBOOT !== 'undefined' && MEINBOOT.an) return; /* an Bord bleibt die Kamera am Boot und dreht nur */ frei = true; fokusPunkt = null });
 
 // Himmel und Licht
-const himmel = new Sky(); himmel.scale.setScalar(5000); szene.add(himmel); const hu = himmel.material.uniforms; hu.turbidity.value = 3; hu.rayleigh.value = 1.1; hu.mieCoefficient.value = .004; hu.mieDirectionalG.value = .86;
+const himmel = new Sky(); himmel.scale.setScalar(5000); szene.add(himmel); const hu = himmel.material.uniforms; hu.turbidity.value = 9; hu.rayleigh.value = .55; /* Berlin: bedeckter, grauer Himmel */ hu.mieCoefficient.value = .004; hu.mieDirectionalG.value = .86;
 const sonne = new THREE.DirectionalLight('#ffe6c8', 3.6); sonne.castShadow = true; sonne.shadow.mapSize.set(handy ? 1024 : 1536, handy ? 1024 : 1536);
 Object.assign(sonne.shadow.camera, { left: -60, right: 60, top: 60, bottom: -60, near: 5, far: 500 }); sonne.shadow.bias = -.0004; sonne.shadow.normalBias = .04; szene.add(sonne, sonne.target);
 const halb = new THREE.HemisphereLight('#b9d4ff', '#f0c9b8', .55); szene.add(halb);
@@ -139,7 +139,7 @@ function licht(mitte) { const h = Math.round(stunde() * 4) / 4, /* Sonne wandert
   const nacht = 1 - glatt(-6, 3, hoehe), gold = glatt(-2, 4, hoehe) * (1 - glatt(8, 22, hoehe));
   const raster = new THREE.Vector3(Math.round(mitte.x / 6) * 6, 0, Math.round(mitte.z / 6) * 6); /* Schatten springt in 6-m-Schritten statt bei jeder Bewegung zu zittern */ sonne.position.copy(sp).multiplyScalar(300).add(raster); sonne.target.position.copy(raster); sonne.intensity = 3.6 * glatt(-2, 6, hoehe); sonne.color.copy(farbe('#ffe6c8', '#ff9a6a', gold));
   halb.intensity = .28 + .27 * (1 - nacht); halb.color.copy(farbe('#b9d4ff', '#4a4f9e', nacht)); halb.groundColor.copy(farbe('#f0c9b8', '#2a1f3a', nacht));
-  renderer.toneMappingExposure = .41 - nacht * .07; sterne.material.opacity = nacht * .9; szene.fog.color.copy(farbe(farbe('#c8b9d8', '#e8a49a', gold).getStyle(), '#1a1430', nacht));
+  renderer.toneMappingExposure = .41 - nacht * .07; sterne.material.opacity = nacht * .9; szene.fog.color.copy(farbe(farbe('#a7abb0', '#b9a99a', gold * .5).getStyle(), '#14161c', nacht));
   for (const m of NEON) m.emissiveIntensity = m.userData.basis * (.12 + nacht * .5); for (const m of FENSTER) m.emissiveIntensity = (m.userData.tag || 0) + m.userData.basis * nacht;
   bloom.strength = .18 + nacht * .28;
   // Laternenlicht: die nächsten Laternen leuchten wirklich

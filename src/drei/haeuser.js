@@ -1,7 +1,7 @@
 // Berlin City 3D · haeuser.js · Häuser aus dem Stadtplan (B): Art déco, Glas mit Solardach, Alex Tower. Schilder kommen aus brand() des Spiels.
 // Ein Feld des Spiels = 3 Meter. Spiel-x wird 3D-X, Spiel-y wird 3D-Z.
 import * as THREE from 'three';
-import { markise, glasfassade } from './texturen.js?v=1795049691';
+import { markise, glasfassade } from './texturen.js?v=1795049805';
 
 export const M = 3;
 export const NEON = [], FENSTER = [], GLAS = []; // GLAS: Hochhausglas, nachts chromartig spiegelnd
@@ -93,26 +93,23 @@ function sockelUndTurm(b, gr) { const p = b.pod, w = 4 * M - .8, d = w, hs = 4.6
   return top }
 
 // Alex Tower: drei Flügel um einen Kern springen spiralförmig zurück, oben die Nadel. Erkennbar, aber nicht übertrieben hoch.
-function glowTower(gr) { const glas = new THREE.MeshPhysicalMaterial({ color: '#d4dfe9', metalness: .55, roughness: .08, envMapIntensity: 1.5, emissive: '#ffe1b8', emissiveIntensity: 0 }); glas.userData.basis = .08; FENSTER.push(glas);
-  const kante = neon('#ff4fa3', 6), weiss = std('#eef1f4', { metalness: .3, roughness: .3 }), schwarz = std('#0c0c10', { metalness: .7, roughness: .22 }); const ebene = 2.1, stufen = 26, kernH = ebene * stufen;
-  const kern = schatten(new THREE.Mesh(new THREE.CylinderGeometry(1.8, 2.8, kernH, 6), glas)); kern.position.y = kernH / 2; gr.add(kern);
-  for (let k = 0; k < 3; k++) { const winkel = k * Math.PI * 2 / 3 + Math.PI / 4;
-    for (let i = 0; i < stufen; i++) { const ende = 8 + k * 5, anteil = Math.max(0, 1 - Math.max(0, i - ende) / (stufen - ende - 2)); if (anteil <= 0) break;
-      const L = 3.6 * Math.pow(anteil, .8) + .8, B = 3.6 - i * .05; const fl = new THREE.Group(); fl.rotation.y = winkel; gr.add(fl);
-      const m = schatten(new THREE.Mesh(new THREE.BoxGeometry(L, ebene, B), glas)); m.position.set(L / 2 + 1.4, i * ebene + ebene / 2, 0); fl.add(m);
-      const r = schatten(new THREE.Mesh(new THREE.CylinderGeometry(B / 2, B / 2, ebene, 14), glas)); r.position.set(L + 1.4, i * ebene + ebene / 2, 0); fl.add(r);
-      const naechst = Math.max(0, 1 - Math.max(0, i + 1 - ende) / (stufen - ende - 2)); if (naechst < anteil) { const n = new THREE.Mesh(new THREE.BoxGeometry(L + B / 2, .22, B + .2), kante); n.position.set(L / 2 + 1.4 + B / 4, (i + 1) * ebene, 0); fl.add(n) }
-      if (i % 4 === 0) { const s = new THREE.Mesh(new THREE.BoxGeometry(L + B / 2, .15, B + .12), weiss); s.position.set(L / 2 + 1.4 + B / 4, i * ebene, 0); fl.add(s) }
-      else if (i % 2 === 0) { const s = new THREE.Mesh(new THREE.BoxGeometry(L + B / 2 + .02, .06, B + .14), schwarz); s.position.set(L / 2 + 1.4 + B / 4, i * ebene, 0); fl.add(s) }
-      // schwarze Lisene an der Flügelspitze und an beiden Flanken
-      const li = new THREE.Mesh(new THREE.BoxGeometry(.14, ebene, .5), schwarz); li.position.set(L + 1.4 + B / 2, i * ebene + ebene / 2, 0); fl.add(li);
-      for (const sz of [-1, 1]) { const f2 = new THREE.Mesh(new THREE.BoxGeometry(.08, ebene, .08), schwarz); f2.position.set(1.6, i * ebene + ebene / 2, sz * (B / 2 + .02)); fl.add(f2) } } }
-  const kragen = new THREE.Mesh(new THREE.CylinderGeometry(1.5, 1.9, 1.2, 6), schwarz); kragen.position.y = kernH + .6; gr.add(kragen);
-  const nadel = schatten(new THREE.Mesh(new THREE.CylinderGeometry(.1, 1.1, 16, 10), weiss)); nadel.position.y = kernH + 8; gr.add(nadel);
-  for (let i = 0; i < 5; i++) { const r = new THREE.Mesh(new THREE.TorusGeometry(1.15 - i * .17, .07, 6, 20), kante); r.rotation.x = Math.PI / 2; r.position.y = kernH + 1.2 + i * 1.9; gr.add(r) }
-  const rot = new THREE.Mesh(new THREE.SphereGeometry(.35, 10, 8), neon('#ff2a2a', 8)); rot.position.y = kernH + 16.2; gr.add(rot); gr.userData.blinkt = rot;
-  const see = new THREE.Mesh(new THREE.CircleGeometry(5.6, 40), new THREE.MeshPhysicalMaterial({ color: '#2aa7bf', roughness: .05, clearcoat: 1, envMapIntensity: 1.4 })); see.rotation.x = -Math.PI / 2; see.position.y = .06; gr.add(see);
-  return kernH + 16 }
+// Fernsehturm am Alex (Martin 19.11.2026: Berlin statt Glow Tower). Unten der Pavillon mit dem Eingang zur Klinik, dann der Betonschaft,
+// die silberne Kugel mit dem Aussichtsring und die rot-weiße Antenne mit Blinklicht. Höhe bewusst übertrieben, damit man ihn überall sieht.
+function glowTower(gr) { const beton = std('#c9c6c0', { roughness: .85 }), stahl = new THREE.MeshPhysicalMaterial({ color: '#cfd4da', metalness: .9, roughness: .22, clearcoat: .6 }),
+    dunkel = std('#1b1d22', { metalness: .4, roughness: .4 }), rot = std('#c8211b', { roughness: .5 }), weiss = std('#f2f2f0', { roughness: .5 });
+  const fenster = new THREE.MeshStandardMaterial({ color: '#2a2d33', emissive: '#ffd9a8', emissiveIntensity: 0, roughness: .3 }); fenster.userData.basis = .3; FENSTER.push(fenster);
+  /* Pavillon mit Faltdach unten */
+  const pav = schatten(new THREE.Mesh(new THREE.CylinderGeometry(5.4, 5.6, 4, 8), dunkel)); pav.position.y = 2; gr.add(pav);
+  for (let i = 0; i < 8; i++) { const z = schatten(new THREE.Mesh(new THREE.ConeGeometry(1.6, 2.4, 3), weiss)); const w = i / 8 * Math.PI * 2; z.position.set(Math.cos(w) * 4.6, 5, Math.sin(w) * 4.6); gr.add(z) }
+  /* Schaft, leicht verjüngt */
+  const H = 70, schaft = schatten(new THREE.Mesh(new THREE.CylinderGeometry(1.25, 2.1, H, 24), beton)); schaft.position.y = 4 + H / 2; gr.add(schaft);
+  /* Kugel mit Fensterring */
+  const ky = 4 + H + 4.2, kugel = schatten(new THREE.Mesh(new THREE.SphereGeometry(5.6, 40, 28), stahl)); kugel.position.y = ky; gr.add(kugel);
+  const ring = new THREE.Mesh(new THREE.CylinderGeometry(5.68, 5.68, 1.3, 40, 1, true), fenster); ring.position.y = ky + .3; gr.add(ring);
+  /* Antenne rot-weiß */
+  const aH = 26; for (let i = 0; i < 8; i++) { const s = new THREE.Mesh(new THREE.CylinderGeometry(.5 - i * .04, .55 - i * .04, aH / 8, 12), i % 2 ? weiss : rot); s.position.y = ky + 5.4 + aH / 16 + i * aH / 8; gr.add(s) }
+  const blink = new THREE.Mesh(new THREE.SphereGeometry(.55, 10, 8), neon('#ff2a2a', 5)); blink.position.y = ky + 5.6 + aH; gr.add(blink); gr.userData.blinkt = blink;
+  return ky + 5.6 + aH }
 
 export function eigeneMaterialien(gr) { const kopie = new Map();
   gr.traverse(o => { if (!o.material || o.isSprite) return; let k = kopie.get(o.material); if (!k) { k = o.material.clone(); k.userData = Object.assign({}, o.material.userData, { opazitaet: o.material.opacity, transparent: o.material.transparent, depthWrite: o.material.depthWrite });

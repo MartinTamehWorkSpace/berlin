@@ -1,9 +1,9 @@
 // Berlin City 3D · leben.js · Menschen (P), Autos (CARS, dein Auto, Uber), Ampeln, Laternen, Palmen aus S. Alles folgt dem laufenden Spiel.
 import * as THREE from 'three';
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
-import { M, box, std, neon } from './haeuser.js?v=1795049691';
-import { MUSTER } from './texturen.js?v=1795049691';
-import { tasche3d } from './taschen.js?v=1795049691';
+import { M, box, std, neon } from './haeuser.js?v=1795049805';
+import { MUSTER } from './texturen.js?v=1795049805';
+import { tasche3d } from './taschen.js?v=1795049805';
 
 const mat = (c, o = {}) => new THREE.MeshStandardMaterial(Object.assign({ color: c, roughness: .6 }, o));
 
@@ -132,14 +132,15 @@ export function stadtmoebel(szene) { const AMP = [], LAMPEN = [], LAMPENFARBE = 
     if (o.k === 'fount') { const f = new THREE.Mesh(new THREE.CylinderGeometry(3.4, 3.6, .6, 32), std('#f4efe6')); f.position.set(o.x * M, .3, o.y * M); szene.add(f); const w = new THREE.Mesh(new THREE.CylinderGeometry(3.1, 3.1, .1, 32), new THREE.MeshPhysicalMaterial({ color: '#5fd0e0', roughness: .05, clearcoat: 1 })); w.position.set(o.x * M, .62, o.y * M); szene.add(w);
       const s = new THREE.Mesh(new THREE.CylinderGeometry(.15, .5, 3, 12), new THREE.MeshStandardMaterial({ color: '#dff6ff', transparent: true, opacity: .6, emissive: '#bff0ff', emissiveIntensity: .3 })); s.position.set(o.x * M, 2, o.y * M); szene.add(s) } }
   // Palmen und Bäume als Instanzen: Stamm und Wedel
-  const palmen = S.filter(o => o.k === 'palm'), baeume = S.filter(o => o.k === 'tree');
+  /* Berlin (Martin 19.11.2026): keine Palmen mehr, überall Linden wie Unter den Linden */ const palmen = [], baeume = S.filter(o => o.k === 'tree' || o.k === 'palm');
   const stamm = new THREE.InstancedMesh(new THREE.CylinderGeometry(.16, .26, 1, 7), std('#8a6a4a', { roughness: .95 }), palmen.length);
   const blattGeo = (() => { const geo = new THREE.PlaneGeometry(.45, 2.1, 1, 6); const p = geo.attributes.position; for (let i = 0; i < p.count; i++) { const y = p.getY(i) + 1.05, w = Math.sin(y / 2.1 * Math.PI) * .9 + .1; p.setX(i, p.getX(i) * w); p.setZ(i, -Math.pow(y / 2.1, 2) * 1.1); p.setY(i, y) } geo.computeVertexNormals(); return geo })();
   const wedel = new THREE.InstancedMesh(blattGeo, new THREE.MeshStandardMaterial({ color: '#3f8f4a', roughness: .8, side: THREE.DoubleSide }), palmen.length * 8); const o3 = new THREE.Object3D(); let w = 0;
   palmen.forEach((o, i) => { const h = 6.5 * (o.s || 1); o3.position.set(o.x * M, h / 2, o.y * M); o3.rotation.set(0, 0, 0); o3.scale.set(1, h, 1); o3.updateMatrix(); stamm.setMatrixAt(i, o3.matrix);
     for (let k = 0; k < 8; k++) { o3.position.set(o.x * M, h, o.y * M); o3.scale.set(1, 1, 1); o3.rotation.set(0, 0, 0); o3.rotation.order = 'YXZ'; o3.rotation.y = k / 8 * Math.PI * 2 + i; o3.rotation.x = -1.05; o3.updateMatrix(); wedel.setMatrixAt(w++, o3.matrix) } });
   stamm.castShadow = wedel.castShadow = true; szene.add(stamm, wedel);
-  const krone = new THREE.InstancedMesh(new THREE.IcosahedronGeometry(1.6, 1), std('#4e8a45', { roughness: .9 }), baeume.length), st2 = new THREE.InstancedMesh(new THREE.CylinderGeometry(.15, .2, 2.4, 6), std('#6b4f38'), baeume.length);
-  baeume.forEach((o, i) => { o3.rotation.set(0, 0, 0); o3.scale.setScalar(o.s || 1); o3.position.set(o.x * M, 1.2, o.y * M); o3.updateMatrix(); st2.setMatrixAt(i, o3.matrix); o3.position.set(o.x * M, 3.2 * (o.s || 1), o.y * M); o3.updateMatrix(); krone.setMatrixAt(i, o3.matrix) });
+  const krone = new THREE.InstancedMesh(new THREE.IcosahedronGeometry(1.9, 1), std('#ffffff', { roughness: .95, flatShading: true }), baeume.length), st2 = new THREE.InstancedMesh(new THREE.CylinderGeometry(.16, .24, 2.6, 6), std('#3d352e', { roughness: .95 }), baeume.length);
+  const LAUB = ['#5c6b3c', '#6f7440', '#8a7a3a', '#4f5e38', '#94692f'].map(c => new THREE.Color(c)); /* Linden im Herbst: Oliv, Senf, Rost */
+  baeume.forEach((o, i) => { o3.rotation.set(0, 0, 0); o3.scale.setScalar(o.s || 1); o3.position.set(o.x * M, 1.2, o.y * M); o3.updateMatrix(); st2.setMatrixAt(i, o3.matrix); o3.position.set(o.x * M, 3.2 * (o.s || 1), o.y * M); o3.updateMatrix(); o3.scale.set((o.s || 1) * 1.1, (o.s || 1) * 1.25, (o.s || 1) * 1.1); o3.updateMatrix(); krone.setMatrixAt(i, o3.matrix); krone.setColorAt(i, LAUB[i % LAUB.length]) });
   krone.castShadow = st2.castShadow = true; szene.add(krone, st2);
   return { LAMPEN, LAMPENFARBE, weiter() { for (const k of AMP) for (const ax of ['x', 'y']) { const z = ampel(k.kx, k.ky, ax); for (const c of ['r', 'y', 'g']) k.l[ax][c].emissiveIntensity = z === c ? 3 : 0 } } } }
