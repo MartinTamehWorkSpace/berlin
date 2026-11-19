@@ -119,6 +119,7 @@ setInterval(() => { if (typeof ICH === 'undefined' || typeof ST === 'undefined')
   else if (kar === 'gastro' && ST.gastro) { const l = LAEDEN.find(l => ST.gastro[l.id] && (INNEN ? INNEN === lokalHaus(l.id) : (() => { const p = lokalPos(l.id); return p && Math.hypot(ICH.x - p.x, ICH.y - p.y) < 2.6 })()));
     if (l) { t = `💶 Kasse leeren · ${l.t}`; f = () => gastroKasse(l); let e = document.getElementById('bPromi'); if (!e) { e = document.createElement('button'); e.id = 'bPromi'; e.className = 'anlegen'; leiste.append(e) } e.textContent = '🥂 Promi-Abend · 150.000 €'; e.hidden = false; e.onclick = () => promiAbend(l) } }
   const bw = document.getElementById('bWare'); if (bw && kar !== 'dealer') bw.hidden = true; const pr = document.getElementById('bPromi'); if (pr && !(kar === 'gastro' && f)) pr.hidden = true;
+  const startOffen = document.getElementById('start') && !document.getElementById('start').hidden; if (startOffen) { f = null; const w2 = document.getElementById('bWare'); if (w2) w2.hidden = true }
   b.hidden = !f; if (f) { b.textContent = t; b.onclick = f }
   /* Fahndungssterne und Karriere oben in der Leiste */
   let c = document.getElementById('hKar'); if (!c) { const hud0 = document.querySelector('.hud'); if (!hud0) return; const d = document.createElement('div'); d.className = 'chip karriere'; d.innerHTML = '<span>Karriere</span><b id="hKar"></b>'; d.style.pointerEvents = 'auto'; d.style.cursor = 'pointer'; d.onclick = karriereZeigen; hud0.append(d); c = document.getElementById('hKar') }
