@@ -1,12 +1,19 @@
-# Glow City
+# Berlin
 
-Lifestyle-Tycoon im 80er-Miami-Stil: eine Stadt mit Läden, Autos, Figuren, Wirtschaft, Konten und Live-Chat. Privates Projekt von Martin, nicht BodyGen.
+Lifestyle-Spiel in Berlin (eigene Kopie von Glow City, getrennt). Live: https://berlin-city.netlify.app, Code: github.com/MartinTamehWorkSpace/berlin (Martin und Leon).
 
-Live für alle: https://glow-city.netlify.app (eigene Konten mit Name und Passwort, Server in `netlify/functions/api.mjs`). Daneben weiter https://claude.ai/artifact/4V8X7riptSypt2UzLUQo1i. Ausliefern (Martin, 19.11.2026): Netlify-Credits sind aufgebraucht. Gebaut und gezeigt wird im Claude-Link (kostet keine Credits). Netlify wird nur hochgeladen, wenn Martin es ausdrücklich sagt.
+## Arbeitsweise (Stand 19.11.2026)
+- Hochladen nur mit `sh werkzeug/hochladen.sh "Was geändert wurde"` (holt Leons Stand, stempelt Versionen, prüft, lädt zu GitHub; Netlify reicht nur durch, kostet nichts). Offene Spiele laden sich binnen 1 Minute selbst neu.
+- Netlify selbst (Server in netlify/functions) nur mit Martins Ja, kostet Credits.
+- Martin 19.11. nachts: Werkstatt-Stand nur lokal committen, NICHT hochladen, bis Martin nachgebessert hat.
+- Berghain baut Leon, Scorpius Berlin baut Martins Seite. Nicht gleichzeitig dieselben Dateien.
 
-GitHub (19.11.2026): Das Spiel liegt auch auf https://martintamehworkspace.github.io/glow-city/ (Konto MartinTamehWorkSpace, Hochladen kostenlos mit `werkzeug/github_hochladen.sh`). Sobald einmal Netlify hochgeladen wird, leitet glow-city.netlify.app per netlify.toml dorthin weiter. Ab dann laufen alle Updates kostenlos über GitHub, nur der Server (netlify/functions) braucht Netlify.
+## Was neu ist (Werkstatt 19.11.)
+- GTA-Look: Schrift Anton, Kanten statt Rundungen, Neonpink #ff2f7d und Amber #ffb21a. Logo BERLIN 030.
+- Karrieren statt Klinik als Hauptspiel: src/spiel/karriere.js (Dealer mit Polizei und Fahndungssternen, Gastro-Boss mit Lokalen und Ausbauten, Influencer mit Hotspots und Kooperationen). Wahl an der Weltzeituhr am Alex oder unten über „Karriere“.
+- Stadtbild: src/drei/graffiti.js (Graffitis, Fernsehturm-Pavillon, Brandenburger Tor, S-Bahn, Spätis, Litfaßsäulen, U-Bahn, Ampelmännchen, Fahrräder, Weltzeituhr, Oberbaumbrücke, Polizeiwagen). Scorpius drinnen: src/welt/scorpius.js.
 
-Langzeitprojekt (Martin, 17.11.2026): ab jetzt täglich, etwa 2 Wochen, danach weitere Welten. Die Klinik ist der Kern und soll 50 % des Spiels ausmachen. Autos, Taschen, Yachten, Jets und Flughafen sind Statusgüter zum Abheben.
+(Unten die alte Anleitung aus Glow City, gilt sinngemäß weiter.)
 
 ## Aufbau
 
