@@ -7,7 +7,7 @@ let raum = null, senden = null;
 
 function figurFuer(id, d) { let p = ECHT.get(id);
   if (!p) { p = Object.assign(human({}), { star: 1, echt: 1, s: 0, v: 0, ph: Math.random() * 6, sz: 1.08, lp: loop(PLAZA, .1) }); ECHT.set(id, p); P.push(p) }
-  if (d.name) p.name = String(d.name).slice(0, 24);
+  if (d.name) p.name = (d.kar ? d.kar + ' ' : '') + String(d.name).slice(0, 24);
   if (d.look) { const l = d.look; Object.assign(p, { skin: l.skin || p.skin, frisur: l.frisur, hair: l.hair || p.hair,
     c1: l.c1, c2: l.c2 != null ? l.c2 : p.c2, top: l.top || l.c1 || p.top, leg: l.leg || l.c2 || p.leg,
     dress: l.dress ? 1 : 0, outfit: l.outfit || null, muster: l.muster || null, acc: l.acc || [], bagK: l.bagK || null,
@@ -26,7 +26,7 @@ function starten() { const ich = window.KONTO_ICH; if (!ich || raum) return;
 
 let letzte = 0, look = '';
 function senden_() { if (!senden || typeof ICH === 'undefined') return; const ich = window.KONTO_ICH; if (!ich) return;
-  const pr = (typeof ST !== 'undefined' && ST.profil) || {}; const d = { id: ich.id, name: pr.handle || ich.name, x: +ICH.x.toFixed(2), y: +ICH.y.toFixed(2), idle: ICH.idle ? 1 : 0, drin: raumName(), tanz: (ICH.tanzBis || 0) > Date.now() ? 1 : 0 };
+  const pr = (typeof ST !== 'undefined' && ST.profil) || {}; const d = { id: ich.id, name: pr.handle || ich.name, x: +ICH.x.toFixed(2), y: +ICH.y.toFixed(2), idle: ICH.idle ? 1 : 0, drin: raumName(), kar: typeof KARRIEREN !== 'undefined' && ST.karriere ? KARRIEREN[ST.karriere].ic : '', tanz: (ICH.tanzBis || 0) > Date.now() ? 1 : 0 };
   // Outfit kommt aus der eigenen Figur, damit jeder Kleiderwechsel sofort bei den anderen ankommt
   const jetzt = Object.assign({}, pr, { skin: ICH.skin || pr.skin, hair: ICH.hair || pr.hair, frisur: ICH.frisur || pr.frisur,
     c1: ICH.c1 || ICH.top || pr.c1, c2: ICH.c2 || ICH.leg, top: ICH.top, leg: ICH.leg, dress: ICH.dress ? 1 : 0,
