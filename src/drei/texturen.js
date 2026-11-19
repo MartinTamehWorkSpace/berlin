@@ -1,4 +1,4 @@
-// Glow City 3D · texturen.js · Alle Bilder auf Leinwand gemalt: Schilder, Markenmuster, Fenster, Straße
+// Berlin City 3D · texturen.js · Alle Bilder auf Leinwand gemalt: Schilder, Markenmuster, Fenster, Straße
 import * as THREE from 'three';
 
 const leinwand = (w, h, mal) => { const c = document.createElement('canvas'); c.width = w; c.height = h; mal(c.getContext('2d'), w, h); const t = new THREE.CanvasTexture(c); t.colorSpace = THREE.SRGBColorSpace; t.anisotropy = 8; return t };

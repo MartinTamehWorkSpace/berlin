@@ -1,8 +1,8 @@
-// Glow City 3D · taschen.js · Handtaschen als echte 3D-Modelle, je Form mit ihren Erkennungszeichen.
+// Berlin City 3D · taschen.js · Handtaschen als echte 3D-Modelle, je Form mit ihren Erkennungszeichen.
 // Jede Tasche wird einmal gebaut, nach Material zusammengefasst (wenige Zeichenaufrufe) und dann für alle Figuren wiederverwendet.
 import * as THREE from 'three';
 import { mergeGeometries } from 'three/addons/utils/BufferGeometryUtils.js';
-import { MUSTER } from './texturen.js?v=1795049048';
+import { MUSTER } from './texturen.js?v=1795049539';
 
 const GOLD = new THREE.MeshStandardMaterial({ color: '#f0cf6a', metalness: 1, roughness: .22 }), SILBER = new THREE.MeshStandardMaterial({ color: '#e4e8ee', metalness: 1, roughness: .2 });
 const VACHETTA = new THREE.MeshStandardMaterial({ color: '#c9a46b', roughness: .55 });

@@ -1,4 +1,4 @@
-// Glow City · nachbarn.js · Beziehungen zu den Nachbarn: Reden, Flirten, Wohnung besuchen, Freundschaft, Date, Club, Yacht, Urlaub, Affäre. Frech wie Sex and the City.
+// Berlin City · nachbarn.js · Beziehungen zu den Nachbarn: Reden, Flirten, Wohnung besuchen, Freundschaft, Date, Club, Yacht, Urlaub, Affäre. Frech wie Sex and the City.
 // Jede Aktion bringt Nähe (0 bis 100), Stil (Glow-Punkte) und Follower. Die Daten stehen in src/daten/nachbarn.js.
 const NB = window.GLOW_NACHBARN;
 function beziehung(id) { ST.nachbarn = ST.nachbarn || {}; return ST.nachbarn[id] = ST.nachbarn[id] || { nahe: 0, freund: false, zuletzt: {}, reden: { tag: '', n: 0 } } }

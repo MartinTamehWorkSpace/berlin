@@ -1,14 +1,14 @@
-// Glow City · aufgaben.js · Tagesaufgaben, Erfolge und das große Belohnungsbanner
+// Berlin City · aufgaben.js · Tagesaufgaben, Erfolge und das große Belohnungsbanner
 // Andere Module melden, was passiert ist: ereignis('kauf', {it}) usw. Neue Aufgaben sind nur ein Eintrag in AUFGABEN_POOL.
 const AUFGABEN_POOL = [
-  { id: 'latte',   text: 'Hol dir einen Oat Latte bei Starbux',         typ: 'kauf',    wenn: d => d.it.id === 'latte',             geld: 300,  stil: 3 },
+  { id: 'latte',   text: 'Hol dir einen Oat Latte bei Café Zweistein',         typ: 'kauf',    wenn: d => d.it.id === 'latte',             geld: 300,  stil: 3 },
   { id: 'zahra',   text: 'Kauf ein Teil bei Zahra',                      typ: 'kauf',    wenn: d => d.it.laden === 'zahra',          geld: 500,  stil: 5 },
-  { id: 'spa',     text: 'Gönn dir eine Massage im Glow Spa',            typ: 'kauf',    wenn: d => d.it.id === 'massage',           geld: 600,  stil: 6 },
+  { id: 'spa',     text: 'Gönn dir eine Massage im Spree Spa',            typ: 'kauf',    wenn: d => d.it.id === 'massage',           geld: 600,  stil: 6 },
   { id: 'schmuck', text: 'Kauf ein Schmuckstück',                        typ: 'kauf',    wenn: d => d.it.kat === 'schmuck',          geld: 1500, stil: 12 },
   { id: 'tasche',  text: 'Hol dir eine neue Tasche',                     typ: 'kauf',    wenn: d => d.it.kat === 'tasche',           geld: 2500, stil: 20 },
-  { id: 'rivva',   text: 'Geh ins Rivva am Wasser',                      typ: 'betreten', wenn: d => d.b.title === 'Rivva',          geld: 400,  stil: 4 },
+  { id: 'rivva',   text: 'Geh ins Papillong am Wasser',                      typ: 'betreten', wenn: d => d.b.title === 'Papillong',          geld: 400,  stil: 4 },
   { id: 'borch',   text: 'Lass dich im Borchert sehen',                  typ: 'betreten', wenn: d => d.b.title === 'Borchert',       geld: 400,  stil: 4 },
-  { id: 'nicky',   text: 'Besuch den Nicky Beach Yachtclub',             typ: 'betreten', wenn: d => /Nicky/.test(d.b.title),        geld: 800,  stil: 8 },
+  { id: 'nicky',   text: 'Besuch den Scorpius Berlin',             typ: 'betreten', wenn: d => /Nicky/.test(d.b.title),        geld: 800,  stil: 8 },
   { id: 'klinik',  text: 'Lass dich bei Dr. Glatt beraten',              typ: 'betreten', wenn: d => /Glatt/.test(d.b.title),        geld: 400,  stil: 4 },
   { id: 'fahren',  text: 'Fahr 40 Straßen weit mit deinem Auto',          typ: 'fahren',  ziel: 40,                                   geld: 1000, stil: 10 },
   { id: 'vote',    text: 'Stimm ab, was in die Stadt kommt',             typ: 'vote',                                                geld: 300,  stil: 3 },

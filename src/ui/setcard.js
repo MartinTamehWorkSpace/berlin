@@ -1,4 +1,4 @@
-// Glow City · setcard.js · wird als klassisches Skript in index.html geladen (gemeinsamer globaler Bereich, Reihenfolge zählt)
+// Berlin City · setcard.js · wird als klassisches Skript in index.html geladen (gemeinsamer globaler Bereich, Reihenfolge zählt)
 // ---------- Visitenkarte: Stufen nach Stilpunkten ----------
 const STUFEN=[{ab:0,n:'Starter',bg:'linear-gradient(135deg,#2a2c34,#1a1b21)',r:'#8a8f99',t:'#111'},{ab:100,n:'Bronze',bg:'linear-gradient(135deg,#5a3a24,#2a1c12)',r:'#cd8b55',t:'#1a0f08'},
  {ab:500,n:'Silber',bg:'linear-gradient(135deg,#6b7280,#2b2f37)',r:'#dfe3e8',t:'#15171b'},{ab:1500,n:'Gold',bg:'linear-gradient(135deg,#7a5a1e,#2e220b)',r:'#f2c14e',t:'#1e1606'},

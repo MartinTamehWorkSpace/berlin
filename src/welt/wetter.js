@@ -1,4 +1,4 @@
-// Glow City · wetter.js · Wetter: meist Sonne, ab und zu tropischer Regen, nachts mit Wetterleuchten
+// Berlin City · wetter.js · Wetter: meist Sonne, ab und zu tropischer Regen, nachts mit Wetterleuchten
 // Wechselt alle zwei Spielstunden. Regen dauert nie lange, wie in Miami.
 const WETTER = { regen: 0, ziel: 0, naechste: UHR.min + 120, blitz: 0 };
 const TROPFEN = Array.from({ length: 260 }, (_, i) => ({ x: Math.random(), y: Math.random(), v: .8 + Math.random() * .6, l: .6 + Math.random() * .6 }));

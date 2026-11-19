@@ -1,4 +1,4 @@
-// Glow City Wirtschaft: eine Quelle für Spiel, Autohaus und Wirtschaftsseite.
+// Berlin City Wirtschaft: eine Quelle für Spiel, Autohaus und Wirtschaftsseite.
 // Neue Dinge kommen nur hier hinzu. "rang" sortiert innerhalb einer Kategorie und lässt Lücken (100, 200, ...),
 // damit später Modelle dazwischen passen, ohne dass sich etwas verschiebt.
 window.GLOW_WIRTSCHAFT = (() => {
@@ -148,13 +148,13 @@ window.GLOW_WIRTSCHAFT = (() => {
     { id: 'j-giga',  kat: 'jacht', rang: 950, laden: 'nicky', name: 'Lürsen Gigayacht 110 m',  preis: 45000000, stil: 900, boot: 'gross', laenge: 9, lack: '#1a1a1d', streifen: '#e6c76a', ab: 53, warte: 10, minStil: 25000 },
     { id: 'j-speed', kat: 'jacht', rang: 100, laden: 'nicky', name: 'Speedboot Rosa',        preis: 180000,   stil: 30,  boot: 'speed' },
     { id: 'j-motor', kat: 'jacht', rang: 300, laden: 'nicky', name: 'Motorjacht Azzurra',    preis: 850000,   stil: 90,  boot: 'jacht', ab: 17 },
-    // Privatjets am Glow Airport: Preise steigen stark, der kleinste ist nach etwa zwei Wochen aktivem Spielen drin
+    // Privatjets am Flughafen Tempelhoff: Preise steigen stark, der kleinste ist nach etwa zwei Wochen aktivem Spielen drin
     { id: 'jet-light', kat: 'jet', rang: 100, laden: 'jets', name: 'Glowstream Light',      preis: 6000000,   stil: 150,  jet: 'light' },
     { id: 'jet-mid',   kat: 'jet', rang: 300, laden: 'jets', name: 'Glowstream Midsize',    preis: 18000000,  stil: 320,  jet: 'mid' },
     { id: 'jet-long',  kat: 'jet', rang: 600, laden: 'jets', name: 'Glowstream Long Range', preis: 45000000,  stil: 700,  jet: 'long' },
     { id: 'jet-ultra', kat: 'jet', rang: 900, laden: 'jets', name: 'Glowstream Ultra',      preis: 95000000,  stil: 1400, jet: 'ultra' },
     { id: 'j-super', kat: 'jacht', rang: 900, laden: 'nicky', name: 'Superjacht Glow One',   preis: 12000000, stil: 400, boot: 'gross', ab: 45, warte: 10, minStil: 10000 },
-    // Designer-Etage in der Galerie Royal: jedes Teil ist ein ganzer Look, den man an der Figur sieht
+    // Designer-Etage in der Galeries Lafayetto: jedes Teil ist ein ganzer Look, den man an der Figur sieht
     { id: 'gucchi-anzug',   kat: 'mode', rang: 700, laden: 'designer', name: 'Gucchi Trainingsanzug', preis: 2400, stil: 26, look: { outfit: 'sport', muster: 'streifen', c2: '#ffffff' }, farben: ['#1d3557', '#16171a', '#f3a6c6', '#2e8b57'] },
     { id: 'versaci-bluse',  kat: 'mode', rang: 710, laden: 'designer', name: 'Versaci Barock-Bluse',  preis: 1300, stil: 18, look: { outfit: 'basic', muster: 'barock', c2: '#16171a' }, farben: ['#16171a', '#1d3557', '#f4efe6'] },
     { id: 'monclair-jacke', kat: 'mode', rang: 720, laden: 'designer', name: 'Monclair Steppjacke',   preis: 2100, stil: 22, look: { outfit: 'blazer', muster: 'stepp', c2: '#16171a' }, farben: ['#16171a', '#f4efe6', '#ff7eb6', '#c9b48a'] },
@@ -175,7 +175,7 @@ window.GLOW_WIRTSCHAFT = (() => {
     { id: 'facial',    kat: 'konsum', rang: 20, laden: 'spa',   name: 'Glow Facial',         preis: 190, energie: 10, stil: 6 },
     { id: 'blowout',   kat: 'konsum', rang: 10, laden: 'salon', name: 'Blowout',             preis: 85,  stil: 5 },
     { id: 'balayage',  kat: 'konsum', rang: 20, laden: 'salon', name: 'Balayage',            preis: 290, stil: 10 },
-    // Luba Arena: Konzerte im Westen der Stadt
+    // Spree Arena: Konzerte im Westen der Stadt
     { id: 'konzert',   kat: 'konsum', rang: 10, laden: 'arena', name: 'Konzertticket Glow Night', preis: 120, energie: -10, follower: 220, stil: 3 },
     { id: 'frontstage',kat: 'konsum', rang: 20, laden: 'arena', name: 'Front of Stage',          preis: 450, energie: -15, follower: 650, stil: 8 },
     { id: 'loge',      kat: 'konsum', rang: 30, laden: 'arena', name: 'VIP-Loge mit Champagner',  preis: 2500, energie: 5, follower: 1600, stil: 25 },

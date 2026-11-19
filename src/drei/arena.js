@@ -1,12 +1,12 @@
-// Glow City 3D · arena.js · Luba Arena im Westen: offenes Stadion wie ein Fußballstadion, aber für Konzerte.
+// Berlin City 3D · arena.js · Spree Arena im Westen: offenes Stadion wie ein Fußballstadion, aber für Konzerte.
 // Ränge in Stufen rundherum, offenes Dach mit weißem Ring, Bühne mit LED-Wand und Lichtrigg, Fans im Innenraum und auf den Rängen.
 // Nachts Lichtkegel in den Himmel, zur halben Stunde Konzertfinale mit Feuerwerk über der Arena (feuerwerk.js).
 import * as THREE from 'three';
-import { M } from './haeuser.js?v=1795049048';
-import { namensSchild } from './leben.js?v=1795049048';
-import { parkplatz } from './parkplatz.js?v=1795049048';
-import { feuerwerk } from './feuerwerk.js?v=1795049048';
-import { fahrbahn } from './texturen.js?v=1795049048';
+import { M } from './haeuser.js?v=1795049539';
+import { namensSchild } from './leben.js?v=1795049539';
+import { parkplatz } from './parkplatz.js?v=1795049539';
+import { feuerwerk } from './feuerwerk.js?v=1795049539';
+import { fahrbahn } from './texturen.js?v=1795049539';
 const std = (c, o = {}) => new THREE.MeshStandardMaterial(Object.assign({ color: c, roughness: .55 }, o));
 // Ellipsenring als flache Platte (für Ränge und Dachring)
 function ring(rx, rz, breite, dicke, mat) { const s = new THREE.Shape(); s.absellipse(0, 0, rx + breite, rz + breite, 0, Math.PI * 2); const loch = new THREE.Path(); loch.absellipse(0, 0, rx, rz, 0, Math.PI * 2, true); s.holes.push(loch);
@@ -53,11 +53,11 @@ export function arena(szene) { const g = new THREE.Group(), cx = -36 * M, cz = 6
   // Feuerwerk über der Arena: zur halben Stunde das Konzertfinale
   const FW = feuerwerk(szene, { x: cx, z: cz }, innerWidth < 760); let finale = -1, t = 0, bild = 0, letzteShow = 0;
   // Parkplätze rund um die Arena: an der Zufahrt, im Süden und im Westen
-  const PARK = [parkplatz(g, 47, 49, { buchten: 10, schild: '🅿️ Parkplatz Luba Arena' }), parkplatz(g, -10, 66, { buchten: 14, schild: '🅿️ P2 Süd', belegt: .45 }), parkplatz(g, -74, 18, { buchten: 12, drehung: Math.PI / 2, schild: '🅿️ P3 West', belegt: .35 })];
-  // Antippen des Stadions führt hinein (Tickets wie beim Gebäude Luba Arena)
-  const haus = B.find(b => b.title === 'Luba Arena'); if (haus) g.traverse(o => { if (o.isMesh && !o.material.blending) o.userData.haus = haus });
+  const PARK = [parkplatz(g, 47, 49, { buchten: 10, schild: '🅿️ Parkplatz Spree Arena' }), parkplatz(g, -10, 66, { buchten: 14, schild: '🅿️ P2 Süd', belegt: .45 }), parkplatz(g, -74, 18, { buchten: 12, drehung: Math.PI / 2, schild: '🅿️ P3 West', belegt: .35 })];
+  // Antippen des Stadions führt hinein (Tickets wie beim Gebäude Spree Arena)
+  const haus = B.find(b => b.title === 'Spree Arena'); if (haus) g.traverse(o => { if (o.isMesh && !o.material.blending) o.userData.haus = haus });
   return { weiter(nacht, dt) { for (const p of PARK) p.weiter(nacht); ANGESTRAHLT.emissiveIntensity = nacht * 2.2; t += dt; if ((++bild) % 3 === 0) { ledMalen(t); wandMalen(t) } ledMat.emissiveIntensity = .6 + nacht * 1.4;
     for (let i = 0; i < n; i++) { const [px, py, pz, ph] = basis[i]; o3.position.set(px, py + Math.max(0, Math.sin(t * 7 + ph)) * .35, pz); o3.updateMatrix(); fan.setMatrixAt(i, o3.matrix) } fan.instanceMatrix.needsUpdate = true;
     for (const k of kegel) { k.h.rotation.y = Math.sin(t * .9 + k.ph) * .5; k.h.rotation.z = Math.sin(t * 1.3 + k.ph) * .25; k.k.material.opacity = .05 + nacht * .12 }
     for (const k of himmel) { k.h.rotation.z = Math.sin(t * .6 + k.ph) * .3; k.h.rotation.x = Math.cos(t * .5 + k.ph) * .25; k.k.material.opacity = nacht * .08 }
-    const d = new Date(); if (d.getMinutes() === 30 && finale !== d.getHours()) { finale = d.getHours(); FW.zeigen(90); if (typeof toast === 'function') toast('🎆 Konzertfinale mit Feuerwerk in der Luba Arena') } if (window.ARENA_SHOW && window.ARENA_SHOW !== letzteShow) { letzteShow = window.ARENA_SHOW; FW.zeigen(70) } FW.weiter(dt) } } }
+    const d = new Date(); if (d.getMinutes() === 30 && finale !== d.getHours()) { finale = d.getHours(); FW.zeigen(90); if (typeof toast === 'function') toast('🎆 Konzertfinale mit Feuerwerk in der Spree Arena') } if (window.ARENA_SHOW && window.ARENA_SHOW !== letzteShow) { letzteShow = window.ARENA_SHOW; FW.zeigen(70) } FW.weiter(dt) } } }

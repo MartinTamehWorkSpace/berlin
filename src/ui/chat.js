@@ -1,4 +1,4 @@
-// Glow City · chat.js · wird als klassisches Skript in index.html geladen (gemeinsamer globaler Bereich, Reihenfolge zählt)
+// Berlin City · chat.js · wird als klassisches Skript in index.html geladen (gemeinsamer globaler Bereich, Reihenfolge zählt)
 // ---------- Bewohner und Stadt-Chat ----------
 // Die Stadt hat 150 feste Bewohnerinnen und Bewohner. Sie sind im Chat als Bewohner gekennzeichnet, echte Spielerinnen kommen später dazu.
 const VORN=['Lena','Sophie','Mia','Emma','Hannah','Lea','Marie','Laura','Julia','Sarah','Anna','Lisa','Nina','Aylin','Selin','Elif','Zoe','Clara','Paula','Mila','Jana','Nora','Valerie','Chiara','Melina','Leonie','Amira','Yasmin','Bianca','Vanessa','Jonas','Luca','Ben','Elias','Noah','Tim','Max','Leon','Kerem','David'];
@@ -22,12 +22,12 @@ function bewohnerSagt(){const r=Math.random();
     for(let k=0;k<n;k++){let t;do{t=antw[Math.floor(Math.random()*antw.length)]}while(genutzt.has(t)&&genutzt.size<antw.length);genutzt.add(t);const b=zufallsBew(a);w+=2500+Math.random()*4000;setTimeout(()=>post(b.handle,fuellen(t),{tag:'Bewohnerin'}),w)}}
   else{const b=zufallsBew();post(b.handle,fuellen(frisch(r<.62?GC.TAGESZEIT[tageszeit()]:GC.ALLGEMEIN)),{tag:'Bewohnerin'})}
   setTimeout(bewohnerSagt,7000+Math.random()*15000)}
-post('','Willkommen in Glow City. Hier schreiben Bewohnerinnen der Stadt, bald auch echte Spielerinnen.',{sys:1});
+post('','Willkommen in Berlin City. Hier schreiben Bewohnerinnen der Stadt, bald auch echte Spielerinnen.',{sys:1});
 for(let i=0;i<4;i++){const b=BEW[i*13];post(b.handle,fuellen(frisch(i%2?GC.ALLGEMEIN:GC.TAGESZEIT[tageszeit()])),{tag:'Bewohnerin'})}setTimeout(bewohnerSagt,4000);
 const online=document.getElementById('online');setInterval(()=>online.textContent=`${140+Math.floor(Math.random()*10)} Bewohner unterwegs`,5000);online.textContent='146 Bewohner unterwegs';
 // Stadt-News: goldene Meldungen im Chat, von echten Spielerinnen und von den Charakteren der Stadt
 function news(text){const p=document.createElement('p');p.className='news';const n=document.createElement('span');n.className='live';n.style.color='#ffd166';n.textContent='NEWS';p.append(n,text);msgs.append(p);while(msgs.children.length>60)msgs.firstChild.remove();msgs.scrollTop=msgs.scrollHeight}
-const PROMI_NEWS=[c=>`${c} hat gerade einen Champagner-Turm im Nicky Beach bestellt`,c=>`${c} wurde mit einer neuen Birkinn vor Maison du Sac gesehen`,c=>`${c} steht auf der Warteliste für den Diamantring 3 Karat`,c=>`${c} ist gerade mit dem Teslo über den CoWork Tower geflogen`,c=>`${c} sitzt im Borchert am Fenstertisch`,c=>`${c} hat 2.000 neue Follower nach einem Selfie im Rivva`,c=>`${c} war heute zweimal bei Dr. Glatt`];
+const PROMI_NEWS=[c=>`${c} hat gerade einen Champagner-Turm im Scorpius Berlin bestellt`,c=>`${c} wurde mit einer neuen Birkinn vor Maison du Sac gesehen`,c=>`${c} steht auf der Warteliste für den Diamantring 3 Karat`,c=>`${c} ist gerade mit dem Teslo über den Fabrik Coworking geflogen`,c=>`${c} sitzt im Borchert am Fenstertisch`,c=>`${c} hat 2.000 neue Follower nach einem Selfie im Papillong`,c=>`${c} war heute zweimal bei Dr. Glatt`];
 setInterval(()=>{const c=FG.CHARS[Math.floor(Math.random()*FG.CHARS.length)];news(PROMI_NEWS[Math.floor(Math.random()*PROMI_NEWS.length)](c.name))},40000+Math.random()*30000);
 document.getElementById('chatForm').onsubmit=e=>{e.preventDefault();setTimeout(()=>ereignis('chat'));const i=document.getElementById('chatIn');const t=i.value.trim();if(!t)return;post(ST.profil.handle||'Du',t,{me:1});i.value='';if(KONTO.room)KONTO.room.emit('chat',{handle:ST.profil.handle||'Gast',text:t.slice(0,140)}).catch(()=>{});
   antworten(t,ST.profil.handle)};

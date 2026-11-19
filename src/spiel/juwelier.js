@@ -1,4 +1,4 @@
-// Glow City · juwelier.js · Bilder für den Schmuck bei Tiffanny (Gold, Diamanten, Edelsteine) und die Affäre auf der Setcard
+// Berlin City · juwelier.js · Bilder für den Schmuck bei Tiffanny (Gold, Diamanten, Edelsteine) und die Affäre auf der Setcard
 // schmuckBild(it, groesse) zeichnet je nach it.bild: ring, pave, solitaer, smaragd, rubin, kette, herz, collier, perlen, armreif, nagel, tennis, ohr, ohrdiamant, perlohr, uhr
 function schmuckBild(it, G) { const c = document.createElement('canvas'), d = Math.min(2, devicePixelRatio || 1); c.width = c.height = G * d; c.style.width = c.style.height = G + 'px'; const g = c.getContext('2d'); if (!g) return c; g.scale(d, d);
   const rose = /Roségold/.test(it.name), silber = /Silber/.test(it.name), cx = G / 2, cy = G / 2;

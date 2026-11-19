@@ -1,4 +1,4 @@
-// Glow City · boutique.js (Daten) · Ware für die eigene Boutique, Regale, Kasse, Glow-Level und das Kollektion
+// Berlin City · boutique.js (Daten) · Ware für die eigene Boutique, Regale, Kasse, Glow-Level und das Kollektion
 // Reine Daten. Zeiten in echten Sekunden: Ware verkauft sich auch, wenn das Spiel zu ist.
 window.GLOW_BOUTIQUE = (() => {
   // Ware fürs Regal: zeit = Sekunden bis verkauft, ek = Einkauf, vk = Erlös, xp = Erfahrung, lvl = ab Glow-Level, fund = Chance auf eine Albumtasche

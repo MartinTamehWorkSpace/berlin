@@ -1,4 +1,4 @@
-// Glow City · zeichnen.js · wird als klassisches Skript in index.html geladen (gemeinsamer globaler Bereich, Reihenfolge zählt)
+// Berlin City · zeichnen.js · wird als klassisches Skript in index.html geladen (gemeinsamer globaler Bereich, Reihenfolge zählt)
 // ---------- Grundformen ----------
 function poly(p,f){let x0=1e9,x1=-1e9,y0=1e9,y1=-1e9;for(const q of p){if(q[0]<x0)x0=q[0];if(q[0]>x1)x1=q[0];if(q[1]<y0)y0=q[1];if(q[1]>y1)y1=q[1]}if(x1<-20||x0>W+20||y1<-20||y0>H+20)return;g.beginPath();g.moveTo(p[0][0],p[0][1]);for(let i=1;i<p.length;i++)g.lineTo(p[i][0],p[i][1]);g.closePath();g.fillStyle=f;g.fill()}
 const quad=(x0,y0,x1,y1,c,z=0)=>poly([pt(x0,y0,z),pt(x1,y0,z),pt(x1,y1,z),pt(x0,y1,z)],c);

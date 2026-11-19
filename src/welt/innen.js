@@ -1,4 +1,4 @@
-// Glow City · innen.js · wird als klassisches Skript in index.html geladen (gemeinsamer globaler Bereich, Reihenfolge zählt)
+// Berlin City · innen.js · wird als klassisches Skript in index.html geladen (gemeinsamer globaler Bereich, Reihenfolge zählt)
 // ---------- Innenansicht: Haus wird bis aufs Erdgeschoss aufgeschnitten ----------
 function etagen(b){const E=[{n:'Erdgeschoss',a:art(b),k:(b.pod.shops.map(s=>s[3]))}];if(!b.tow)return E;
   const hoch=b.tow.fl+1;if(b.top==='home')E.push({n:`${hoch}. Stock`,a:'home',k:['home'],t:'Deine Wohnung'});

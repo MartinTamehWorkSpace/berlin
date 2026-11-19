@@ -1,4 +1,4 @@
-// Glow City · klinik.js · Deine Schönheitsklinik im Glow Tower: du bist Ästhetikärztin, Dr. Glatt ist dein Mentor.
+// Berlin City · klinik.js · Deine Schönheitsklinik im Alex Tower: du bist Ästhetikärztin, Dr. Glatt ist dein Mentor.
 // Kundinnen kommen in echter Zeit ins Wartezimmer, du behandelst sie auf deinen Liegen, rechnest ab und baust aus. Hier liegt die hohe Verdienststufe.
 const KQ = window.GLOW_KLINIK;
 function klinikStand() { if (!ST.klinik) ST.klinik = { liegen: [null], warte: [], geraete: { spritze: 1 }, raum: 0, sterne: 3, behandelt: 0, umsatz: 0, naechste: Date.now() + 8000 }; ST.klinik.team = ST.klinik.team || {}; ST.klinik.posts = ST.klinik.posts || []; if (ST.klinik.marketing == null) ST.klinik.marketing = ST.klinik.team.social ? 1 : 0; delete ST.klinik.team.social; ST.klinik.budget = ST.klinik.budget || 0; ST.klinik.ausbau = ST.klinik.ausbau || {}; ST.klinik.etagen = ST.klinik.etagen || { basis: 1 }; ST.klinik.lohnBis = ST.klinik.lohnBis || Date.now(); if ((ST.klinik.ausgabenBestand || 0) < 4) bestandSchaetzen(ST.klinik); return ST.klinik }
@@ -131,10 +131,10 @@ function etagenLeiste(k) { const r = el_('div', 'etagenleiste'); r.append(el_('s
     b.onclick = () => { if (!offen) { KLINIK.tab = 'ausbau'; return klinikZeichnen() } KLINIK.etage = e.id; aktivSein(k); if (window.DREI && DREI.etage) DREI.etage(e.id); klinikZeichnen() }; r.append(b) }
   return r }
 
-// Status für die Blase über dem Glow Tower und den Zähler am Knopf
+// Status für die Blase über dem Alex Tower und den Zähler am Knopf
 function klinikStatus() { const k = klinikStand(), fertig = k.liegen.filter(l => l && liegeRest(l) <= 0).length, warten = k.warte.length;
   if (fertig) return { text: `${fertig} fertig · kassieren`, farbe: '#ff4fa3', n: fertig + warten }; if (warten) return { text: `${warten} ${warten === 1 ? 'Kundin wartet' : 'Kundinnen warten'}`, farbe: '#2fbfb0', n: warten };
-  return { text: 'Klinik · Glow Tower', farbe: '#2a1e36', n: 0 } }
+  return { text: 'Klinik · Alex Tower', farbe: '#2a1e36', n: 0 } }
 
 // Wirtschaftlichkeit: Umsatz, Ausgaben, Verdienst pro Stunde aktiv und passiv, wann die Investition wieder drin ist
 function wirtschaftZahlen(k) { const aus = k.ausgaben || {}, invest = ['geraete', 'einrichtung', 'team', 'marketing', 'etagen', 'ausbau'].reduce((s, x) => s + (aus[x] || 0), 0), laufend = aus.laufend || 0;
@@ -213,8 +213,8 @@ function klinikZeichnen() { const root = document.getElementById('klinik'); if (
     for (const d of KQ.POSTS) { const r = el_('div', 'ware'), l = el_('div'); const gesperrt = f < d.ab, fehlt = d.braucht === 'behandelt' && !k.behandelt; l.append(el_('b', null, `${d.icon} ${d.name}`), el_('small', null, `${d.follower[0].toLocaleString('de-DE')} bis ${d.follower[1].toLocaleString('de-DE')} Follower · Produktion ${dauer(d.dauer)}${gesperrt ? ` · ab ${d.ab.toLocaleString('de-DE')} Follower` : ''}${fehlt ? ' · erst nach deiner ersten Behandlung' : ''}`));
       const bt = el_('button', 'cta', 'Planen'); bt.disabled = gesperrt || fehlt || k.posts.length >= 3; bt.onclick = () => { k.posts.push({ id: d.id, t0: Date.now() + k.posts.reduce((s, p) => s, 0) }); save(); toast(`${d.name} ist in Produktion`); klinikZeichnen() }; r.append(l, bt); body.append(r) } }
   else if (KLINIK.tab === 'rang') { if (typeof ligaBereich === 'function') { ligaBereich(k, body); body.append(el_('h4', null, 'Alle Kliniken der Stadt')) } const liste = KQ.RIVALEN.map(r => { const tage = Math.floor((Date.now() / 864e5) - 20400); return { name: r.name, haus: r.haus, beh: r.behandlungen + tage * Math.round(r.aerzte * 6), aerzte: r.aerzte, sterne: r.sterne, follower: r.follower + tage * Math.round(r.follower / 400), umsatz: r.umsatz + tage * r.aerzte * 2400, art: 'NPC' } });
-    if (typeof SPIELER !== 'undefined') for (const [id, x] of SPIELER) { let st = {}; try { st = x.klinik ? { klinik: x.klinik } : JSON.parse(x.stand || '{}') } catch (e) {} if (!st.klinik) continue; liste.push({ name: x.handle, haus: 'Glow Tower', beh: st.klinik.behandelt || 0, aerzte: 1 + (st.klinik.team && st.klinik.team.aerztin ? 1 : 0), sterne: st.klinik.sterne || 3, follower: x.fol || 0, umsatz: st.klinik.umsatz || 0, art: 'LIVE' }) }
-    liste.push({ name: (ST.profil && ST.profil.handle) || 'Du', haus: 'Glow Tower', beh: k.behandelt, aerzte: 1 + (k.team.aerztin ? 1 : 0), sterne: k.sterne, follower: ST.follower || 0, umsatz: k.umsatz, art: 'DU' });
+    if (typeof SPIELER !== 'undefined') for (const [id, x] of SPIELER) { let st = {}; try { st = x.klinik ? { klinik: x.klinik } : JSON.parse(x.stand || '{}') } catch (e) {} if (!st.klinik) continue; liste.push({ name: x.handle, haus: 'Alex Tower', beh: st.klinik.behandelt || 0, aerzte: 1 + (st.klinik.team && st.klinik.team.aerztin ? 1 : 0), sterne: st.klinik.sterne || 3, follower: x.fol || 0, umsatz: st.klinik.umsatz || 0, art: 'LIVE' }) }
+    liste.push({ name: (ST.profil && ST.profil.handle) || 'Du', haus: 'Alex Tower', beh: k.behandelt, aerzte: 1 + (k.team.aerztin ? 1 : 0), sterne: k.sterne, follower: ST.follower || 0, umsatz: k.umsatz, art: 'DU' });
     KLINIK.sort = KLINIK.sort || 'beh'; const sw = el_('div', 'tabs'); sw.style.alignSelf = 'flex-start'; for (const [key, n] of [['beh', 'Behandlungen'], ['umsatz', 'Umsatz'], ['follower', 'Follower'], ['sterne', 'Bewertung']]) { const b = el_('button', null, n); b.setAttribute('aria-pressed', KLINIK.sort === key); b.onclick = () => { KLINIK.sort = key; klinikZeichnen() }; sw.append(b) } body.append(sw);
     liste.sort((a, b) => b[KLINIK.sort] - a[KLINIK.sort]).forEach((c, i) => { const r = el_('div', 'freundin' + (c.art === 'DU' ? ' live' : '')), l = el_('div'); const n = el_('b', null, `${i + 1}. ${c.name}`); n.prepend(el_('span', 'marke', c.art)); l.append(n, el_('small', null, `${c.haus} · ${c.beh.toLocaleString('de-DE')} Behandlungen · ${c.aerzte} ${c.aerzte === 1 ? 'Ärztin' : 'Ärztinnen'} · ${c.sterne.toFixed(1)} ★ · ${Math.round(c.follower).toLocaleString('de-DE')} Follower · ${euro(Math.round(c.umsatz))}`)); r.append(l); body.append(r) }) }
   else if (KLINIK.tab === 'team') { body.append(el_('h4', null, 'Marketing'));
@@ -229,7 +229,7 @@ function klinikZeichnen() { const root = document.getElementById('klinik'); if (
     const bt = el_('button', 'cta', n ? euro(n.preis) : 'Fertig'); bt.disabled = !n || ST.geld < n.preis; bt.onclick = raumKaufen; r.append(l, bt); body.append(r);
     const np = KQ.LIEGEN[k.liegen.length]; const r2 = el_('div', 'ware'); const l2 = el_('div'); l2.append(el_('b', null, `🛏️ Liegen: ${k.liegen.length} von ${KQ.LIEGEN.length}`), el_('small', null, 'Jede Liege behandelt eine Kundin gleichzeitig.'));
     const b2 = el_('button', 'cta', np != null ? euro(np) : 'Fertig'); b2.disabled = np == null || ST.geld < np; b2.onclick = liegeKaufen; r2.append(l2, b2); body.append(r2);
-    body.append(el_('h4', null, 'Neue Etagen im Glow Tower'));
+    body.append(el_('h4', null, 'Neue Etagen im Alex Tower'));
     for (const e of KQ.ETAGEN.slice(1)) { const hat = !!k.etagen[e.id], r = el_('div', 'freundin' + (hat ? ' live' : '')), l = el_('div'); l.append(el_('b', null, `🏢 ${e.name}`), el_('small', null, e.text));
       const bt = el_('button', hat ? null : 'cta', hat ? 'Eröffnet' : k.sterne < e.ab ? `ab ${e.ab.toFixed(1)} ★` : euro(e.preis)); bt.disabled = hat || k.sterne < e.ab || ST.geld < e.preis; bt.onclick = () => etageKaufen(e.id); r.append(l, bt); body.append(r) }
     body.append(el_('h4', null, 'Praxis veredeln'));

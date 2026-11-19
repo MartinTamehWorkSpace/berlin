@@ -1,4 +1,4 @@
-// Glow City · boden.js · wird als klassisches Skript in index.html geladen (gemeinsamer globaler Bereich, Reihenfolge zählt)
+// Berlin City · boden.js · wird als klassisches Skript in index.html geladen (gemeinsamer globaler Bereich, Reihenfolge zählt)
 // ---------- Boden ----------
 // Boden-Zwischenspeicher: doppelt so groß wie der Bildschirm, neu nur bei Zoom oder großem Verschieben
 const BC={cv:document.createElement('canvas'),cx:0,cy:0,z:0,w:0,h:0};

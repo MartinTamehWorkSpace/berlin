@@ -1,4 +1,4 @@
-// Glow City · klinik.js (Daten) · Deine Schönheitsklinik im Glow Tower: Behandlungen, Geräte, Liegen, Wartezimmer, Kundinnen
+// Berlin City · klinik.js (Daten) · Deine Schönheitsklinik im Alex Tower: Behandlungen, Geräte, Liegen, Wartezimmer, Kundinnen
 // Reine Daten. Zeiten in echten Sekunden. Neue Behandlung oder neues Gerät = ein Eintrag hier.
 window.GLOW_KLINIK = (() => {
   // geraet: was du dafür besitzen musst. dauer in Sekunden, preis = Honorar pro Behandlung (Euro pro Sekunde steigt mit jedem Gerät, Balance 17.11.), xp = Erfahrung, wunsch = wie oft Kundinnen danach fragen
@@ -48,7 +48,7 @@ window.GLOW_KLINIK = (() => {
   const MIN_ABSTAND = 30; // mit vollem Werbebudget etwa alle 30 Sekunden eine Kundin
   const GRUND_ABSTAND = 90; // ohne Werbebudget etwa alle 90 Sekunden
   const BONUS_PERSOENLICH = .25, BONUS_EXPRESS = .1, EXPRESS_SEK = 20; // aktiv spielen lohnt sich
-  // Etagen im Glow Tower: schalten neue Geräte und Behandlungen frei
+  // Etagen im Alex Tower: schalten neue Geräte und Behandlungen frei
   const ETAGEN = [{ id: 'basis', name: 'Praxis-Etage', preis: 0 }, { id: 'op', name: 'OP-Etage', preis: 170000, ab: 3.9, text: 'Operationssaal: Lidstraffung, Nasenkorrektur, Mini-Facelift' }, { id: 'longevity', name: 'Longevity- und Biohacking-Etage', preis: 120000, ab: 4.1, text: 'Infusionen, Sauerstoffkammer, Kryokammer, Longevity-Check' }];
   const NAMEN = ['Lena', 'Sophie', 'Mia', 'Hannah', 'Lara', 'Nina', 'Julia', 'Chiara', 'Selin', 'Emma', 'Vanessa', 'Leonie', 'Paula', 'Clara', 'Zoe', 'Elif', 'Marie', 'Jana', 'Aylin', 'Romy'];
   const VIP = ['Valentina Vane', 'Sasha Montclair', 'Celeste Harrington', 'Margot Kessler', 'Carlotta Bloom']; // zahlen das Doppelte
@@ -80,14 +80,14 @@ window.GLOW_KLINIK = (() => {
   const RIVALEN = [
     { name: 'Dr. Ricco & Dr. Nico', haus: 'Doppelpraxis am Boulevard', behandlungen: 1800, aerzte: 5, sterne: 4.8, follower: 940000, umsatz: 2600000 },
     { name: 'Dr. Hana Kim', haus: 'Seoul Glow Studio', behandlungen: 620, aerzte: 2, sterne: 4.6, follower: 210000, umsatz: 640000 },
-    { name: 'Maison Botox', haus: 'Galerie Royal', behandlungen: 410, aerzte: 2, sterne: 4.2, follower: 64000, umsatz: 380000 },
+    { name: 'Maison Botox', haus: 'Galeries Lafayetto', behandlungen: 410, aerzte: 2, sterne: 4.2, follower: 64000, umsatz: 380000 },
     { name: 'Dr. Lia Sommer', haus: 'Skin Lab Ost', behandlungen: 150, aerzte: 1, sterne: 4.4, follower: 18000, umsatz: 120000 },
-    { name: 'Glow & Go', haus: 'Boulevard Mall', behandlungen: 90, aerzte: 1, sterne: 3.7, follower: 6500, umsatz: 54000 }
+    { name: 'Glow & Go', haus: 'KaDeVe', behandlungen: 90, aerzte: 1, sterne: 3.7, follower: 6500, umsatz: 54000 }
   ];
   // Kongresse, Messen, Vorträge: du reist in echter Zeit ab, das Team führt die Praxis. Zurück gibt es Honorar, Follower, Sterne und einen Glow-Boost.
   // kosten = Reise und Hotel, honorar = Gage für deinen Vortrag, ab = Sterne, die du dafür brauchst. Jeder Kongress einmal pro Tag.
   const KONGRESSE = [
-    { id: 'rivva',  icon: '🎤', ort: 'Glow City',  name: 'Vortrag im Rivva Med Club',          art: 'Vortrag', dauer: 600,   kosten: 0,      honorar: 900,   follower: 300,   sterne: .05, boost: 15, ab: 0 },
+    { id: 'rivva',  icon: '🎤', ort: 'Berlin City',  name: 'Vortrag im Papillong Med Club',          art: 'Vortrag', dauer: 600,   kosten: 0,      honorar: 900,   follower: 300,   sterne: .05, boost: 15, ab: 0 },
     { id: 'miami',  icon: '🌴', ort: 'Miami',      name: 'Aesthetic Expo Miami',               art: 'Messe',   dauer: 1800,  kosten: 2400,   honorar: 0,      follower: 1500,  sterne: .1,  boost: 30, ab: 3.4 },
     { id: 'paris',  icon: '🗼', ort: 'Paris',      name: 'Anti-Aging Kongress Paris',          art: 'Vortrag', dauer: 3600,  kosten: 9000,  honorar: 16000,  follower: 4000,  sterne: .15, boost: 45, ab: 3.8 },
     { id: 'seoul',  icon: '🇰🇷', ort: 'Seoul',      name: 'K-Beauty Expo Seoul',                art: 'Messe',   dauer: 7200,  kosten: 24000,  honorar: 0,      follower: 15000, sterne: .15, boost: 60, ab: 4.1 },

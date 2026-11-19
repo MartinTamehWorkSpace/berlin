@@ -1,4 +1,4 @@
-// Glow City · boot.js · Dein eigenes Boot fahren: am Anleger antippen, an Bord gehen, aufs Wasser tippen und hinfahren, mit „Anlegen“ zurück.
+// Berlin City · boot.js · Dein eigenes Boot fahren: am Anleger antippen, an Bord gehen, aufs Wasser tippen und hinfahren, mit „Anlegen“ zurück.
 const MEINBOOT = { an: false, x: 0, y: 0, h: 0, ziel: null, party: false, abgerechnet: 0 };
 // Bootsparty: läuft dauerhaft, bis du sie beendest. Sprit kostet pro Minute, dafür gibt es Stil und Follower pro Minute.
 const BOOTSPARTY = { speed: { kosten: 60, stil: 1, fol: 30 }, jacht: { kosten: 250, stil: 2, fol: 80 }, gross: { kosten: 900, stil: 4, fol: 200 } };

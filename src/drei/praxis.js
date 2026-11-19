@@ -1,10 +1,10 @@
-// Glow City 3D · praxis.js · Deine Klinik im Glow Tower, begehbar: Praxis-Etage, OP-Etage, Longevity-Etage, verbunden mit dem Aufzug.
+// Berlin City 3D · praxis.js · Deine Klinik im Alex Tower, begehbar: Praxis-Etage, OP-Etage, Longevity-Etage, verbunden mit dem Aufzug.
 // Du läufst als deine Figur, tippst Kundinnen an (behandeln) und fertige Plätze (abrechnen). Der Stand kommt immer aus ST.klinik.
 import * as THREE from 'three';
 import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
-import { neueFigur, einkleiden, gehen } from './leben.js?v=1795049048';
+import { neueFigur, einkleiden, gehen } from './leben.js?v=1795049539';
 import { RoundedBoxGeometry } from 'three/addons/geometries/RoundedBoxGeometry.js';
-import { hindernisseSammeln, schritt } from './kollision.js?v=1795049048';
+import { hindernisseSammeln, schritt } from './kollision.js?v=1795049539';
 
 const std = (c, o = {}) => new THREE.MeshStandardMaterial(Object.assign({ color: c, roughness: .5 }, o));
 const leinwand = (w, h, mal) => { const c = document.createElement('canvas'); c.width = w; c.height = h; mal(c.getContext('2d'), w, h); const t = new THREE.CanvasTexture(c); t.colorSpace = THREE.SRGBColorSpace; t.anisotropy = 8; return t };
@@ -140,7 +140,7 @@ export function praxis(renderer) {
     ziel.x = THREE.MathUtils.clamp(ziel.x, RAUM.x0 + .8, RAUM.x1 - .8); ziel.z = THREE.MathUtils.clamp(ziel.z, RAUM.z0 + .8, RAUM.z1 - .8); markierung.position.set(ziel.x, .03, ziel.z); markierung.material.opacity = 1 }
   function ausfuehren(a) { if (a.typ === 'behandeln') behandeln(a.id); else if (a.typ === 'abrechnen') abrechnen(a.i); else if (a.typ === 'beschleunigen') beschleunigen(a.i); else if (a.typ === 'aufzug') aufzugZeigen(); else if (a.typ === 'ausgang') { klinikZu(); toast('Zurück in der Stadt') } }
   function aufzugZeigen() { let el = document.getElementById('aufzugWahl'); if (!el) { el = document.createElement('div'); el.id = 'aufzugWahl'; el.className = 'aufzugwahl'; document.body.append(el) } el.replaceChildren(); const k = klinikStand();
-    const kopf = document.createElement('b'); kopf.textContent = 'Aufzug · Glow Tower'; el.append(kopf);
+    const kopf = document.createElement('b'); kopf.textContent = 'Aufzug · Alex Tower'; el.append(kopf);
     for (const [id, E] of Object.entries(ETAGEN)) { const offen = id === 'basis' || (k.etagen && k.etagen[id]); const b = document.createElement('button'); b.textContent = (id === etage ? '● ' : '') + E.name + (offen ? '' : ' · noch nicht eröffnet'); b.disabled = !offen || id === etage;
       b.onclick = () => { el.hidden = true; fahren(id) }; el.append(b) }
     const zu = document.createElement('button'); zu.textContent = 'Schließen'; zu.className = 'zu'; zu.onclick = () => el.hidden = true; el.append(zu); el.hidden = false }

@@ -1,4 +1,4 @@
-// Glow City Figuren: die 20 festen Charaktere und das Zeichnen jeder Figur (Stadt, Läden, Figurenbogen).
+// Berlin City Figuren: die 20 festen Charaktere und das Zeichnen jeder Figur (Stadt, Läden, Figurenbogen).
 // zeichne(ctx, x, y, s, f, t): x/y = Füße, s = Maßstab (1 = etwa 46 px hoch), t = Zeit für Gehen und Mimik.
 window.GLOW_FIGUREN = (() => {
   // Luxustaschen: jede mit eigener Form, damit man sie an der Figur erkennt
@@ -54,19 +54,19 @@ window.GLOW_FIGUREN = (() => {
       skin: '#c99a76', hair: '#1a1210', frisur: 'locken', outfit: 'jeans', c1: '#f4efe6', c2: '#3a5070', acc: ['creolen'], tasche: 'speedi', auto: 'Nio E-Roller', mimik: 'zwinkern', lippe: '#b45a6a' },
     { id: 'jule', name: 'Jule Wagner', handle: '@jule.neu', w: 1, rolle: 'Neu in der Stadt', stil: 12, lohn: 500, verm: 10000, fol: 120, glow: 7.0,
       skin: '#f4dccb', hair: '#b5462c', frisur: 'bob', outfit: 'jeans', c1: '#e8d5c4', c2: '#2f3e56', acc: [], tasche: null, auto: null, mimik: 'laecheln', lippe: '#c98080' },
-    { id: 'paula', name: 'Paula Novak', handle: 'Service im Rivva', w: 1, rolle: 'Kellnerin im Rivva', ort: 'riva', stil: 40, lohn: 500, verm: 900, fol: 600, glow: 7.6,
+    { id: 'paula', name: 'Paula Novak', handle: 'Service im Papillong', w: 1, rolle: 'Kellnerin im Papillong', ort: 'riva', stil: 40, lohn: 500, verm: 900, fol: 600, glow: 7.6,
       skin: '#eac2a2', hair: '#2b1a12', frisur: 'dutt', outfit: 'uniform', c1: '#f4efe6', c2: '#16171a', acc: [], tasche: null, auto: 'Hollandrad Amsterdam', mimik: 'laecheln', lippe: '#b86a6a' },
-    { id: 'thorne', name: 'Maximilian Thorne', handle: '@thorne', w: 0, rolle: 'Investor, Eigentümer CoWork Tower', stil: 71000, lohn: 8800, verm: 18000000, fol: 87000, glow: 8.8,
+    { id: 'thorne', name: 'Maximilian Thorne', handle: '@thorne', w: 0, rolle: 'Investor, Eigentümer Fabrik Coworking', stil: 71000, lohn: 8800, verm: 18000000, fol: 87000, glow: 8.8,
       skin: '#e4b997', hair: '#c9c4bc', frisur: 'kurz', outfit: 'anzug', c1: '#202226', c2: '#f4efe6', acc: ['uhr', 'sonnenbrille'], tasche: null, auto: 'Teslo Roadster', mimik: 'selbstbewusst' },
-    { id: 'kerem', name: 'Kerem Aydin', handle: '@kerem.bootshus', w: 0, rolle: 'Clubbesitzer Bootshus', ort: 'boot', stil: 18000, lohn: 4400, verm: 1500000, fol: 140000, glow: 8.3,
+    { id: 'kerem', name: 'Kerem Aydin', handle: '@kerem.bootshus', w: 0, rolle: 'Clubbesitzer Grill Royale', ort: 'boot', stil: 18000, lohn: 4400, verm: 1500000, fol: 140000, glow: 8.3,
       skin: '#c99a76', hair: '#121212', frisur: 'glatt_m', outfit: 'leder', c1: '#141414', c2: '#2b2b30', acc: ['goldkette', 'uhr', 'sonnenbrille'], tasche: null, auto: 'Lamborgia Furioso', mimik: 'zwinkern' },
     { id: 'jonas', name: 'Jonas Weber', handle: '@jonas.lift', w: 0, rolle: 'Personal Trainer', ort: 'mcf', stil: 7400, lohn: 2000, verm: 160000, fol: 210000, glow: 8.5,
       skin: '#d7a985', hair: '#2b2118', frisur: 'kurz', outfit: 'sport', c1: '#6d6f73', c2: '#16171a', acc: ['goldkette'], tasche: null, auto: 'Audri S5', mimik: 'lachen' },
     { id: 'glatt', name: 'Dr. Felix Glatt', handle: 'Schönheitschirurg', w: 0, rolle: 'Chefarzt Ästhetik Klinik', ort: 'klinik', stil: 3900, lohn: 3700, verm: 2400000, fol: 33000, glow: 7.8,
       skin: '#f1d3bd', hair: '#cfc9c0', frisur: 'kurz', outfit: 'kittel', c1: '#ffffff', c2: '#2f3e46', acc: ['uhr'], tasche: null, auto: 'Mercedia G 63', mimik: 'laecheln' },
-    { id: 'luca', name: 'Luca Moretti', handle: 'Glow Motors', w: 0, rolle: 'Verkäufer bei Glow Motors', ort: 'motors', stil: 2100, lohn: 1600, verm: 85000, fol: 9000, glow: 8.0,
+    { id: 'luca', name: 'Luca Moretti', handle: 'Spree Motors', w: 0, rolle: 'Verkäufer bei Spree Motors', ort: 'motors', stil: 2100, lohn: 1600, verm: 85000, fol: 9000, glow: 8.0,
       skin: '#e2b896', hair: '#1a1410', frisur: 'glatt_m', outfit: 'anzug', c1: '#1d2a44', c2: '#f4efe6', acc: ['uhr'], tasche: null, auto: 'Audri S5', mimik: 'selbstbewusst' },
-    { id: 'ben', name: 'Ben Hartmann', handle: 'Barista', w: 0, rolle: 'Barista bei Starbux', ort: 'star', stil: 520, lohn: 630, verm: 4200, fol: 2800, glow: 7.5,
+    { id: 'ben', name: 'Ben Hartmann', handle: 'Barista', w: 0, rolle: 'Barista bei Café Zweistein', ort: 'star', stil: 520, lohn: 630, verm: 4200, fol: 2800, glow: 7.5,
       skin: '#f0cdb0', hair: '#5a3d2b', frisur: 'kurz', outfit: 'schuerze', c1: '#f4efe6', c2: '#1e6b4a', acc: [], tasche: null, auto: 'Nio E-Roller', mimik: 'lachen' }
   ];
 

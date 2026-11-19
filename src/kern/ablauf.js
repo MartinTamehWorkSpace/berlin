@@ -1,11 +1,11 @@
-// Glow City · ablauf.js · wird als klassisches Skript in index.html geladen (gemeinsamer globaler Bereich, Reihenfolge zählt)
+// Berlin City · ablauf.js · wird als klassisches Skript in index.html geladen (gemeinsamer globaler Bereich, Reihenfolge zählt)
 // ---------- Ablauf ----------
 let T=0,last=performance.now(),sel=null;
 const front=(o,b)=>o.x>=b.x+b.w||o.y>=b.y+b.d;
 const GLUT={};function glut(c){if(GLUT[c])return GLUT[c];const k=document.createElement('canvas');k.width=k.height=64;const x=k.getContext('2d');const q=x.createRadialGradient(32,32,0,32,32,32);q.addColorStop(0,c);q.addColorStop(.25,c+'aa');q.addColorStop(1,c+'00');x.fillStyle=q;x.fillRect(0,0,64,64);return GLUT[c]=k}
 function lamp(o){const[x,y]=pt(o.x,o.y);const s=Z;g.strokeStyle='#2a2b30';g.lineWidth=1.6*s;g.beginPath();g.moveTo(x,y);g.lineTo(x,y-34*s);g.lineTo(x+6*s,y-36*s);g.stroke();
   const k=glut(o.c);g.drawImage(k,x+6*s-14*s,y-35*s-14*s,28*s,28*s);g.globalAlpha=.4;g.drawImage(k,x+4*s-18*s,y-9*s,36*s,18*s);g.globalAlpha=1}
-const PADS=()=>['Residenz Marina','Galerie Royal','Health Hub','CoWork Tower'].map(t=>B.find(b=>b.title===t)).filter(Boolean).map(b=>({x:b.x+2,y:b.y+2,z:b.topZ||b.h}));
+const PADS=()=>['Spreeufer Residenz','Galeries Lafayetto','Health Hub','Fabrik Coworking'].map(t=>B.find(b=>b.title===t)).filter(Boolean).map(b=>({x:b.x+2,y:b.y+2,z:b.topZ||b.h}));
 const HELIS=[{liv:'#ff4fa3',name:'GLOW AIR',a:0,b:1,t:0},{liv:'#f4f4f2',name:'NEWS',a:2,b:3,t:5}];
 // Wegesuche auf einem feinen Raster: Häuser und Wasser sind gesperrt
 const GS=.5,GX0=-36,GY0=-6,GWd=Math.ceil(114/GS),GHt=Math.ceil(56/GS);

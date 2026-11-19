@@ -1,4 +1,4 @@
-// Glow City · stammkundinnen.js · Stammkundinnen und Bewertungen der Klinik.
+// Berlin City · stammkundinnen.js · Stammkundinnen und Bewertungen der Klinik.
 // Stammkundinnen kommen mit ihrer Geschichte wieder, wollen ihre Lieblingsbehandlung und zahlen pro Besuch 10 % mehr (bis 50 %).
 // Ab dem 4. Besuch ist sie deine beste Kundin: Follower und ab dann VIP. Jede Behandlung bekommt eine Bewertung mit Sternen und einem Satz.
 const STAMM = { neuAb: 3, wiederChance: .22, neuChance: .1, pause: 4 * 60000, treueProBesuch: .1, treueMax: .5, besteAb: 4, besteFollower: 2000 };
@@ -6,7 +6,7 @@ const STAMM = { neuAb: 3, wiederChance: .22, neuChance: .1, pause: 4 * 60000, tr
 const PROMI = { abstand: 20 * 60000, chance: .08, geduld: 150, treue: 1.5, follower: 1500 };
 function stammWahl(k, kd) { const KD = window.GLOW_KUNDINNEN; if (!KD || k.behandelt < STAMM.neuAb) return kd; k.kartei = k.kartei || {};
   if (aktiv(k) && k.behandelt >= 5 && Date.now() - (k.promiZuletzt || 0) > PROMI.abstand && Math.random() < PROMI.chance) { k.promiZuletzt = Date.now(); const name = KQ.VIP[Math.floor(Math.random() * KQ.VIP.length)];
-    setTimeout(() => { banner('⭐ PROMI-ANFRAGE', `${name} will jetzt zu dir`, `Wartet nur ${PROMI.geduld / 60 | 0} Minuten · zahlt das 5-Fache`); if (typeof news === 'function') news(`${name} wurde gerade vor dem Glow Tower gesehen`) }, 300);
+    setTimeout(() => { banner('⭐ PROMI-ANFRAGE', `${name} will jetzt zu dir`, `Wartet nur ${PROMI.geduld / 60 | 0} Minuten · zahlt das 5-Fache`); if (typeof news === 'function') news(`${name} wurde gerade vor dem Alex Tower gesehen`) }, 300);
     return Object.assign(kd, { name, vip: true, promi: true, icon: '⭐', treue: PROMI.treue, geduld: PROMI.geduld }) }
   const da = new Set([...k.warte.map(w => w.name), ...k.liegen.filter(Boolean).map(l => l.kundin.name)]), jetzt = Date.now();
   const kann = s => !da.has(s.name) && (!k.kartei[s.name] || jetzt - k.kartei[s.name].zuletzt > STAMM.pause) && s.wunsch.some(id => { const b = behandlung(id); return b && k.geraete[b.geraet] && (!b.etage || k.etagen[b.etage]) });

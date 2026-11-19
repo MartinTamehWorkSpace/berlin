@@ -1,14 +1,14 @@
-// Glow City · einfuehrung.js · Einführung beim ersten Start: eine Karte über der Leiste führt Schritt für Schritt durch Klinik, Stadt und Chat.
+// Berlin City · einfuehrung.js · Einführung beim ersten Start: eine Karte über der Leiste führt Schritt für Schritt durch Klinik, Stadt und Chat.
 // Schritte mit Bedingung gehen von selbst weiter, sobald man es gemacht hat; der passende Knopf leuchtet. Überspringen geht jederzeit.
 // Wer schon behandelt hat, sieht die Einführung nie. Fertig steht in ST.intro.
 const INTRO = [
-  { titel: 'Willkommen in Glow City', text: 'Du bist Ärztin und baust im Glow Tower deine eigene Schönheitsklinik auf. Je besser sie läuft, desto mehr Geld, Stil und Follower hast du für das Leben in der Stadt.', knopf: 'Los geht’s' },
+  { titel: 'Willkommen in Berlin City', text: 'Du bist Ärztin und baust im Alex Tower deine eigene Schönheitsklinik auf. Je besser sie läuft, desto mehr Geld, Stil und Follower hast du für das Leben in der Stadt.', knopf: 'Los geht’s' },
   { titel: 'Deine Klinik', text: 'Tipp unten auf Klinik.', zeig: '#bKlinik', fertig: () => KLINIK.offen },
   { titel: 'Deine erste Kundin', text: 'Im Wartezimmer warten Kundinnen. Der grüne Betrag ist ihr Honorar. Tipp auf Behandeln.', zeig: '#klinik .kzeile .kja', fertig: () => klinikStand().liegen.some(Boolean) || klinikStand().behandelt > 0 },
   { titel: 'Selbst behandeln', text: 'Tipp auf 🩺 Selbst machen und setz die Spritze selbst. Wer selbst behandelt, verdient mehr und sammelt Anerkennung. Danach tippst du auf 💶 Kassieren.', zeig: '#klinik .regal .knopf', fertig: () => klinikStand().behandelt > 0 },
   { titel: 'Kassiert', text: 'Von deinem Honorar kaufst du weitere Liegen, Geräte und Team. Das nächste Ziel steht immer oben im Praxis-Reiter. So wächst deine Klinik.', knopf: 'Weiter' },
-  { titel: 'Die Stadt', text: 'Mit Wohin? kommst du überall hin: Boutiquen, Nicky Beach, Arena, Flughafen. Am Glow Tower mit dem pinken Ring treffen sich alle. Echte Spielerinnen tragen einen grünen Ring und LIVE.', zeig: '#bStadt', knopf: 'Weiter' },
-  { titel: 'Sag Hallo', text: 'Im Stadt-Chat schreibst du mit allen. Die Bewohnerinnen antworten dir. Viel Spaß in Glow City!', zeig: '#bChat', knopf: 'Fertig' }
+  { titel: 'Die Stadt', text: 'Mit Wohin? kommst du überall hin: Boutiquen, Scorpius Berlin, Arena, Flughafen. Am Alex Tower mit dem pinken Ring treffen sich alle. Echte Spielerinnen tragen einen grünen Ring und LIVE.', zeig: '#bStadt', knopf: 'Weiter' },
+  { titel: 'Sag Hallo', text: 'Im Stadt-Chat schreibst du mit allen. Die Bewohnerinnen antworten dir. Viel Spaß in Berlin City!', zeig: '#bChat', knopf: 'Fertig' }
 ];
 function introZeigen() { const n = ST.intro; let el = document.getElementById('intro'); if (n == null || n >= INTRO.length || n === 'fertig') { if (el) el.hidden = true; introLeuchten(null); return }
   const s = INTRO[n]; if (!el) { el = document.createElement('div'); el.id = 'intro'; el.className = 'intro'; document.body.append(el) }

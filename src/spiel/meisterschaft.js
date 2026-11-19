@@ -1,4 +1,4 @@
-// Glow City · meisterschaft.js · Meisterschaft je Behandlung: Wer eine Behandlung oft macht, steigt in 5 Stufen auf (10, 30, 80, 200, 500 Mal).
+// Berlin City · meisterschaft.js · Meisterschaft je Behandlung: Wer eine Behandlung oft macht, steigt in 5 Stufen auf (10, 30, 80, 200, 500 Mal).
 // Jede Stufe bringt 6 % mehr Honorar für genau diese Behandlung. Aufstieg mit Banner, Fortschritt im Geräte-Reiter, Stufe als ◆ im Wartezimmer.
 // 20 Stufen je Behandlung (ab 5 bis rund 2.300 Behandlungen), jede Stufe +3 % Honorar für genau diese Behandlung, ganz oben +60 %
 const MEISTER = { ab: Array.from({ length: 20 }, (_, i) => Math.round(5 * Math.pow(1.38, i))), bonus: .03,

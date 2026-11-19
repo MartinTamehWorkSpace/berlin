@@ -1,4 +1,4 @@
-// Glow City · glowscore.js · Der Glow Score: ein Hauptwert, auf den alles einzahlt. Er bestimmt deinen Rang in der Stadt.
+// Berlin City · glowscore.js · Der Glow Score: ein Hauptwert, auf den alles einzahlt. Er bestimmt deinen Rang in der Stadt.
 // Alle Einzelwerte bleiben (Stil, Vermögen, Follower, Klinik, Meisterschaft, Pokale, Anerkennung), der Score fasst sie zusammen.
 // Große Zahlen wachsen über Wurzeln, damit niemand mit nur einem Wert davonzieht: wer überall gut ist, steht oben.
 const SCORE_TEILE = [

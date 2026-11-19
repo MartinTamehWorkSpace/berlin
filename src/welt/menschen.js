@@ -1,4 +1,4 @@
-// Glow City · menschen.js · wird als klassisches Skript in index.html geladen (gemeinsamer globaler Bereich, Reihenfolge zählt)
+// Berlin City · menschen.js · wird als klassisches Skript in index.html geladen (gemeinsamer globaler Bereich, Reihenfolge zählt)
 // ---------- Menschen ----------
 function person(p){const[x,y]=pt(p.x,p.y);const s=Z*.62*p.sz;
   if(p===ICH&&p.faehrt&&ICH.auto){const k=AUTO_SPR[ICH.auto.id];const im=k&&SPR[k]&&SPR[k][p.richtung||'90'];const lf=(p.lift||0)*Z;if(lf>1){const gl=g.createRadialGradient(x,y,1,x,y,32*Z);gl.addColorStop(0,'rgba(143,227,240,.5)');gl.addColorStop(1,'rgba(143,227,240,0)');g.fillStyle=gl;g.beginPath();g.ellipse(x,y,32*Z,16*Z,0,0,7);g.fill()}

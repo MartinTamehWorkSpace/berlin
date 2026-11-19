@@ -1,9 +1,9 @@
-// Glow City 3D · flughafen.js · Glow Airport östlich der Stadt: Zufahrt, Vorfeld, Landebahn mit Befeuerung, Hangar, Tower und vier Glowstream-Jets.
+// Berlin City 3D · flughafen.js · Flughafen Tempelhoff östlich der Stadt: Zufahrt, Vorfeld, Landebahn mit Befeuerung, Hangar, Tower und vier Glowstream-Jets.
 // Gekaufte Jets stehen schwarz mit Goldstreifen, die anderen weiß mit Preisschild. Antippen deines Jets öffnet die Flugziele (src/spiel/jet.js).
 import * as THREE from 'three';
-import { M } from './haeuser.js?v=1795049048';
-import { namensSchild } from './leben.js?v=1795049048';
-import { parkplatz } from './parkplatz.js?v=1795049048';
+import { M } from './haeuser.js?v=1795049539';
+import { namensSchild } from './leben.js?v=1795049539';
+import { parkplatz } from './parkplatz.js?v=1795049539';
 const std = (c, o = {}) => new THREE.MeshStandardMaterial(Object.assign({ color: c, roughness: .5 }, o));
 const ASPHALT = std('#2a2c31', { roughness: .9 }), BETON = std('#c9c6c0', { roughness: .95 }), WEISS = std('#f6f6f4', { roughness: .25, metalness: .2 }), SCHWARZ = std('#0d0e12', { roughness: .2, metalness: .5 }),
   GOLD = std('#d9b44a', { roughness: .25, metalness: .8 }), GLAS = std('#0c1a26', { roughness: .05, metalness: .6 }), CHROM = std('#e8ecf0', { roughness: .15, metalness: 1 });
@@ -58,7 +58,7 @@ export function flughafen(szene) { const g = new THREE.Group(); szene.add(g);
     for (const [x, z, f] of [[-L * .5, 0, '#ffffff'], [-L * .12, L * .42, '#ff3b3b'], [-L * .12, -L * .42, '#3bff7a']]) { const b = new THREE.Mesh(new THREE.SphereGeometry(.18, 8, 6), new THREE.MeshBasicMaterial({ color: f })); b.position.set(x, L * .1, z); b.userData.blitz = true; grp.add(b) }
     grp.userData.glut = glut; queueMicrotask(() => { if (grp.parent) grp.parent.userData.glut = glut }); return grp }
   // Parkplätze am Terminal: an der Zufahrt und vor dem Hangar
-  const PARK = [parkplatz(g, 50 * M, 11 * M, { buchten: 12, schild: '🅿️ Glow Airport Terminal' }), parkplatz(g, 49 * M, 36 * M, { buchten: 8, drehung: Math.PI / 2, schild: '🅿️ Crew', belegt: .5 })];
+  const PARK = [parkplatz(g, 50 * M, 11 * M, { buchten: 12, schild: '🅿️ Flughafen Tempelhoff Terminal' }), parkplatz(g, 49 * M, 36 * M, { buchten: 8, drehung: Math.PI / 2, schild: '🅿️ Crew', belegt: .5 })];
   return { flugZeit: () => flugT, flugPunkt() { const j = flugT >= 0 && flugId && modelle[flugId]; return j ? j.position : null }, weiter(nacht, dt) { for (const p of PARK) p.weiter(nacht); const s = jets.map(i => ST.besitz[i.id] ? 1 : 0).join(''); if (s !== stand) { stand = s; aufstellen() } BEFEUERUNG.emissiveIntensity = .2 + nacht * 3; const startet = flugT >= 0, phase = Math.floor(T_ * 14) % 4;
     LAUF.forEach((m, i) => m.emissiveIntensity = startet ? (i === phase ? 9 : 1.2) : .3 + nacht * 3); MITTE.emissiveIntensity = startet ? 3 + Math.sin(T_ * 20) * 1.5 : .2 + nacht * 2.2;
     for (const f of FLUT) { f.kopf.material.emissiveIntensity = .3 + nacht * 3 + (startet ? 2 : 0) }

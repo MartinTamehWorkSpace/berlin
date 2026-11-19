@@ -1,4 +1,4 @@
-// Glow City · events.js · Live-Events mit Zeitdruck: Flash-Sale, Happy Hour, Promi-Sichtung
+// Berlin City · events.js · Live-Events mit Zeitdruck: Flash-Sale, Happy Hour, Promi-Sichtung
 // Alle 90 bis 150 Sekunden startet ein Event. Neue Events sind ein Eintrag in EVENT_ARTEN.
 const EVENT_ARTEN = [
   { id: 'sale',  dauer: 120, start() { const l = ['zahra', 'sac', 'tif', 'prado', 'lulu'][Math.floor(Math.random() * 5)]; return { laden: l, faktor: .7, titel: `FLASH SALE · ${BR[l].n} −30 %` } } },

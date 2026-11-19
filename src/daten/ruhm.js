@@ -1,4 +1,4 @@
-// Glow City · ruhm.js (Daten) · Ruhm-Stufen, Marketing-Leiter und Werbebudget
+// Berlin City · ruhm.js (Daten) · Ruhm-Stufen, Marketing-Leiter und Werbebudget
 // Ruhm = Follower + Stilpunkte × 20. Je höher die Stufe, desto mehr Kundinnen (Klinik, Boutique) und desto höher deine Preise.
 const RUHM = {
   STUFEN: [

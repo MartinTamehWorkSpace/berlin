@@ -1,4 +1,4 @@
-// Glow City · freundinnen.js · Boutiquen anderer besuchen und aufpolieren. Beide haben etwas davon.
+// Berlin City · freundinnen.js · Boutiquen anderer besuchen und aufpolieren. Beide haben etwas davon.
 // Jede schreibt nur ihr eigenes Dokument: Der Besuch steht in ST.besucht der Besucherin, die Besuchte liest ihn und holt sich den Bonus selbst ab.
 const BESUCH = { proTag: 5, schneller: 15 * 60e3, xpGast: 25, xpWirtin: 20, geldGast: 300 };
 function besuchtHeute() { const h = heute(); if (!ST.besucht || ST.besucht.tag !== h) ST.besucht = { tag: h, ids: [] }; return ST.besucht }
@@ -27,7 +27,7 @@ function freundinnenZeichnen(body) { const bh = besuchtHeute(), liste = boutique
   const k = el_('div', 'albumkopf'); k.append(el_('b', null, 'Boutiquen besuchen'), el_('span', null, `Heute ${bh.ids.length}/${BESUCH.proTag} Besuche`)); body.append(k);
   body.append(el_('p', 'hin', 'Besuch eine Freundin und polier ihre Regale auf. Ihre Ware verkauft sich schneller, du bekommst Geld und XP. Besuchen dich andere, wird deine Ware schneller fertig.'));
   if (ST.erhalten && ST.erhalten.tag === heute() && ST.erhalten.ids.length) { const namen = ST.erhalten.ids.map(id => (SPIELER.get(id) || {}).handle).filter(Boolean); if (namen.length) body.append(el_('p', 'hin gast', `Heute bei dir: ${namen.join(', ')}`)) }
-  if (!live.length) body.append(el_('p', 'hin', 'Noch keine Freundin online mit eigener Boutique. Schick ihr den Link zu Glow City, dann taucht sie hier mit LIVE auf.'));
+  if (!live.length) body.append(el_('p', 'hin', 'Noch keine Freundin online mit eigener Boutique. Schick ihr den Link zu Berlin City, dann taucht sie hier mit LIVE auf.'));
   for (const b of liste) { const r = el_('div', 'freundin' + (b.live ? ' live' : '')); const l = el_('div');
     const n = el_('b', null, b.name); const m = el_('span', 'marke', b.live ? 'LIVE' : 'NPC'); n.prepend(m);
     const besetzt = b.regale.filter(Boolean).length; l.append(n, el_('small', null, `Level ${b.lvl} · ${b.album} Taschen${b.live ? ` · ${besetzt} Regale belegt` : b.rolle ? ' · ' + b.rolle : ''}`));

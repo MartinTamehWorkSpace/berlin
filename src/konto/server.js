@@ -1,4 +1,4 @@
-// Glow City · server.js · Eigene Konten außerhalb von Claude (Netlify): Anmeldefenster mit Name und Passwort, dann Spielstand, Spielerliste und Chat über /api.
+// Berlin City · server.js · Eigene Konten außerhalb von Claude (Netlify): Anmeldefenster mit Name und Passwort, dann Spielstand, Spielerliste und Chat über /api.
 // Stellt dieselbe Schnittstelle bereit wie Claude (claude.use: db, user, room), damit konto.js unverändert bleibt. Auf claude.ai greift das nicht.
 (function () { if (window.claude || typeof location === 'undefined' || !/^https?:$/.test(location.protocol) || /claude\.ai|claudeusercontent/.test(location.host)) return;
   const TOKEN = 'berlinToken'; let token = null, ich = null;

@@ -1,4 +1,4 @@
-// Glow City · bewohner.js · wird als klassisches Skript in index.html geladen (gemeinsamer globaler Bereich, Reihenfolge zählt)
+// Berlin City · bewohner.js · wird als klassisches Skript in index.html geladen (gemeinsamer globaler Bereich, Reihenfolge zählt)
 // ---------- Menschen ----------
 const SK=['#f3d5bf','#e4b997','#c48f6b','#8d5b3d','#5c3b29'],HAIR=['#2b2118','#5a3d2b','#dcc28e','#141414','#8a4b2c','#cfc9c0'];
 const CL=['#16171a','#f2eee8','#2f3e46','#7a6a58','#c9b48a','#3d405b','#8c2f39','#d9d2c3','#4b5d4f','#1d3557','#e8d5c4','#b8c4cc'];

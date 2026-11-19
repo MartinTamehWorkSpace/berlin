@@ -1,4 +1,4 @@
-// Glow City 3D · feuerwerk.js · Feuerwerk über dem Glow Tower: zu jeder vollen Stunde (echte Zeit) 90 Sekunden lang.
+// Berlin City 3D · feuerwerk.js · Feuerwerk über dem Alex Tower: zu jeder vollen Stunde (echte Zeit) 90 Sekunden lang.
 // Edle Farben (Gold, Weiß, Champagner). Ein Punktsystem für alle Funken, additiv gemischt, damit der Bloom sie leuchten lässt.
 import * as THREE from 'three';
 const FARBEN = ['#ffd36b', '#ffffff', '#ffe2b8', '#ff8fc7', '#9fd8ff']; // Gold, Weiß, Champagner, ein Hauch Rosé und Eisblau: stilvoll statt bunt
@@ -16,7 +16,7 @@ export function feuerwerk(szene, mitte, klein) {
   return {
     zeigen(sek = 30) { testBis = Date.now() + sek * 1000 },
     laeuft,
-    weiter(dt) { dt = Math.min(dt, .05); const an = laeuft(); if (an && !war && typeof toast === 'function') toast('🎆 Feuerwerk über dem Glow Tower'); war = an;
+    weiter(dt) { dt = Math.min(dt, .05); const an = laeuft(); if (an && !war && typeof toast === 'function') toast('🎆 Feuerwerk über dem Alex Tower'); war = an;
       if (an) { bisNaechste -= dt; if (bisNaechste <= 0) { starten(); bisNaechste = .35 + Math.random() * .6 } }
       for (let r = raketen.length - 1; r >= 0; r--) { const k = raketen[r]; k.y += k.vy * dt; const i = frei; frei = (frei + 1) % MAX; pos.set([k.x + (Math.random() - .5) * .3, k.y, k.z], i * 3); v.set([0, -2, 0], i * 3); leben[i] = .5; farbe.set([1, .85, .6], i * 3); if (k.y >= k.bis) { knall(k.x, k.y, k.z); raketen.splice(r, 1) } }
       let aktiv = false; for (let i = 0; i < MAX; i++) { if (leben[i] <= 0) { col[i * 3] = col[i * 3 + 1] = col[i * 3 + 2] = 0; continue } aktiv = true; leben[i] -= dt;

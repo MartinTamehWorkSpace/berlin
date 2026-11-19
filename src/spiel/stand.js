@@ -1,4 +1,4 @@
-// Glow City · spielstand.js · wird als klassisches Skript in index.html geladen (gemeinsamer globaler Bereich, Reihenfolge zählt)
+// Berlin City · spielstand.js · wird als klassisches Skript in index.html geladen (gemeinsamer globaler Bereich, Reihenfolge zählt)
 // ---------- Spielstand und Wirtschaft ----------
 const WS=window.GLOW_WIRTSCHAFT;
 const KONSUM=k=>i=>i.kat==='konsum'&&i.laden===k;
@@ -65,7 +65,7 @@ function zeile(it){const d=document.createElement('div');d.className='row';const
 let offen=null;
 function meinTag(){offen=null;sel=null;const c=document.getElementById('card');c.hidden=false;document.getElementById('hint').hidden=true;document.getElementById('ct').textContent='Mein Tag';
   const k=WS.lohnStufe(ST.tage),n=WS.naechsteStufe(ST.tage);const cb=document.getElementById('cb');cb.replaceChildren();
-  const p=document.createElement('p');p.textContent=`Du arbeitest als ${k.titel} im CoWork Tower. Jeder Arbeitstag zählt für die Karriere, jeder Tag am Stück erhöht den Lohn um 2 %, bis zu 30 %.`;
+  const p=document.createElement('p');p.textContent=`Du arbeitest als ${k.titel} im Fabrik Coworking. Jeder Arbeitstag zählt für die Karriere, jeder Tag am Stück erhöht den Lohn um 2 %, bis zu 30 %.`;
   const day=document.createElement('div');day.className='day';
   const box=(a,b)=>{const d=document.createElement('div');const bb=document.createElement('b');bb.textContent=b;d.append(bb,a);return d};
   day.append(box('Tageslohn heute',euro(WS.tageslohn(ST.tage,ST.serie+1))),box('Serie',`${ST.serie} Tage`),box('Arbeitstage',String(ST.tage)),box('Nächste Stufe',n?`${n.titel} in ${n.ab-ST.tage} T.`:'Höchste Stufe'));

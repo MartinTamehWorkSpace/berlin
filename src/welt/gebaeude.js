@@ -1,4 +1,4 @@
-// Glow City · gebaeude.js · wird als klassisches Skript in index.html geladen (gemeinsamer globaler Bereich, Reihenfolge zählt)
+// Berlin City · gebaeude.js · wird als klassisches Skript in index.html geladen (gemeinsamer globaler Bereich, Reihenfolge zählt)
 // ---------- Gebäude ----------
 const lit=(a,b,c)=>((a*7+b*3+c*5)%5)>1;
 function glassFace(f,side,z0,z1,kind){const len=side==='L'?f.w:f.d;const F=side==='L'?fL:fR;
@@ -83,7 +83,7 @@ function tower(b){const t=b.tow;let f={x:b.x+t.ox,y:b.y+t.oy,w:t.w,d:t.d};let z0
   if(t.led){const u0=.25,u1=f.w-.25,za=z0+FH*2,zb=z0+FH*7;fL(f,u0,u1,za,zb,'#0b1016');
     faceT(f,'L',u0,zb);g.save();g.beginPath();g.rect(0,0,(u1-u0)*35.78,zb-za);g.clip();
     g.fillStyle='#8fe3f0';g.font='700 15px Inter';g.textBaseline='middle';const msg='RANKING HEUTE   #1 @valentina 9.840 STIL   #2 @mila 9.512   #3 @jonas.lift 8.990   NEU: ABSTIMMUNG LÄUFT   ';
-    const w=g.measureText(msg).width,o=-(T*40%w);g.fillText(msg+msg,o,(zb-za)*.35);g.fillStyle='#d8c39a';g.font='500 22px Bodoni Moda';g.fillText('Glow City',8+((T*12)%60),(zb-za)*.75);g.restore();g.setTransform(1,0,0,1,0,0)}
+    const w=g.measureText(msg).width,o=-(T*40%w);g.fillText(msg+msg,o,(zb-za)*.35);g.fillStyle='#d8c39a';g.font='500 22px Bodoni Moda';g.fillText('Berlin City',8+((T*12)%60),(zb-za)*.75);g.restore();g.setTransform(1,0,0,1,0,0)}
   if(t.tier){fL(f,0,f.w,z1-1,z1+1,t.crown);fR(f,0,f.d,z1-1,z1+1,t.crown);top4(f.x,f.y,f.w,f.d,z1,'#4a5a64');
     const i=t.tier.ins;f={x:f.x+i,y:f.y+i,w:f.w-2*i,d:f.d-2*i};z0=z1;z1=z0+t.tier.fl*FH;glassFace(f,'L',z0,z1,t.kind);glassFace(f,'R',z0,z1,t.kind)}
   // leuchtende Krone
@@ -102,9 +102,9 @@ const WERBUNG=[
  {bg:['#1a0c18','#3a1430'],rand:'#ff4fa3',marke:'GLOW CITY',titel:'Black Card',zeile:'Valentina hat sie. Und du?',f:'#ffffff',bild:'valentina'},
  {bg:['#0e1f22','#0b2e33'],rand:'#81d8d0',marke:'TIFFANNY & CO.',titel:'Diamant 3 Karat',zeile:'Warteliste 21 Tage',f:'#e9fbf9',bild:'diamant'},
  {bg:['#f4f6f7','#dfe6ea'],rand:'#9fb6bf',marke:'DR. GLATT',titel:'Dein bester Glow',zeile:'Botox ab 390 € · fast ausgebucht',f:'#1d2b33',bild:'flakon'},
- {bg:['#140c12','#2a0f1d'],rand:'#ff7eb6',marke:'LAMBORGIA',titel:'Furioso in Rosa',zeile:'Jetzt bei Glow Motors',f:'#ffffff',bild:'auto4'},
- {bg:['#0a2a2c','#064046'],rand:'#2fe0d2',marke:'NICKY BEACH',titel:'Sunset Club',zeile:'Jacht-Charter ab 2.500 €',f:'#ffffff',bild:'sonne'}];
-const TAFELN=new Set(['Nicky Beach Yachtclub','Villa Palms','Borchert',"Huggo's",'Rivva','Bootshus','McFett Arena','Health Hub','Marktplatz Ost']);
+ {bg:['#140c12','#2a0f1d'],rand:'#ff7eb6',marke:'LAMBORGIA',titel:'Furioso in Rosa',zeile:'Jetzt bei Spree Motors',f:'#ffffff',bild:'auto4'},
+ {bg:['#0a2a2c','#064046'],rand:'#2fe0d2',marke:'SCORPIUS',titel:'Sunset Club',zeile:'Jacht-Charter ab 2.500 €',f:'#ffffff',bild:'sonne'}];
+const TAFELN=new Set(['Scorpius Berlin','Villa Palms','Borchert',"Huggo's",'Papillong','Grill Royale','Kiez Gym','Health Hub','Markthalle Zehn']);
 function werbeBild(w,x0,y0,bw,bh){g.save();g.beginPath();g.rect(x0,y0,bw,bh);g.clip();
   const sp=SPR;const cx=x0+bw/2,cy=y0+bh/2;
   if(w.bild==='auto5'||w.bild==='auto4'){const im=sp[w.bild==='auto5'?'5':'4']&&sp[w.bild==='auto5'?'5':'4']['90'];
@@ -183,12 +183,12 @@ function brand(k,w,h){g.textAlign='center';g.textBaseline='middle';
    case'seph':plate('#0b0b0d','#ffffff');txt('SEPHORRA','700 S Inter','#ffffff',4);break;
    case'vic':plate('#f7c6da','#d81b60');txt("Victoria's Secrett",'italic 500 S Bodoni Moda','#7a1440');break;
    case'lulu':plate('#ffffff','#d22630');txt('lulu lemonn','800 S Inter','#d22630',1);break;
-   case'spa':plate('#f4efe6','#e6c76a');txt('Glow Spa','italic 500 S Bodoni Moda','#5a4a2a',1);break;
+   case'spa':plate('#f4efe6','#e6c76a');txt('Spree Spa','italic 500 S Bodoni Moda','#5a4a2a',1);break;
    case'salon':plate('#16171a','#e6c76a');txt('SALON BLOND','600 S Inter','#f2e2b8',3);break;
    case'apfel':plate('#f4f5f7','#c9ccd1');txt('Apfel Store','600 S Inter','#1d1d1f');break;
    case'arena':plate('#0d0e12','#ff8fc7');txt('LUBA ARENA','800 S Inter','#ffffff',3);break;
    case'jets':plate('#16171a','#e6c76a');txt('GLOW AIRPORT','700 S Inter','#e6c76a',3);break;
-   case'nicky':plate('#2fe0d2','#ffffff');txt('Nicky Beach','400 S Yellowtail','#073b3a');break;
+   case'nicky':plate('#2fe0d2','#ffffff');txt('Scorpius Berlin','400 S Yellowtail','#073b3a');break;
    case'bout':plate('#ff4fa3','#ffffff');txt('Boutique '+((typeof ST!=='undefined'&&ST.profil&&ST.profil.handle)||'Glow'),'italic 500 S Bodoni Moda','#ffffff',.5);break;
    case'home':plate('#d8c39a');txt('DEIN ZUHAUSE','700 S Inter','#15161a',1);break}}
 function topSign(b){if(!b.top||!b.topF)return;const f=b.topF;const[cx,cy]=pt(f.x+f.w/2,f.y+f.d/2,b.topZ);const s=Math.min(Z/DPR,1.4)*DPR;

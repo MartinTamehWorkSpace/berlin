@@ -1,4 +1,4 @@
-// Glow City · eigenes-auto.js · wird als klassisches Skript in index.html geladen (gemeinsamer globaler Bereich, Reihenfolge zählt)
+// Berlin City · eigenes-auto.js · wird als klassisches Skript in index.html geladen (gemeinsamer globaler Bereich, Reihenfolge zählt)
 // ---------- Eigenes Auto vor der Wohnung, mit Namensschild ----------
 const PARK_ICH={x:4.2,y:7.6};const AUTO_SPR={twinga:'1',s5:'2',g63:'3',furioso:'4',roadster:'5',uber:'2'};
 // Uber: ein schwarzer Wagen fährt über die Straßen zu dir, holt dich ab und bringt dich bis vor die Tür. 10 €.

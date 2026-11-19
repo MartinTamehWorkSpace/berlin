@@ -1,4 +1,4 @@
-// Glow City · traum.js · Dein nächster Traum: oben unter der Uhr steht immer das nächste große Statusziel mit Fortschritt.
+// Berlin City · traum.js · Dein nächster Traum: oben unter der Uhr steht immer das nächste große Statusziel mit Fortschritt.
 // Gewählt wird das günstigste Statusstück, das du dir gerade noch nicht leisten kannst (mindestens 20 % über deinem Konto): erreichbar, aber nie geschenkt.
 // Ist es leistbar, wird die Leiste grün und führt dich mit einem Tipp direkt in den Laden. Neue Statusgüter sind nur Einträge im Katalog.
 const TRAUM_KAT = ['auto', 'tasche', 'jacht', 'jet', 'wohnen', 'schmuck'];

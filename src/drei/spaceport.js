@@ -1,9 +1,9 @@
-// Glow City 3D · spaceport.js · Glow Spaceport hinter dem Flughafen: Betonrampe, Stahl-Startturm mit Greifarmen, Edelstahlrakete (Booster und Raumschiff mit Klappen),
+// Berlin City 3D · spaceport.js · Spree Spaceport hinter dem Flughafen: Betonrampe, Stahl-Startturm mit Greifarmen, Edelstahlrakete (Booster und Raumschiff mit Klappen),
 // Kugeltanks, Wasserturm, Schild. Nachts angestrahlt (nur leuchtende Flächen, keine echten Lichter). Zur Viertelstunde nach jeder vollen Stunde startet die Rakete
 // mit Feuer und Rauch und steht danach wieder auf der Rampe. Antippen zeigt den Ausblick: Mond und Mars, für Milliardäre, noch gesperrt.
 import * as THREE from 'three';
-import { M } from './haeuser.js?v=1795049048';
-import { namensSchild } from './leben.js?v=1795049048';
+import { M } from './haeuser.js?v=1795049539';
+import { namensSchild } from './leben.js?v=1795049539';
 const std = (c, o = {}) => new THREE.MeshStandardMaterial(Object.assign({ color: c, roughness: .5 }, o));
 export function spaceport(szene) { const g = new THREE.Group(), x0 = 87 * M, z0 = 6 * M; g.position.set(x0, 0, z0); szene.add(g);
   const BETON = std('#bdb9b2', { roughness: .95 }), STAHL = std('#3a3f47', { metalness: .7, roughness: .4 }), EDEL = std('#d7dbe0', { metalness: 1, roughness: .18 }), SCHWARZ = std('#16171a', { roughness: .6 });
@@ -37,7 +37,7 @@ export function spaceport(szene) { const g = new THREE.Group(), x0 = 87 * M, z0 
   // Start zur Viertelstunde nach jeder vollen Stunde (echte Zeit, für alle gleich), 40 Sekunden
   let startT = -1, letzte = -1;
   return { weiter(nacht, dt) { LICHT.emissiveIntensity = .2 + nacht * 2.5; blitz.visible = Math.sin(performance.now() / 300) > 0; const d = new Date();
-    if (d.getMinutes() === 15 && letzte !== d.getHours()) { letzte = d.getHours(); startT = 0; if (typeof toast === 'function') toast('🚀 Start am Glow Spaceport') }
+    if (d.getMinutes() === 15 && letzte !== d.getHours()) { letzte = d.getHours(); startT = 0; if (typeof toast === 'function') toast('🚀 Start am Spree Spaceport') }
     if (startT >= 0) { startT += dt; const t = startT; flamme.material.opacity = t < 2 ? t / 2 * .9 : t < 30 ? .9 : Math.max(0, .9 - (t - 30)); flamme.scale.set(1 + Math.sin(t * 40) * .06, 1 + Math.sin(t * 23) * .1, 1);
       rakete.position.y = 4.3 + (t > 4 ? Math.pow(t - 4, 2.2) * 1.4 : 0); if (t < 12 && Math.random() < dt * 25) { const r = new THREE.Mesh(new THREE.SphereGeometry(3, 10, 8), rauchMat.clone()); r.position.set((Math.random() - .5) * 10, 4, (Math.random() - .5) * 10); g.add(r); RAUCH.push({ r, l: 8 }) }
       if (t > 40) { startT = -1; rakete.position.y = 4.3; flamme.material.opacity = 0 } }

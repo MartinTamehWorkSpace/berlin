@@ -1,4 +1,4 @@
-// Glow City 3D · welt.js · Die Stadt in 3D: Renderer, Himmel nach der Spieluhr, Boden und Straßen, Kamera folgt dir, Antippen.
+// Berlin City 3D · welt.js · Die Stadt in 3D: Renderer, Himmel nach der Spieluhr, Boden und Straßen, Kamera folgt dir, Antippen.
 // Die Spiellogik bleibt im Spiel (frame() in ablauf.js). Hier wird nur gezeichnet und angetippt. Innenräume zeichnet weiter das 2D-Spiel.
 import * as THREE from 'three';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
@@ -8,17 +8,18 @@ import { EffectComposer } from 'three/addons/postprocessing/EffectComposer.js';
 import { RenderPass } from 'three/addons/postprocessing/RenderPass.js';
 import { UnrealBloomPass } from 'three/addons/postprocessing/UnrealBloomPass.js';
 import { OutputPass } from 'three/addons/postprocessing/OutputPass.js';
-import { M, NEON, FENSTER, GLAS, baueHaeuser, box, std, durchsicht } from './haeuser.js?v=1795049048';
-import { menschen, verkehr, stadtmoebel, autosLaden } from './leben.js?v=1795049048';
-import { fahrbahn, pflaster, sand, blase, rasen } from './texturen.js?v=1795049048';
-import { praxis } from './praxis.js?v=1795049048';
-import { wohnung } from './wohnung.js?v=1795049048';
-import { boote, helis } from './wasser.js?v=1795049048';
-import { feuerwerk } from './feuerwerk.js?v=1795049048';
-import { strand } from './strand.js?v=1795049048';
-import { flughafen } from './flughafen.js?v=1795049048';
-import { arena } from './arena.js?v=1795049048';
-import { spaceport } from './spaceport.js?v=1795049048';
+import { graffiti } from './graffiti.js?v=1795049539';
+import { M, NEON, FENSTER, GLAS, baueHaeuser, box, std, durchsicht } from './haeuser.js?v=1795049539';
+import { menschen, verkehr, stadtmoebel, autosLaden } from './leben.js?v=1795049539';
+import { fahrbahn, pflaster, sand, blase, rasen } from './texturen.js?v=1795049539';
+import { praxis } from './praxis.js?v=1795049539';
+import { wohnung } from './wohnung.js?v=1795049539';
+import { boote, helis } from './wasser.js?v=1795049539';
+import { feuerwerk } from './feuerwerk.js?v=1795049539';
+import { strand } from './strand.js?v=1795049539';
+import { flughafen } from './flughafen.js?v=1795049539';
+import { arena } from './arena.js?v=1795049539';
+import { spaceport } from './spaceport.js?v=1795049539';
 let PRAXIS = null, WOHNUNG = null, inWohnungJetzt = false;
 
 const handy = innerWidth < 760;
@@ -91,14 +92,14 @@ for (const b of B) { const x0 = (b.x + 2) * M, z0 = (b.y + 5.02) * M, z1 = (b.y 
   const schild = new THREE.Mesh(new THREE.PlaneGeometry(.55, .55), PSCHILD); schild.position.set(x0 - .3, 2.1, (b.y + 4.95) * M + .05); szene.add(schild) }
 
 // ---------- Häuser, Menschen, Autos, Stadtmöbel ----------
-const haeuser = baueHaeuser(szene); const leute = menschen(szene); const autos = verkehr(szene); const moebel = stadtmoebel(szene); autosLaden();
+const haeuser = baueHaeuser(szene); const graffitiWelt = graffiti(szene); const leute = menschen(szene); const autos = verkehr(szene); const moebel = stadtmoebel(szene); autosLaden();
 // Nachts: unter jeder Laterne ein warmweißer Lichtkegel auf der Straße, dazu die echten Lichter in der Nähe. Stilvoll, keine Casino-Farben.
 const KEGEL = (() => { const c = document.createElement('canvas'); c.width = c.height = 128; const x = c.getContext('2d'), g = x.createRadialGradient(64, 64, 0, 64, 64, 64); g.addColorStop(0, 'rgba(255,255,255,1)'); g.addColorStop(.35, 'rgba(255,255,255,.55)'); g.addColorStop(1, 'rgba(255,255,255,0)'); x.fillStyle = g; x.fillRect(0, 0, 128, 128); return new THREE.CanvasTexture(c) })();
 const LICHTKEGEL = moebel.LAMPEN.map((p, i) => { const m = new THREE.Mesh(new THREE.PlaneGeometry(16, 16), new THREE.MeshBasicMaterial({ map: KEGEL, color: '#ffd9a8', transparent: true, opacity: 0, blending: THREE.AdditiveBlending, depthWrite: false })); m.rotation.x = -Math.PI / 2; m.position.set(p.x, .06, p.z); m.renderOrder = 2; szene.add(m); return m });
 const boutique = B.find(b => b.meins === 'boutique'), tower = B.find(b => b.haupt); const STRAND = strand(szene); const FLUGHAFEN = flughafen(szene); let JETKAM = false; const ARENA = arena(szene); const SPACEPORT = spaceport(szene);
 const FEUERWERK = feuerwerk(szene, tower ? { x: (tower.x + 2) * M, z: (tower.y + 2) * M } : { x: 80, z: 80 }, handy); window.FEUERWERK = FEUERWERK;
 const BOOTE = boote(szene), HELIS3 = helis(szene);
-// Glow Tower als Treffpunkt: leuchtender Doppelring am Boden und ein festes Schild, damit alle wissen: hier ist deine Klinik, hier treffen sich die Spielerinnen
+// Alex Tower als Treffpunkt: leuchtender Doppelring am Boden und ein festes Schild, damit alle wissen: hier ist deine Klinik, hier treffen sich die Spielerinnen
 const turmRing = new THREE.Group(); if (tower) { const mx = (tower.x + 2) * M, mz = (tower.y + 2) * M; turmRing.position.set(mx, 0, mz);
   // Medizinisch blauer Lichtsaum: niedrige, nach oben ausblendende Wand aus Licht
   const saumTex = (() => { const c = document.createElement('canvas'); c.width = 4; c.height = 64; const g2 = c.getContext('2d'), v = g2.createLinearGradient(0, 64, 0, 0); v.addColorStop(0, 'rgba(120,200,255,.55)'); v.addColorStop(1, 'rgba(120,200,255,0)'); g2.fillStyle = v; g2.fillRect(0, 0, 4, 64); return new THREE.CanvasTexture(c) })();
@@ -153,7 +154,7 @@ function licht(mitte) { const h = Math.round(stunde() * 4) / 4, /* Sonne wandert
 const ziel = new THREE.Vector3(ICH.x * M, 1.5, ICH.y * M); steuer.target.copy(ziel); kamera.position.set(ziel.x + 17, 19, ziel.z + 17);
 let fokusPunkt = null; const tmp = new THREE.Vector3();
 const zoom = f => { tmp.subVectors(kamera.position, steuer.target).multiplyScalar(f); if (tmp.length() > 6 && tmp.length() < 180) kamera.position.copy(steuer.target).add(tmp) };
-// Kino-Modus für Reels: Oberfläche aus, Kamera fliegt langsam um den Glow Tower, über die Promenade und zurück. Tippen beendet.
+// Kino-Modus für Reels: Oberfläche aus, Kamera fliegt langsam um den Alex Tower, über die Promenade und zurück. Tippen beendet.
 const KINO = { an: false, t: 0 }; document.getElementById('zkino').onclick = () => { KINO.an = true; KINO.t = 0; document.body.classList.add('kino'); const h = document.body.appendChild(Object.assign(document.createElement('div'), { className: 'kinohinweis', textContent: 'Kino-Modus · tippen zum Beenden' })); setTimeout(() => h.style.opacity = 0, 2000); setTimeout(() => h.remove(), 3200) };
 addEventListener('pointerdown', () => { if (!KINO.an || KINO.t < .5) return; KINO.an = false; document.body.classList.remove('kino') }, true);
 /* Steuerkreuz (Martin 19.11.2026): ⟲ ⟳ drehen die Kamera um den Blickpunkt, gedrückt halten dreht weiter */
@@ -175,7 +176,7 @@ leinwand.addEventListener('pointerup', e => { if (!runter || Math.hypot(e.client
   let haus = null, person = null, auto = false, boot = false; for (const t of ray.intersectObjects(szene.children, true)) { let o = t.object; if (!o.visible) continue; while (o && !o.userData.haus && !o.userData.p && !o.userData.meinAuto && !o.userData.meinBoot && !o.userData.jet && !o.userData.spaceport && o.parent) o = o.parent;
     if (o.userData.haus && o.userData.haus.drei && o.userData.haus.drei.userData.durch) continue;
     if (o.userData.spaceport) { if (typeof spaceportZeigen === 'function') spaceportZeigen(); return }
-    if (o.userData.jet) { if (ST.besitz[o.userData.jet]) jetZiele(); else { const t = B.find(b => b.title === 'Glow Airport'); if (t) laufeZu(t.x + 2, t.y + 2, t); toast('Dieser Jet ist zu verkaufen. Ab ins Terminal.') } return }
+    if (o.userData.jet) { if (ST.besitz[o.userData.jet]) jetZiele(); else { const t = B.find(b => b.title === 'Flughafen Tempelhoff'); if (t) laufeZu(t.x + 2, t.y + 2, t); toast('Dieser Jet ist zu verkaufen. Ab ins Terminal.') } return }
     if (o.userData.meinBoot) { boot = true; break } if (o.userData.meinAuto) { auto = true; break } if (o.userData.p) { person = o.userData.p; break } if (o.userData.haus) { haus = o.userData.haus; break } }
   const p = new THREE.Vector3(); ray.ray.intersectPlane(bodenEbene, p); const x = p.x / M, y = p.z / M; fokusPunkt = null; frei = false;
   // Boot: antippen = an Bord gehen; an Bord tippt man aufs Wasser, um hinzufahren
@@ -196,7 +197,7 @@ function zeichne(dt) { T3 += dt; LETZT_DT = dt;
   WELLEN2.offset.set(T3 * .006, T3 * .004);
   if (KINO.an) { KINO.t += dt; const tw = tower ? new THREE.Vector3((tower.x + 2) * M, 0, (tower.y + 2) * M) : new THREE.Vector3(60, 0, 60), u = KINO.t * .05, r = 70 + Math.sin(KINO.t * .13) * 35;
     steuer.target.lerp(tmp.set(tw.x + Math.sin(KINO.t * .07) * 30, 6 + Math.sin(KINO.t * .21) * 4, tw.z + 25 + Math.sin(KINO.t * .05) * 40), Math.min(1, dt * .8)); kamera.position.lerp(tmp.set(tw.x + Math.cos(u) * r, 22 + Math.sin(KINO.t * .17) * 14, tw.z + Math.sin(u) * r), Math.min(1, dt * .8)); frei = true }
-  // Klinik offen: deine Praxis im Glow Tower statt der Stadt
+  // Klinik offen: deine Praxis im Alex Tower statt der Stadt
   const inPraxis = typeof KLINIK !== 'undefined' && KLINIK.offen; steuer.enabled = !inPraxis;
   // Wohnungen: eigener 3D-Raum statt der alten 2D-Ansicht
   inWohnungJetzt = !inPraxis && typeof INNEN !== 'undefined' && INNEN && typeof etagen === 'function' && etagen(INNEN)[INNEN.stock || 0].a === 'home'; const inWohnung = inWohnungJetzt; if (inWohnung) steuer.enabled = false;
@@ -213,7 +214,7 @@ function zeichne(dt) { T3 += dt; LETZT_DT = dt;
   if (fp) { const ft = FLUGHAFEN.flugZeit(), wackel = ft > 2 && ft < 7 ? .12 : 0; kamera.position.lerp(tmp.set(fp.x + 7 + (Math.random() - .5) * wackel, fp.y + 5 + Math.min(14, Math.max(0, ft - 7) * 1.5), fp.z + 24), Math.min(1, dt * 1.8)) }
   CX = wx(ICH.x, ICH.y); CY = wy(ICH.x, ICH.y, 0);
   const nacht = licht(steuer.target); const mitte = { x: steuer.target.x / M, y: steuer.target.z / M }; const weite = Math.min(30, 10 + kamera.position.distanceTo(steuer.target) / M * .9);
-  if ((++bildNr) % 4 === 0) durchsicht(haeuser, kamera, new THREE.Vector3(ICH.x * M, 1.2, ICH.y * M)); leute.weiter(T3, mitte, weite); autos.weiter(nacht); moebel.weiter(); BOOTE.weiter(T3); FEUERWERK.weiter(dt); HELIS3.weiter(T3, dt);
+  if ((++bildNr) % 4 === 0) durchsicht(haeuser, kamera, new THREE.Vector3(ICH.x * M, 1.2, ICH.y * M)); leute.weiter(T3, mitte, weite); autos.weiter(nacht); graffitiWelt.weiter(); moebel.weiter(); BOOTE.weiter(T3); FEUERWERK.weiter(dt); HELIS3.weiter(T3, dt);
   for (const h of haeuser) h.visible = h.userData.haus !== INNEN; if (tower && tower.drei && tower.drei.userData.blinkt) tower.drei.userData.blinkt.visible = Math.sin(T3 * 3) > 0;
   // Blase über deiner Boutique
   if (boutique && typeof boutiqueStatus === 'function') { const s = boutiqueStatus(); if (s && s.text !== blasenText) { blasenText = s.text; blasenSprite.material.map = blase(s.text, s.farbe); blasenSprite.material.needsUpdate = true } blasenSprite.visible = !!s;

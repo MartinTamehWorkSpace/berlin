@@ -1,4 +1,4 @@
-// Glow City · partys.js (Daten) · Was in den Wohnungen los ist: jede Wohnung hat jeden Tag ein Event mit Namen, Art und 4 bis 10 Gästen.
+// Berlin City · partys.js (Daten) · Was in den Wohnungen los ist: jede Wohnung hat jeden Tag ein Event mit Namen, Art und 4 bis 10 Gästen.
 // art bestimmt die Einrichtung (dj, bar, kueche, dinner, beauty) und die Mitmach-Aktion. Neue Events sind nur ein Eintrag.
 window.GLOW_PARTYS = {
   EVENTS: [
@@ -23,7 +23,7 @@ window.GLOW_PARTYS = {
   AKTIONEN: [{ id: 'reden', icon: '💬', name: 'Reden', stufe: 0 }, { id: 'anstossen', icon: '🥂', name: 'Anstoßen', stufe: 10 }, { id: 'tanzen', icon: '💃', name: 'Tanzen', stufe: 25 },
     { id: 'selfie', icon: '🤳', name: 'Selfie zusammen', stufe: 35 }, { id: 'flirten', icon: '😏', name: 'Flirten', stufe: 50 }, { id: 'deal', icon: '🤝', name: 'Deal machen', stufe: 60 }, { id: 'kuessen', icon: '💋', name: 'Küssen', stufe: 80 }],
   // Was Gäste sagen, wenn du sie ansprichst
-  SAETZE: ['Du bist doch die Ärztin aus dem Glow Tower, oder?', 'Komm, ich stell dir jemanden vor.', 'Hast du die neue Birkinn schon gesehen?', 'Wir sollten mal zusammen nach Mykonos.',
+  SAETZE: ['Du bist doch die Ärztin aus dem Alex Tower, oder?', 'Komm, ich stell dir jemanden vor.', 'Hast du die neue Birkinn schon gesehen?', 'Wir sollten mal zusammen nach Mykonos.',
     'Ich brauche unbedingt einen Termin bei dir.', 'Der DJ ist ein Freund von mir.', 'Wer hat den Champagner mitgebracht? Respekt.', 'Nächste Woche feiere ich bei mir, du bist eingeladen.',
-    'Ich habe dich in der Luba Arena gesehen.', 'Erzähl, wie läuft deine Praxis?', 'Du siehst unverschämt erholt aus.', 'Kennst du schon das Rivva? Bester Spritz der Stadt.']
+    'Ich habe dich in der Spree Arena gesehen.', 'Erzähl, wie läuft deine Praxis?', 'Du siehst unverschämt erholt aus.', 'Kennst du schon das Papillong? Bester Spritz der Stadt.']
 };

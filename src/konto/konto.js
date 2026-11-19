@@ -1,4 +1,4 @@
-// Glow City · konto.js · wird als klassisches Skript in index.html geladen (gemeinsamer globaler Bereich, Reihenfolge zählt)
+// Berlin City · konto.js · wird als klassisches Skript in index.html geladen (gemeinsamer globaler Bereich, Reihenfolge zählt)
 // ---------- Echte Konten: Spielstand in der Datenbank, andere Spielerinnen live ----------
 const KONTO={db:null,id:null,doc:null,room:null,schreibt:false,zuletzt:0};const SPIELER=new Map();
 // Gäste: klarer Weg zur Anmeldung. Konto anlegen und anmelden läuft über claude.ai, danach den Spiellink neu öffnen.
@@ -13,7 +13,7 @@ async function kontoStarten(){const u=window.claude&&window.claude.use;const el=
   if(room){KONTO.room=room;room.on('chat',m=>{if(m.isMe&&m.sameTab)return;const d=m.data||{};const h=String(d.handle||'Spielerin').slice(0,24),t=String(d.text||'').slice(0,140);if(t){post(h,t,{live:1});if((!d.t||Date.now()-d.t<30000)&&Math.random()<.6)antworten(t,h,1)}});
     try{room.presence({handle:(ST.profil&&ST.profil.handle)||'Gast'});room.onPeers(peers=>{const echte=(peers||[]).filter(p=>!p.isMe&&!(p.kind==='agent'));KONTO.live=echte.length;const el=document.getElementById('online');if(el)el.dataset.live=echte.length;if(echte.length&&!KONTO.gemeldet){KONTO.gemeldet=1;post('',`Live-Chat verbunden. Gerade online: ${echte.map(p=>(p.state&&p.state.handle)||'Spielerin').join(', ')}`,{sys:1})}})}catch(e){}
     post('','Live-Chat verbunden: Echte Spielerinnen, die gerade online sind, sehen deine Nachrichten.',{sys:1})}
-  else post('','Live-Chat nicht verbunden. Dafür musst du mit einem Claude-Konto angemeldet sein und Zugang zu Glow City haben.',{sys:1});
+  else post('','Live-Chat nicht verbunden. Dafür musst du mit einem Claude-Konto angemeldet sein und Zugang zu Berlin City haben.',{sys:1});
   if(!db||!user){gastHinweis(el);return}
   KONTO.db=db;KONTO.id=await user.id();KONTO.doc=db.doc('spieler/'+KONTO.id);
   try{const snap=await KONTO.doc.get();if(snap.exists){const d=snap.data();if(d&&d.stand){try{const alt=JSON.parse(d.stand);const neuer=(alt.gespeichert||0)>(ST.gespeichert||0)||(!alt.gespeichert&&!ST.gespeichert&&(alt.stil||0)>=(ST.stil||0));if(neuer||!ST.profil.handle){ST=Object.assign({},START,alt);if(!ST.reset1){ST.profil.handle='';ST.reset1=1}save();hud();lookAnwenden();startAufbauen()}}catch(e){}}}}catch(e){}

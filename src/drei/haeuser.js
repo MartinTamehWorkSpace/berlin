@@ -1,7 +1,7 @@
-// Glow City 3D · haeuser.js · Häuser aus dem Stadtplan (B): Art déco, Glas mit Solardach, Glow Tower. Schilder kommen aus brand() des Spiels.
+// Berlin City 3D · haeuser.js · Häuser aus dem Stadtplan (B): Art déco, Glas mit Solardach, Alex Tower. Schilder kommen aus brand() des Spiels.
 // Ein Feld des Spiels = 3 Meter. Spiel-x wird 3D-X, Spiel-y wird 3D-Z.
 import * as THREE from 'three';
-import { markise, glasfassade } from './texturen.js?v=1795049048';
+import { markise, glasfassade } from './texturen.js?v=1795049539';
 
 export const M = 3;
 export const NEON = [], FENSTER = [], GLAS = []; // GLAS: Hochhausglas, nachts chromartig spiegelnd
@@ -92,7 +92,7 @@ function sockelUndTurm(b, gr) { const p = b.pod, w = 4 * M - .8, d = w, hs = 4.6
   if (b.top && b.top !== 'work') { const s = new THREE.Mesh(new THREE.PlaneGeometry(9, 1.9), markenSchild(b.top)); s.position.set(0, top + 2.4, w / 2 - .6); gr.add(s); box(9.2, .3, .3, ATTIKA, 0, top + .5, w / 2 - .6, gr) }
   return top }
 
-// Glow Tower: drei Flügel um einen Kern springen spiralförmig zurück, oben die Nadel. Erkennbar, aber nicht übertrieben hoch.
+// Alex Tower: drei Flügel um einen Kern springen spiralförmig zurück, oben die Nadel. Erkennbar, aber nicht übertrieben hoch.
 function glowTower(gr) { const glas = new THREE.MeshPhysicalMaterial({ color: '#d4dfe9', metalness: .55, roughness: .08, envMapIntensity: 1.5, emissive: '#ffe1b8', emissiveIntensity: 0 }); glas.userData.basis = .08; FENSTER.push(glas);
   const kante = neon('#ff4fa3', 6), weiss = std('#eef1f4', { metalness: .3, roughness: .3 }), schwarz = std('#0c0c10', { metalness: .7, roughness: .22 }); const ebene = 2.1, stufen = 26, kernH = ebene * stufen;
   const kern = schatten(new THREE.Mesh(new THREE.CylinderGeometry(1.8, 2.8, kernH, 6), glas)); kern.position.y = kernH / 2; gr.add(kern);
@@ -119,7 +119,7 @@ export function eigeneMaterialien(gr) { const kopie = new Map();
     if (NEON.includes(o.material)) NEON.push(k); if (FENSTER.includes(o.material)) FENSTER.push(k); kopie.set(o.material, k) } o.material = k }); gr.userData.materialien = [...kopie.values()] }
 // Häuser zwischen Kamera und dir: durchsichtig und nicht anklickbar, damit du dahinter weiterlaufen kannst
 export function durchsicht(haeuser, kamera, ziel) { const v = ziel.clone().project(kamera), abstand = kamera.position.distanceTo(ziel), ecke = new THREE.Vector3();
-  for (const h of haeuser) { if (h.userData.haupt && (h.userData.box || (h.userData.box = new THREE.Box3().setFromObject(h))).distanceToPoint(kamera.position) > 30) { if (h.userData.durch) { h.userData.durch = false; for (const m of h.userData.materialien) { m.transparent = m.userData.transparent; m.opacity = m.userData.opazitaet; m.depthWrite = m.userData.depthWrite; m.needsUpdate = true } } continue } // Glow Tower: von weitem immer sichtbar, nur ganz nah durchsichtig
+  for (const h of haeuser) { if (h.userData.haupt && (h.userData.box || (h.userData.box = new THREE.Box3().setFromObject(h))).distanceToPoint(kamera.position) > 30) { if (h.userData.durch) { h.userData.durch = false; for (const m of h.userData.materialien) { m.transparent = m.userData.transparent; m.opacity = m.userData.opazitaet; m.depthWrite = m.userData.depthWrite; m.needsUpdate = true } } continue } // Alex Tower: von weitem immer sichtbar, nur ganz nah durchsichtig
     if (!h.userData.box) h.userData.box = new THREE.Box3().setFromObject(h); const b = h.userData.box; let x0 = 9, x1 = -9, y0 = 9, y1 = -9;
     for (let k = 0; k < 8; k++) { ecke.set(k & 1 ? b.max.x : b.min.x, k & 2 ? b.max.y : b.min.y, k & 4 ? b.max.z : b.min.z).project(kamera); x0 = Math.min(x0, ecke.x); x1 = Math.max(x1, ecke.x); y0 = Math.min(y0, ecke.y); y1 = Math.max(y1, ecke.y) }
     const mitte = b.getCenter(ecke); const naeher = kamera.position.distanceTo(mitte) < abstand - 2; const rand = .06;

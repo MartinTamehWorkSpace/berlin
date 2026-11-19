@@ -1,4 +1,4 @@
-// Glow City · natur.js · wird als klassisches Skript in index.html geladen (gemeinsamer globaler Bereich, Reihenfolge zählt)
+// Berlin City · natur.js · wird als klassisches Skript in index.html geladen (gemeinsamer globaler Bereich, Reihenfolge zählt)
 // ---------- Pflanzen, Brunnen, Jachten ----------
 const S=[];
 for(let i=0;i<16;i++)S.push({k:R()<.4?'palm':'tree',x:PARK.x+.3+R()*3.4,y:PARK.y+.3+R()*3.4,s:.8+R()*.5});
@@ -14,7 +14,7 @@ for(let i=0;i<4;i++){S.push({k:'palm',x:PLAZA.x+.4+i*1.07,y:PLAZA.y+.4,s:.75});S
 const SCHIFFE=[{x:2,y:50.5,L:6,v:.8,typ:'gross',ph:0},{x:24,y:48.4,L:3.2,v:-1.3,typ:'jacht',ph:1},{x:38,y:52.4,L:1.8,v:3.2,typ:'speed',ph:2}];
 const YACHT=[];for(let i=0;i<3;i++)YACHT.push({k:'yacht',x:42+i*2.3,y:46.6+(i%2)*1.2,L:2.4,ph:i});
 S.push({k:'meinejacht',x:39.2,y:46.4});
-// Palmen im Beachclub von Nicky Beach (die Kai-Palmen stehen oben bei y 42.5)
+// Palmen im Beachclub von Scorpius Berlin (die Kai-Palmen stehen oben bei y 42.5)
 for(const[x,y,s]of[[34.5,42.6,1],[37.6,45.6,.9],[40.6,45.4,1.05],[35.8,45.9,.85]])S.push({k:'palm',x,y,s});
 // Strandliegen und Schirme
 for(let i=0;i<8;i++){S.push({k:'schirm',x:34.4+i*1.75,y:43.4+(i%2)*.9,c:i%2?'#ff7eb6':'#f4efe6'})}for(let i=0;i<8;i+=2)YACHT.push({k:'yacht',x:2.6+i*4.1,y:44.2+(i/2%2)*1.6,L:1.6+R()*1.2,ph:R()*6});
