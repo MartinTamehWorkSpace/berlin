@@ -60,7 +60,7 @@ function polizeiWeiter(dt) { const k = ST.kar, sterne = (ST.fahndung || 0);
     else { if (!p.ziel || Math.hypot(p.ziel[0] - p.x, p.ziel[1] - p.y) < .1) { const gx = STR.reduce((a, b) => Math.abs(b - p.x) < Math.abs(a - p.x) ? b : a), gy = STR.reduce((a, b) => Math.abs(b - p.y) < Math.abs(a - p.y) ? b : a), r = Math.random();
         p.ziel = r < .5 ? [STR[Math.max(0, Math.min(4, STR.indexOf(gx) + (Math.random() < .5 ? -1 : 1)))], gy] : [gx, STR[Math.max(0, Math.min(4, STR.indexOf(gy) + (Math.random() < .5 ? -1 : 1)))]] }
       const dx = p.ziel[0] - p.x, dy = p.ziel[1] - p.y, dd = Math.hypot(dx, dy), v = Math.min(dd, 2.2 * dt); p.x += dx / (dd || 1) * v; p.y += dy / (dd || 1) * v; p.blau = sterne ? p.blau + dt : 0 } }
-  const jagt = POLIZEI.some(p => p.jagd); if (jagt && !ST.jagdAn) toast('🚨 Streife hinter dir! Lauf und tauch ab.'); ST.jagdAn = jagt;
+  const jagt = POLIZEI.some(p => p.jagd); if (jagt && !ST.jagdAn) toast('🚨 Streife hinter dir! Lauf und tauch ab.'); ST.jagdAn = jagt; document.body.classList.toggle('jagd', jagt);
   /* Abtauchen: ohne Streife in der Nähe verliert man alle 20 Sekunden einen Stern */
   if (sterne > 0) { const nah = POLIZEI.some(p => Math.hypot(ICH.x - p.x, ICH.y - p.y) < 9); ST.fahndungUhr = (ST.fahndungUhr || 0) + (nah ? 0 : dt);
     if (ST.fahndungUhr > 20) { ST.fahndungUhr = 0; if (sterne >= 3 && k) k.entkommen3 = true; if (sterne >= 4 && k) k.entkommen4 = true; ST.fahndung = sterne - 1; toast(ST.fahndung ? `Abgetaucht: noch ${ST.fahndung} ★` : 'Die Polizei hat dich verloren'); missionPruefen(); save() } } }
@@ -76,6 +76,7 @@ function deal(o) { const k = kst(), t = Date.now(); if ((k.pause['d_' + o] || 0)
 function nachschub() { const preis = 6000 + (kst().m.dealer || 0) * 4000; if (ST.geld < preis) return toast(`Nachschub kostet ${euro(preis)}`); ST.geld -= preis; ST.ware = (ST.ware || 0) + 10; banner('📦 NACHSCHUB', 'Kontakt am Kotti: 10 Päckchen', `−${euro(preis)} · Ware ${ST.ware}`); save(); hud() }
 function content(o) { const k = kst(), t = Date.now(); if ((k.pause['c_' + o] || 0) > t) return toast(`Hier hast du gerade gedreht. Wieder in ${dauer(Math.ceil(((k.pause['c_' + o]) - t) / 1000))}`);
   const viral = Math.random() < .12, fol = Math.round((200 + (k.m.influ || 0) * 400) * (viral ? 25 : 1) * (.7 + Math.random() * .6));
+  const bl = document.createElement('div'); bl.className = 'blitz'; document.body.append(bl); setTimeout(() => bl.remove(), 600);
   k.pause['c_' + o] = t + 90000; k.orte[o] = 1; k.posts++; if (viral) k.viral++; ST.follower = (ST.follower || 0) + fol; ST.geld += Math.round(fol * 2.5); ICH.tanzBis = Date.now() + 6000;
   banner(viral ? '🔥 VIRAL' : '📸 CONTENT', `${ORTE[o].n}${viral ? ': Dein Video explodiert' : ''}`, `+${fol.toLocaleString('de-DE')} Follower · +${euro(Math.round(fol * 2.5))}`); missionPruefen(); save(); hud() }
 function gastroKasse(l) { ST.gastroKasse = ST.gastroKasse || {}; const seit = Math.min(240, (Date.now() - (ST.gastroKasse[l.id] || ST.gastro[l.id])) / 60000), geld = Math.round(seit * lokalProMin(l));
