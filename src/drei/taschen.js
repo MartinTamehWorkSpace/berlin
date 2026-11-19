@@ -1,4 +1,4 @@
-// Berlin City 3D · taschen.js · Handtaschen als echte 3D-Modelle, je Form mit ihren Erkennungszeichen.
+// Berlin 3D · taschen.js · Handtaschen als echte 3D-Modelle, je Form mit ihren Erkennungszeichen.
 // Jede Tasche wird einmal gebaut, nach Material zusammengefasst (wenige Zeichenaufrufe) und dann für alle Figuren wiederverwendet.
 import * as THREE from 'three';
 import { mergeGeometries } from 'three/addons/utils/BufferGeometryUtils.js';

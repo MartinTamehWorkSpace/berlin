@@ -1,4 +1,4 @@
-// Berlin City · autos.js · wird als klassisches Skript in index.html geladen (gemeinsamer globaler Bereich, Reihenfolge zählt)
+// Berlin · autos.js · wird als klassisches Skript in index.html geladen (gemeinsamer globaler Bereich, Reihenfolge zählt)
 // ---------- Autos ----------
 function car(c){const ra=Math.max(0,Math.min(1,Math.min(c.t+.5,41.8-c.t)/1.2));if(ra<=0)return;g.globalAlpha=ra;carInnen(c);g.globalAlpha=1}
 function carInnen(c){const dirS=c.vert?(c.v>0?'0':'180'):(c.v>0?'90':'270');const im=SPR[c.lvl+c.vr]&&SPR[c.lvl+c.vr][dirS];

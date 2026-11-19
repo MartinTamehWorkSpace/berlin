@@ -1,11 +1,11 @@
-// Berlin City · foto.js · Fotomodus: Selfie am aktuellen Ort, Follower je nach Ort, Outfit und Uhrzeit
+// Berlin · foto.js · Fotomodus: Selfie am aktuellen Ort, Follower je nach Ort, Outfit und Uhrzeit
 // Bester Ort: Promenade und Yachtclub zum Sonnenuntergang. Ein Foto alle 60 Sekunden.
 const FOTO_ORTE = { 'Scorpius Berlin': 2.2, Papillong: 2, Borchert: 1.8, 'Galeries Lafayetto': 1.6, "Ryotei 398": 1.5, 'Maison du Sac': 1.5, 'Tiffanny & Co.': 1.5, 'Spree Spa': 1.2 };
 let fotoBereit = 0;
 function fotoMachen() { if (T < fotoBereit) { toast(`Nächstes Foto in ${Math.ceil(fotoBereit - T)} Sekunden`); return } fotoBereit = T + 60;
   // Ort: Gebäude, in dem oder vor dem man steht, sonst die Straße
   const nah = INNEN || B.find(b => Math.hypot(ICH.x - (b.x + 2), ICH.y - (b.y + 4.4)) < 2.2);
-  const ort = nah ? nah.title : (ICH.y > 41 ? 'East Side Ufer' : 'Berlin City');
+  const ort = nah ? nah.title : (ICH.y > 41 ? 'East Side Ufer' : 'Berlin');
   const h = stunde(), goldeneStunde = h > 17.5 && h < 20 ? 1.6 : (h > 21 || h < 5) ? 1.2 : 1;
   const schmuck = (ICH.acc || []).length, tasche = ICH.bagK ? WS.KATALOG.find(i => i.id === ICH.bagK) : null;
   const faktor = (FOTO_ORTE[ort] || (ort === 'East Side Ufer' ? 1.7 : 1)) * goldeneStunde;

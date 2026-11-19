@@ -1,4 +1,4 @@
-// Berlin City · liga.js · Liga der Woche: Kliniken treten jede Woche (Montag bis Sonntag) mit ihrem Wochenumsatz gegeneinander an.
+// Berlin · liga.js · Liga der Woche: Kliniken treten jede Woche (Montag bis Sonntag) mit ihrem Wochenumsatz gegeneinander an.
 // Dabei: 5 Rivalinnen (wachsen mit deiner Klinik mit, damit es immer knapp bleibt), alle echten Spielerinnen derselben Woche und du.
 // Am Wochenende gibt es für Platz 1 bis 3 einen Anteil am Wochenumsatz, Follower und einen Pokal. Der Abstand zum nächsten Platz steht immer da.
 const LIGA = { preise: [{ anteil: .15, follower: 5000, name: 'Gold' }, { anteil: .08, follower: 2000, name: 'Silber' }, { anteil: .04, follower: 1000, name: 'Bronze' }], staerke: [1.9, 1.35, 1, .7, .45], stundenProTag: 3 };

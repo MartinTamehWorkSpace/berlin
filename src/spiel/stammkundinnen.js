@@ -1,4 +1,4 @@
-// Berlin City · stammkundinnen.js · Stammkundinnen und Bewertungen der Klinik.
+// Berlin · stammkundinnen.js · Stammkundinnen und Bewertungen der Klinik.
 // Stammkundinnen kommen mit ihrer Geschichte wieder, wollen ihre Lieblingsbehandlung und zahlen pro Besuch 10 % mehr (bis 50 %).
 // Ab dem 4. Besuch ist sie deine beste Kundin: Follower und ab dann VIP. Jede Behandlung bekommt eine Bewertung mit Sternen und einem Satz.
 const STAMM = { neuAb: 3, wiederChance: .22, neuChance: .1, pause: 4 * 60000, treueProBesuch: .1, treueMax: .5, besteAb: 4, besteFollower: 2000 };

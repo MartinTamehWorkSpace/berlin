@@ -1,4 +1,4 @@
-// Berlin City Figuren: die 20 festen Charaktere und das Zeichnen jeder Figur (Stadt, Läden, Figurenbogen).
+// Berlin Figuren: die 20 festen Charaktere und das Zeichnen jeder Figur (Stadt, Läden, Figurenbogen).
 // zeichne(ctx, x, y, s, f, t): x/y = Füße, s = Maßstab (1 = etwa 46 px hoch), t = Zeit für Gehen und Mimik.
 window.GLOW_FIGUREN = (() => {
   // Luxustaschen: jede mit eigener Form, damit man sie an der Figur erkennt

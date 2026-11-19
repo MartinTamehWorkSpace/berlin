@@ -1,4 +1,4 @@
-// Berlin City · liegen.js · Liegen aufwerten: jede Liege hat 20 Stufen. Pro Stufe 3 % kürzere Behandlung und 2 % mehr Honorar auf genau dieser Liege.
+// Berlin · liegen.js · Liegen aufwerten: jede Liege hat 20 Stufen. Pro Stufe 3 % kürzere Behandlung und 2 % mehr Honorar auf genau dieser Liege.
 // Alle 5 Stufen ein sichtbar neues Modell im Klinikraum (praxis.js fragt liegeModell ab). Preise steigen pro Stufe um 45 %.
 const LIEGE = { max: 20, zeit: .03, honorar: .02, grund: 400, faktor: 1.45,
   modelle: [{ ab: 0, name: 'Standard', farbe: '#ffffff' }, { ab: 5, name: 'Komfort', farbe: '#f2dfe6' }, { ab: 10, name: 'Premium-Leder', farbe: '#e7d3b0' }, { ab: 15, name: 'Medical Pro', farbe: '#2a2a30' }, { ab: 20, name: 'Signature Gold', farbe: '#16171a', gold: true }] };

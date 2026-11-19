@@ -1,4 +1,4 @@
-// Berlin City 3D · strand.js · Die Wasserfront: Holzpromenade (Palmen kommen aus S über leben.js), Terrassen über dem Wasser für Borchert, Ryotei 398, Papillong und Grill Royale,
+// Berlin 3D · strand.js · Die Wasserfront: Holzpromenade (Palmen kommen aus S über leben.js), Terrassen über dem Wasser für Borchert, Ryotei 398, Papillong und Grill Royale,
 // Scorpius Berlin als Boho-Beachclub (Steinpool, Schilfpergola, Rattanlampen, Feuer). Stilvoll in Stein, Leinen und Holz. Nachts warmes Licht über den Terrassen.
 import * as THREE from 'three';
 import { M } from './haeuser.js?v=1795067735';

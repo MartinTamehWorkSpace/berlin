@@ -1,4 +1,4 @@
-// Berlin City · aufklaerung.js · Aufklärungsblatt zu jeder Behandlung (antippen in Liege oder Wartezimmer) und Merkblätter von Kongressen.
+// Berlin · aufklaerung.js · Aufklärungsblatt zu jeder Behandlung (antippen in Liege oder Wartezimmer) und Merkblätter von Kongressen.
 // Die Inhalte stehen in src/daten/aufklaerung.js.
 const AUF = window.GLOW_AUFKLAERUNG;
 const HINWEIS = 'Das ist keine medizinische Empfehlung. Alle Angaben sind allgemeine Information. Bitte kläre jede Behandlung persönlich mit deiner Ärztin oder deinem Arzt ab.';

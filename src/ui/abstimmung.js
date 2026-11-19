@@ -1,9 +1,9 @@
-// Berlin City · abstimmung.js · wird als klassisches Skript in index.html geladen (gemeinsamer globaler Bereich, Reihenfolge zählt)
+// Berlin · abstimmung.js · wird als klassisches Skript in index.html geladen (gemeinsamer globaler Bereich, Reihenfolge zählt)
 // ---------- Abstimmung: die Stadt entscheidet, was als Nächstes gebaut wird ----------
 const VOTE_ZIEL=new Date(Date.now()+((7-new Date().getDay())%7||7)*864e5);VOTE_ZIEL.setHours(20,0,0,0);
 const OPTIONEN=[['nagel','Nagelstudio „Glossy Tips“',1840],['pilates','Pilates-Studio am Wasser',1712],['sushi','Sushi-Bar auf dem Dach',1388],['juwel','Juwelier „Maison Or“',1205],['pool','Rooftop-Pool mit DJ',994]];
 function abstimmung(){if(INNEN)return;const cb=panel('Abstimmung der Woche');ST.vote=ST.vote||{};const heute_=heute();const gewaehlt=ST.vote.tag===heute_?ST.vote.id:null;
-  const p0=document.createElement('p');const rest=Math.max(0,VOTE_ZIEL-Date.now()),h=Math.floor(rest/36e5),d=Math.floor(h/24);p0.textContent=`Was kommt als Nächstes nach Berlin City? Eine Stimme pro Tag. Gewonnen wird am Sonntag um 20 Uhr, noch ${d?d+' Tage ':''}${h%24} Std.`;
+  const p0=document.createElement('p');const rest=Math.max(0,VOTE_ZIEL-Date.now()),h=Math.floor(rest/36e5),d=Math.floor(h/24);p0.textContent=`Was kommt als Nächstes nach Berlin? Eine Stimme pro Tag. Gewonnen wird am Sonntag um 20 Uhr, noch ${d?d+' Tage ':''}${h%24} Std.`;
   const plus=Math.floor((Date.now()/36e5)%100);const st=OPTIONEN.map(([id,n,v],i)=>[id,n,v+plus*(5-i)+(ST.vote.zaehl&&ST.vote.zaehl[id]||0)]);const summe=st.reduce((a,x)=>a+x[2],0);
   const vo=document.createElement('div');vo.className='vo';
   st.sort((a,b)=>b[2]-a[2]).forEach(([id,n,v],i)=>{const b=document.createElement('button');if(id===gewaehlt)b.className='meins';b.disabled=!!gewaehlt;const pr=Math.round(v/summe*100);

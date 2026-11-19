@@ -1,4 +1,4 @@
-// Berlin City · marken.js · wird als klassisches Skript in index.html geladen (gemeinsamer globaler Bereich, Reihenfolge zählt)
+// Berlin · marken.js · wird als klassisches Skript in index.html geladen (gemeinsamer globaler Bereich, Reihenfolge zählt)
 // ---------- Marken und Angebote ----------
 const BR={
  prado:{n:'Prado',t:'Taschen, Schuhe, Mäntel. Teuer, aber jedes Teil bringt dauerhaft Stil.',fx:[['Nylon-Tasche','Stil +40 · 2.300 €'],['Loafer','Stil +22 · 980 €']]},

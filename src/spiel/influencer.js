@@ -1,4 +1,4 @@
-// Berlin City · influencer.js · Vom Praxisalltag zur bekannten Ärztin: Follower-Stufen mit Kooperations-Einkommen und ab Macro eine eigene Pflegemarke.
+// Berlin · influencer.js · Vom Praxisalltag zur bekannten Ärztin: Follower-Stufen mit Kooperations-Einkommen und ab Macro eine eigene Pflegemarke.
 // Einkommen läuft in echter Zeit (auch wenn du weg bist, höchstens 8 Stunden am Stück), ausgezahlt im Minutentakt.
 // Die Marke: Produkte einmal entwickeln, danach verkaufen sie sich stündlich, je mehr Follower, desto mehr. Neue Produkte sind nur Einträge in MARKE.produkte.
 // 20 Stufen von 500 bis 5 Mio. Followern, dazwischen gleichmäßige Schritte. Star-Bonus steigt bis +300 %, Kooperationen bis 30.000 € pro Stunde.

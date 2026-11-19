@@ -1,4 +1,4 @@
-// Berlin City Wirtschaft: eine Quelle für Spiel, Autohaus und Wirtschaftsseite.
+// Berlin Wirtschaft: eine Quelle für Spiel, Autohaus und Wirtschaftsseite.
 // Neue Dinge kommen nur hier hinzu. "rang" sortiert innerhalb einer Kategorie und lässt Lücken (100, 200, ...),
 // damit später Modelle dazwischen passen, ohne dass sich etwas verschiebt.
 window.GLOW_WIRTSCHAFT = (() => {

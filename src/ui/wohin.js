@@ -1,4 +1,4 @@
-// Berlin City · wohin.js · Knopf „Wohin?“ in der Leiste: alle Orte der Stadt als große Kacheln nach Thema.
+// Berlin · wohin.js · Knopf „Wohin?“ in der Leiste: alle Orte der Stadt als große Kacheln nach Thema.
 // Antippen: Kamera fliegt hin, du gehst oder fährst los (Auto, Uber oder zu Fuß wie beim Antippen eines Hauses).
 const WOHIN = [
   ['Karriere', [['@uhr', '🕰️', 'Weltzeituhr · Karriere'], ['@ort:goerli', '💊', 'Görli · Deals'], ['@ort:raw', '💊', 'RAW · Deals'], ['@ort:kotti', '💊', 'Kotti · Deals'], ['@ort:tor', '📸', 'Brandenburger Tor'], ['@ort:ufer', '📸', 'East Side Ufer']]],

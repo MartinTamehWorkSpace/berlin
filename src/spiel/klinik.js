@@ -1,4 +1,4 @@
-// Berlin City · klinik.js · Deine Schönheitsklinik im Alex Tower: du bist Ästhetikärztin, Dr. Glatt ist dein Mentor.
+// Berlin · klinik.js · Deine Schönheitsklinik im Alex Tower: du bist Ästhetikärztin, Dr. Glatt ist dein Mentor.
 // Kundinnen kommen in echter Zeit ins Wartezimmer, du behandelst sie auf deinen Liegen, rechnest ab und baust aus. Hier liegt die hohe Verdienststufe.
 const KQ = window.GLOW_KLINIK;
 function klinikStand() { if (!ST.klinik) ST.klinik = { liegen: [null], warte: [], geraete: { spritze: 1 }, raum: 0, sterne: 3, behandelt: 0, umsatz: 0, naechste: Date.now() + 8000 }; ST.klinik.team = ST.klinik.team || {}; ST.klinik.posts = ST.klinik.posts || []; if (ST.klinik.marketing == null) ST.klinik.marketing = ST.klinik.team.social ? 1 : 0; delete ST.klinik.team.social; ST.klinik.budget = ST.klinik.budget || 0; ST.klinik.ausbau = ST.klinik.ausbau || {}; ST.klinik.etagen = ST.klinik.etagen || { basis: 1 }; ST.klinik.lohnBis = ST.klinik.lohnBis || Date.now(); if ((ST.klinik.ausgabenBestand || 0) < 4) bestandSchaetzen(ST.klinik); return ST.klinik }

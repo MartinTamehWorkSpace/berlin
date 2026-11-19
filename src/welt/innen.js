@@ -1,4 +1,4 @@
-// Berlin City · innen.js · wird als klassisches Skript in index.html geladen (gemeinsamer globaler Bereich, Reihenfolge zählt)
+// Berlin · innen.js · wird als klassisches Skript in index.html geladen (gemeinsamer globaler Bereich, Reihenfolge zählt)
 // ---------- Innenansicht: Haus wird bis aufs Erdgeschoss aufgeschnitten ----------
 function etagen(b){const E=[{n:'Erdgeschoss',a:art(b),k:(b.pod.shops.map(s=>s[3]))}];
   if(E[0].a==='sc_terrasse'&&typeof scorpiusEtagen==='function')return scorpiusEtagen(E);

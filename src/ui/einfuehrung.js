@@ -1,4 +1,4 @@
-// Berlin City · einfuehrung.js · Einführung beim ersten Start: eine Karte über der Leiste führt Schritt für Schritt durch Klinik, Stadt und Chat.
+// Berlin · einfuehrung.js · Einführung beim ersten Start: eine Karte über der Leiste führt Schritt für Schritt durch Klinik, Stadt und Chat.
 // Schritte mit Bedingung gehen von selbst weiter, sobald man es gemacht hat; der passende Knopf leuchtet. Überspringen geht jederzeit.
 // Wer schon behandelt hat, sieht die Einführung nie. Fertig steht in ST.intro.
 const INTRO = [

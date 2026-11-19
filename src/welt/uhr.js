@@ -1,4 +1,4 @@
-// Berlin City · zeit.js · Tag und Nacht: Spieluhr, Himmelsfarben, Dunkelheit, Lichter bei Nacht
+// Berlin · zeit.js · Tag und Nacht: Spieluhr, Himmelsfarben, Dunkelheit, Lichter bei Nacht
 // Ein Spieltag dauert 4 echte Stunden (eine Spielstunde = 10 echte Minuten). Die Uhr folgt der echten Zeit,
 // darum ist für alle Spielerinnen gleichzeitig Tag oder Nacht. UHR.min zählt immer weiter, die Stunde ist min/60 modulo 24.
 const UHR = { tagMs: 4 * 3600e3, min: 0, zuletzt: '' };

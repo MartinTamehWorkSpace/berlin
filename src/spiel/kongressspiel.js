@@ -1,4 +1,4 @@
-// Berlin City · kongressspiel.js · Dein Vortrag auf dem Kongress: das Publikum stellt Fragen aus den Aufklärungsblättern, du antwortest unter Zeitdruck.
+// Berlin · kongressspiel.js · Dein Vortrag auf dem Kongress: das Publikum stellt Fragen aus den Aufklärungsblättern, du antwortest unter Zeitdruck.
 // Richtig = Applaus (Serie und Tempo geben mehr), falsch oder zu langsam = ein Mikrofon weniger (3 Mikros). Applaus voll = Standing Ovations:
 // sofort zurück mit voller Gage und Siegerbonus. Sonst verkürzt sich die Reise um den erreichten Applaus. Ein Vortrag pro Reise.
 // Am Ende steht, was du mitnimmst: jede Frage mit der richtigen Antwort.
@@ -32,5 +32,5 @@ function kongressSpiel() { const k = klinikStand(); if (!unterwegs(k)) return; i
     const mit = el_('div', 'kmit'); mit.append(el_('h4', null, 'Das nimmst du mit'), el_('p', 'hin', `${richtig} von ${gelernt.length} Fragen richtig · Anerkennung +${richtig * 3}${sieg ? ' · du fliegst sofort zurück' : ` · Reise ${Math.round(Math.min(100, wert))} % kürzer`}`));
     for (const g of gelernt) { const z = el_('div', 'klern ' + (g.ok ? 'ok' : 'neu')); z.append(el_('b', null, g.frage), el_('span', null, g.antwort)); mit.append(z) }
     mit.append(el_('p', 'hin', 'Allgemeine Information im Spiel, keine medizinische Empfehlung. Behandlungen immer mit Ärztin oder Arzt abklären.'));
-    const weiter = el_('button', 'cta opkasse', sieg ? '✈️ Zurück nach Berlin City' : 'Weiter'); weiter.onclick = () => { el.hidden = true; klinikWeiter(); if (KLINIK.offen) klinikZeichnen() }; fuss.replaceChildren(mit, weiter); save(); hud() }
+    const weiter = el_('button', 'cta opkasse', sieg ? '✈️ Zurück nach Berlin' : 'Weiter'); weiter.onclick = () => { el.hidden = true; klinikWeiter(); if (KLINIK.offen) klinikZeichnen() }; fuss.replaceChildren(mit, weiter); save(); hud() }
   frageEl.textContent = 'Der Saal ist voll. Beantworte die Fragen schnell und richtig, Serien bringen extra Applaus.'; const los = el_('button', 'cta opkasse', '🎤 Vortrag starten'); los.onclick = () => { antworten.replaceChildren(); naechste() }; antworten.append(los); zeichnen() }

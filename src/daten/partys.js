@@ -1,4 +1,4 @@
-// Berlin City · partys.js (Daten) · Was in den Wohnungen los ist: jede Wohnung hat jeden Tag ein Event mit Namen, Art und 4 bis 10 Gästen.
+// Berlin · partys.js (Daten) · Was in den Wohnungen los ist: jede Wohnung hat jeden Tag ein Event mit Namen, Art und 4 bis 10 Gästen.
 // art bestimmt die Einrichtung (dj, bar, kueche, dinner, beauty) und die Mitmach-Aktion. Neue Events sind nur ein Eintrag.
 window.GLOW_PARTYS = {
   EVENTS: [

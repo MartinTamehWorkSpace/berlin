@@ -1,4 +1,4 @@
-// Berlin City 3D · parkplatz.js · Ein Parkplatz als Baustein: Belag, 2 Reihen Buchten mit weißen Linien, Lichtmasten, Schild, geparkte Autos.
+// Berlin 3D · parkplatz.js · Ein Parkplatz als Baustein: Belag, 2 Reihen Buchten mit weißen Linien, Lichtmasten, Schild, geparkte Autos.
 // Benutzt von Arena und Flughafen. Ort, Drehung, Buchten und Schild kommen als Werte, nachts gehen die Masten an.
 import * as THREE from 'three';
 import { namensSchild, parkAuto } from './leben.js?v=1795067735';

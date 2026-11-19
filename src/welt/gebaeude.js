@@ -1,4 +1,4 @@
-// Berlin City · gebaeude.js · wird als klassisches Skript in index.html geladen (gemeinsamer globaler Bereich, Reihenfolge zählt)
+// Berlin · gebaeude.js · wird als klassisches Skript in index.html geladen (gemeinsamer globaler Bereich, Reihenfolge zählt)
 // ---------- Gebäude ----------
 const lit=(a,b,c)=>((a*7+b*3+c*5)%5)>1;
 function glassFace(f,side,z0,z1,kind){const len=side==='L'?f.w:f.d;const F=side==='L'?fL:fR;
@@ -83,7 +83,7 @@ function tower(b){const t=b.tow;let f={x:b.x+t.ox,y:b.y+t.oy,w:t.w,d:t.d};let z0
   if(t.led){const u0=.25,u1=f.w-.25,za=z0+FH*2,zb=z0+FH*7;fL(f,u0,u1,za,zb,'#0b1016');
     faceT(f,'L',u0,zb);g.save();g.beginPath();g.rect(0,0,(u1-u0)*35.78,zb-za);g.clip();
     g.fillStyle='#8fe3f0';g.font='700 15px Inter';g.textBaseline='middle';const msg='RANKING HEUTE   #1 @valentina 9.840 STIL   #2 @mila 9.512   #3 @jonas.lift 8.990   NEU: ABSTIMMUNG LÄUFT   ';
-    const w=g.measureText(msg).width,o=-(T*40%w);g.fillText(msg+msg,o,(zb-za)*.35);g.fillStyle='#d8c39a';g.font='500 22px Bodoni Moda';g.fillText('Berlin City',8+((T*12)%60),(zb-za)*.75);g.restore();g.setTransform(1,0,0,1,0,0)}
+    const w=g.measureText(msg).width,o=-(T*40%w);g.fillText(msg+msg,o,(zb-za)*.35);g.fillStyle='#d8c39a';g.font='500 22px Bodoni Moda';g.fillText('Berlin',8+((T*12)%60),(zb-za)*.75);g.restore();g.setTransform(1,0,0,1,0,0)}
   if(t.tier){fL(f,0,f.w,z1-1,z1+1,t.crown);fR(f,0,f.d,z1-1,z1+1,t.crown);top4(f.x,f.y,f.w,f.d,z1,'#4a5a64');
     const i=t.tier.ins;f={x:f.x+i,y:f.y+i,w:f.w-2*i,d:f.d-2*i};z0=z1;z1=z0+t.tier.fl*FH;glassFace(f,'L',z0,z1,t.kind);glassFace(f,'R',z0,z1,t.kind)}
   // leuchtende Krone

@@ -1,4 +1,4 @@
-// Berlin City · partys.js · Leben in den Wohnungen: jede Wohnung hat jeden Tag ein Event (Techno-Brunch, CEO-Dinner …) mit 4 bis 10 Gästen,
+// Berlin · partys.js · Leben in den Wohnungen: jede Wohnung hat jeden Tag ein Event (Techno-Brunch, CEO-Dinner …) mit 4 bis 10 Gästen,
 // passender Einrichtung und Aktionen (mitmachen, Gäste ansprechen). In jeder Wohnung steht die Glow-Home-Zentrale: Lieferdienste und Möbel bestellen.
 const PD = window.GLOW_PARTYS;
 const LIEFERUNG = [

@@ -1,4 +1,4 @@
-// Berlin City · op.js · Selbst behandeln und operieren: kurzes Geschicklichkeitsspiel direkt an der Liege.
+// Berlin · op.js · Selbst behandeln und operieren: kurzes Geschicklichkeitsspiel direkt an der Liege.
 // Spritze und Zugang: Zielring zieht sich zusammen, tippen wenn er die Mitte trifft. Schnitt: Linie mit dem Finger nachfahren.
 // Naht: Punkte der Reihe nach, der Faden folgt. Gerät: Fläche abfahren, bevor die Zeit abläuft.
 // Ergebnis 0 bis 100: Behandlung ist sofort fertig, das Honorar steigt bis aufs Doppelte, du sammelst Anerkennung.

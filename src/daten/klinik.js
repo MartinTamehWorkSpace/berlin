@@ -1,4 +1,4 @@
-// Berlin City · klinik.js (Daten) · Deine Schönheitsklinik im Alex Tower: Behandlungen, Geräte, Liegen, Wartezimmer, Kundinnen
+// Berlin · klinik.js (Daten) · Deine Schönheitsklinik im Alex Tower: Behandlungen, Geräte, Liegen, Wartezimmer, Kundinnen
 // Reine Daten. Zeiten in echten Sekunden. Neue Behandlung oder neues Gerät = ein Eintrag hier.
 window.GLOW_KLINIK = (() => {
   // geraet: was du dafür besitzen musst. dauer in Sekunden, preis = Honorar pro Behandlung (Euro pro Sekunde steigt mit jedem Gerät, Balance 17.11.), xp = Erfahrung, wunsch = wie oft Kundinnen danach fragen
@@ -87,7 +87,7 @@ window.GLOW_KLINIK = (() => {
   // Kongresse, Messen, Vorträge: du reist in echter Zeit ab, das Team führt die Praxis. Zurück gibt es Honorar, Follower, Sterne und einen Glow-Boost.
   // kosten = Reise und Hotel, honorar = Gage für deinen Vortrag, ab = Sterne, die du dafür brauchst. Jeder Kongress einmal pro Tag.
   const KONGRESSE = [
-    { id: 'rivva',  icon: '🎤', ort: 'Berlin City',  name: 'Vortrag im Papillong Med Club',          art: 'Vortrag', dauer: 600,   kosten: 0,      honorar: 900,   follower: 300,   sterne: .05, boost: 15, ab: 0 },
+    { id: 'rivva',  icon: '🎤', ort: 'Berlin',  name: 'Vortrag im Papillong Med Club',          art: 'Vortrag', dauer: 600,   kosten: 0,      honorar: 900,   follower: 300,   sterne: .05, boost: 15, ab: 0 },
     { id: 'miami',  icon: '🌴', ort: 'Miami',      name: 'Aesthetic Expo Miami',               art: 'Messe',   dauer: 1800,  kosten: 2400,   honorar: 0,      follower: 1500,  sterne: .1,  boost: 30, ab: 3.4 },
     { id: 'paris',  icon: '🗼', ort: 'Paris',      name: 'Anti-Aging Kongress Paris',          art: 'Vortrag', dauer: 3600,  kosten: 9000,  honorar: 16000,  follower: 4000,  sterne: .15, boost: 45, ab: 3.8 },
     { id: 'seoul',  icon: '🇰🇷', ort: 'Seoul',      name: 'K-Beauty Expo Seoul',                art: 'Messe',   dauer: 7200,  kosten: 24000,  honorar: 0,      follower: 15000, sterne: .15, boost: 60, ab: 4.1 },

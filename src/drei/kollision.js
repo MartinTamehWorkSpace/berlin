@@ -1,4 +1,4 @@
-// Berlin City 3D · kollision.js · Gegenstand geht nie durch Gegenstand: Möbel werden zu Rechtecken am Boden, Figuren gleiten an ihnen entlang.
+// Berlin 3D · kollision.js · Gegenstand geht nie durch Gegenstand: Möbel werden zu Rechtecken am Boden, Figuren gleiten an ihnen entlang.
 // Wände und Böden (sehr groß oder flach), Hängendes (über 1,6 m) und Figuren zählen nicht als Hindernis.
 import * as THREE from 'three';
 export function hindernisseSammeln(...gruppen) { const rects = [], b = new THREE.Box3();

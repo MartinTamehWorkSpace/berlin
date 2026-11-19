@@ -1,4 +1,4 @@
-// Berlin City · jet.js · Mit deinem Privatjet abheben: Ziel wählen, der Jet rollt und startet am Flughafen Tempelhoff, du bekommst Stil und Follower.
+// Berlin · jet.js · Mit deinem Privatjet abheben: Ziel wählen, der Jet rollt und startet am Flughafen Tempelhoff, du bekommst Stil und Follower.
 // Jedes Ziel einmal am Tag. Größere Jets bringen mehr (Faktor nach Jet-Typ).
 const JETFLUG = { start: 0, id: null };
 const JET_FAKTOR = { light: 1, mid: 1.6, long: 2.4, ultra: 3.5 };

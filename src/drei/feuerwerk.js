@@ -1,4 +1,4 @@
-// Berlin City 3D · feuerwerk.js · Feuerwerk über dem Alex Tower: zu jeder vollen Stunde (echte Zeit) 90 Sekunden lang.
+// Berlin 3D · feuerwerk.js · Feuerwerk über dem Alex Tower: zu jeder vollen Stunde (echte Zeit) 90 Sekunden lang.
 // Edle Farben (Gold, Weiß, Champagner). Ein Punktsystem für alle Funken, additiv gemischt, damit der Bloom sie leuchten lässt.
 import * as THREE from 'three';
 const FARBEN = ['#ffd36b', '#ffffff', '#ffe2b8', '#ff8fc7', '#9fd8ff']; // Gold, Weiß, Champagner, ein Hauch Rosé und Eisblau: stilvoll statt bunt

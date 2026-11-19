@@ -1,4 +1,4 @@
-// Berlin City · natur.js · wird als klassisches Skript in index.html geladen (gemeinsamer globaler Bereich, Reihenfolge zählt)
+// Berlin · natur.js · wird als klassisches Skript in index.html geladen (gemeinsamer globaler Bereich, Reihenfolge zählt)
 // ---------- Pflanzen, Brunnen, Jachten ----------
 const S=[];
 for(let i=0;i<16;i++)S.push({k:R()<.4?'palm':'tree',x:PARK.x+.3+R()*3.4,y:PARK.y+.3+R()*3.4,s:.8+R()*.5});

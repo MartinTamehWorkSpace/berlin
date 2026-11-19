@@ -1,4 +1,4 @@
-// Berlin City · tagesserie.js · Tagesbonus: sieben Tage am Stück, steigendes Geld, an Tag 7 15.000 €
+// Berlin · tagesserie.js · Tagesbonus: sieben Tage am Stück, steigendes Geld, an Tag 7 15.000 €
 // Einmal pro Kalendertag abholen. Wer einen Tag auslässt, fängt wieder bei Tag 1 an.
 const SERIE_LOHN = [
   { text: '1.000 €', geben: () => { ST.geld += 1000 } },

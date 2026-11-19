@@ -1,4 +1,4 @@
-// Berlin City 3D · wohnung.js · Wohnungen als 3D-Raum im Pinterest-Stil: Fischgrätparkett, Fensterfront mit Skyline, Bouclé-Sofa, TV-Wand, Kücheninsel, Pflanzen, warmes Licht.
+// Berlin 3D · wohnung.js · Wohnungen als 3D-Raum im Pinterest-Stil: Fischgrätparkett, Fensterfront mit Skyline, Bouclé-Sofa, TV-Wand, Kücheninsel, Pflanzen, warmes Licht.
 // Deine eigene Wohnung ist privat: Gäste nur, wenn du einlädst. Bei den Nachbarn läuft das Event des Tages mit Gästen. Gekaufte Möbel (kat 'wohnen') stehen sichtbar im Raum.
 // Antippen: Gast ansprechen, TV oder Laptop öffnet das Internet (Bestellen und Möbel kaufen).
 import * as THREE from 'three';

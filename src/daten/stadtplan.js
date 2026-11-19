@@ -1,4 +1,4 @@
-// Berlin City · stadtplan.js · wird als klassisches Skript in index.html geladen (gemeinsamer globaler Bereich, Reihenfolge zählt)
+// Berlin · stadtplan.js · wird als klassisches Skript in index.html geladen (gemeinsamer globaler Bereich, Reihenfolge zählt)
 // ---------- Viertel ----------
 // Reihe 0: Wohnen und Arbeit · Reihe 1: Luxus-Boulevard · Reihe 2: Beauty und Gesundheit · Reihe 3: Hafen mit Restaurants
 const lot=(bx,by)=>({x:8*bx+3,y:8*by+3,w:4,d:4});

@@ -1,4 +1,4 @@
-// Berlin City · ablauf.js · wird als klassisches Skript in index.html geladen (gemeinsamer globaler Bereich, Reihenfolge zählt)
+// Berlin · ablauf.js · wird als klassisches Skript in index.html geladen (gemeinsamer globaler Bereich, Reihenfolge zählt)
 // ---------- Ablauf ----------
 let T=0,last=performance.now(),sel=null;
 const front=(o,b)=>o.x>=b.x+b.w||o.y>=b.y+b.d;

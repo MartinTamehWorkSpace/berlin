@@ -1,4 +1,4 @@
-// Berlin City · aufgaben.js · Tagesaufgaben, Erfolge und das große Belohnungsbanner
+// Berlin · aufgaben.js · Tagesaufgaben, Erfolge und das große Belohnungsbanner
 // Andere Module melden, was passiert ist: ereignis('kauf', {it}) usw. Neue Aufgaben sind nur ein Eintrag in AUFGABEN_POOL.
 const AUFGABEN_POOL = [
   { id: 'latte',   text: 'Hol dir eine Melange im Café Zweistein',         typ: 'kauf',    wenn: d => d.it.id === 'latte',             geld: 300,  stil: 3 },

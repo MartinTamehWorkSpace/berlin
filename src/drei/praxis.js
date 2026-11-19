@@ -1,4 +1,4 @@
-// Berlin City 3D · praxis.js · Deine Klinik im Alex Tower, begehbar: Praxis-Etage, OP-Etage, Longevity-Etage, verbunden mit dem Aufzug.
+// Berlin 3D · praxis.js · Deine Klinik im Alex Tower, begehbar: Praxis-Etage, OP-Etage, Longevity-Etage, verbunden mit dem Aufzug.
 // Du läufst als deine Figur, tippst Kundinnen an (behandeln) und fertige Plätze (abrechnen). Der Stand kommt immer aus ST.klinik.
 import * as THREE from 'three';
 import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';

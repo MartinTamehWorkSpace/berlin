@@ -1,4 +1,4 @@
-// Berlin City · pflanzen-boote.js · wird als klassisches Skript in index.html geladen (gemeinsamer globaler Bereich, Reihenfolge zählt)
+// Berlin · pflanzen-boote.js · wird als klassisches Skript in index.html geladen (gemeinsamer globaler Bereich, Reihenfolge zählt)
 // ---------- Pflanzen, Brunnen, Jachten ----------
 function tree(t){const[x,y]=pt(t.x,t.y);const s=Z*t.s;g.fillStyle='rgba(0,0,0,.18)';g.beginPath();g.ellipse(x+3*s,y,9*s,3.5*s,0,0,7);g.fill();
   g.fillStyle='#6b5340';g.fillRect(x-1.2*s,y-12*s,2.4*s,12*s);g.fillStyle='#4f6e45';g.beginPath();g.arc(x,y-19*s,8.5*s,0,7);g.fill();g.fillStyle='#6a8c58';g.beginPath();g.arc(x-2.5*s,y-22*s,5*s,0,7);g.fill()}

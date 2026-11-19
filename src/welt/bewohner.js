@@ -1,4 +1,4 @@
-// Berlin City · bewohner.js · wird als klassisches Skript in index.html geladen (gemeinsamer globaler Bereich, Reihenfolge zählt)
+// Berlin · bewohner.js · wird als klassisches Skript in index.html geladen (gemeinsamer globaler Bereich, Reihenfolge zählt)
 // ---------- Menschen ----------
 const SK=['#f3d5bf','#e4b997','#c48f6b','#8d5b3d','#5c3b29'],HAIR=['#2b2118','#5a3d2b','#dcc28e','#141414','#8a4b2c','#cfc9c0','#141414','#2b2118','#e8e4dc','#ff4f8b','#3fa87a'];/* Berlin: auch Platin, Pink, Grün */
 /* Berlin (Martin 19.11.2026): dunkler angezogen. Viel Schwarz, Anthrazit, Oliv, Denim, ein Bordeaux, kaum Helles */

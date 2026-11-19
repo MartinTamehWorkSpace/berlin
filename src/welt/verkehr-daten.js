@@ -1,4 +1,4 @@
-// Berlin City · verkehr-daten.js · wird als klassisches Skript in index.html geladen (gemeinsamer globaler Bereich, Reihenfolge zählt)
+// Berlin · verkehr-daten.js · wird als klassisches Skript in index.html geladen (gemeinsamer globaler Bereich, Reihenfolge zählt)
 // ---------- Autos ----------
 const CARS=[];const MIX=[[1,10],[2,5],[3,3],[4,2],[5,1]];const VAR={1:['','b','r','','b','r','','','b','r']};
 // Spuren: in +y fährt man auf x=8k+.55, in -y auf 8k+1.45, in +x auf y=8j+1.45, in -x auf 8j+.55

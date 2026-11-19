@@ -1,4 +1,4 @@
-// Berlin City · chat.js · wird als klassisches Skript in index.html geladen (gemeinsamer globaler Bereich, Reihenfolge zählt)
+// Berlin · chat.js · wird als klassisches Skript in index.html geladen (gemeinsamer globaler Bereich, Reihenfolge zählt)
 // ---------- Bewohner und Stadt-Chat ----------
 // Die Stadt hat 150 feste Bewohnerinnen und Bewohner. Sie sind im Chat als Bewohner gekennzeichnet, echte Spielerinnen kommen später dazu.
 const VORN=['Lena','Sophie','Mia','Emma','Hannah','Lea','Marie','Laura','Julia','Sarah','Anna','Lisa','Nina','Aylin','Selin','Elif','Zoe','Clara','Paula','Mila','Jana','Nora','Valerie','Chiara','Melina','Leonie','Amira','Yasmin','Bianca','Vanessa','Jonas','Luca','Ben','Elias','Noah','Tim','Max','Leon','Kerem','David'];
@@ -22,7 +22,7 @@ function bewohnerSagt(){const r=Math.random();
     for(let k=0;k<n;k++){let t;do{t=antw[Math.floor(Math.random()*antw.length)]}while(genutzt.has(t)&&genutzt.size<antw.length);genutzt.add(t);const b=zufallsBew(a);w+=2500+Math.random()*4000;setTimeout(()=>post(b.handle,fuellen(t),{tag:'Bewohnerin'}),w)}}
   else{const b=zufallsBew();post(b.handle,fuellen(frisch(r<.62?GC.TAGESZEIT[tageszeit()]:GC.ALLGEMEIN)),{tag:'Bewohnerin'})}
   setTimeout(bewohnerSagt,7000+Math.random()*15000)}
-post('','Willkommen in Berlin City. Hier schreiben Bewohnerinnen der Stadt, bald auch echte Spielerinnen.',{sys:1});
+post('','Willkommen in Berlin. Hier schreiben Bewohnerinnen der Stadt, bald auch echte Spielerinnen.',{sys:1});
 for(let i=0;i<4;i++){const b=BEW[i*13];post(b.handle,fuellen(frisch(i%2?GC.ALLGEMEIN:GC.TAGESZEIT[tageszeit()])),{tag:'Bewohnerin'})}setTimeout(bewohnerSagt,4000);
 const online=document.getElementById('online');setInterval(()=>online.textContent=`${140+Math.floor(Math.random()*10)} Bewohner unterwegs`,5000);online.textContent='146 Bewohner unterwegs';
 // Stadt-News: goldene Meldungen im Chat, von echten Spielerinnen und von den Charakteren der Stadt

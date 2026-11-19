@@ -1,4 +1,4 @@
-// Berlin City · aufklaerung.js (Daten) · Was bei jeder Behandlung wirklich passiert, und die Merkblätter von Kongressen.
+// Berlin · aufklaerung.js (Daten) · Was bei jeder Behandlung wirklich passiert, und die Merkblätter von Kongressen.
 // Der Mehrwert der Klinik: Spielerinnen lernen nebenbei, was bei einer Behandlung gemacht wird, womit, was es kostet an Ausfallzeit und welche Risiken es gibt.
 // Sachlich und vorsichtig formuliert. Allgemeine Information, keine ärztliche Beratung.
 window.GLOW_AUFKLAERUNG = {

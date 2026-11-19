@@ -1,4 +1,4 @@
-// Berlin City · orte.js · Orte mit eigener Bühne statt nur Innenraum: Spree Arena (Auftritte) und Fabrik Coworking (Fortbildungen).
+// Berlin · orte.js · Orte mit eigener Bühne statt nur Innenraum: Spree Arena (Auftritte) und Fabrik Coworking (Fortbildungen).
 // Betritt man den Ort, öffnet sich zuerst das Ortsfenster; Tickets bzw. Büro bleiben über einen Knopf erreichbar.
 // Jeder Auftritt und jede Fortbildung einmal am Tag. Neue Auftritte oder Kurse sind nur Einträge in AUFTRITTE bzw. SCHULUNGEN.
 const AUFTRITTE = [

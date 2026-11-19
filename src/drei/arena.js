@@ -1,4 +1,4 @@
-// Berlin City 3D · arena.js · Spree Arena im Westen: offenes Stadion wie ein Fußballstadion, aber für Konzerte.
+// Berlin 3D · arena.js · Spree Arena im Westen: offenes Stadion wie ein Fußballstadion, aber für Konzerte.
 // Ränge in Stufen rundherum, offenes Dach mit weißem Ring, Bühne mit LED-Wand und Lichtrigg, Fans im Innenraum und auf den Rängen.
 // Nachts Lichtkegel in den Himmel, zur halben Stunde Konzertfinale mit Feuerwerk über der Arena (feuerwerk.js).
 import * as THREE from 'three';

@@ -1,4 +1,4 @@
-// Berlin City · spielstand.js · wird als klassisches Skript in index.html geladen (gemeinsamer globaler Bereich, Reihenfolge zählt)
+// Berlin · spielstand.js · wird als klassisches Skript in index.html geladen (gemeinsamer globaler Bereich, Reihenfolge zählt)
 // ---------- Spielstand und Wirtschaft ----------
 const WS=window.GLOW_WIRTSCHAFT;
 const KONSUM=k=>i=>i.kat==='konsum'&&i.laden===k;

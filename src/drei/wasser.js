@@ -1,4 +1,4 @@
-// Berlin City 3D · wasser.js · Jachten (am Steg, fahrend, deine eigene) und drei Hubschrauber zwischen den Hochhausdächern
+// Berlin 3D · wasser.js · Jachten (am Steg, fahrend, deine eigene) und drei Hubschrauber zwischen den Hochhausdächern
 import * as THREE from 'three';
 import { M } from './haeuser.js?v=1795067735';
 import { namensSchild, neueFigur, einkleiden, tanzen } from './leben.js?v=1795067735';

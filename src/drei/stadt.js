@@ -1,4 +1,4 @@
-// Berlin City 3D · welt.js · Die Stadt in 3D: Renderer, Himmel nach der Spieluhr, Boden und Straßen, Kamera folgt dir, Antippen.
+// Berlin 3D · welt.js · Die Stadt in 3D: Renderer, Himmel nach der Spieluhr, Boden und Straßen, Kamera folgt dir, Antippen.
 // Die Spiellogik bleibt im Spiel (frame() in ablauf.js). Hier wird nur gezeichnet und angetippt. Innenräume zeichnet weiter das 2D-Spiel.
 import * as THREE from 'three';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';

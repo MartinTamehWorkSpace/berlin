@@ -1,4 +1,4 @@
-// Berlin City · boutique.js · Die eigene Boutique (Regale, Kasse), Level und Funde fürs Kollektion
+// Berlin · boutique.js · Die eigene Boutique (Regale, Kasse), Level und Funde fürs Kollektion
 // Der tägliche Kreislauf: Ware einräumen, wiederkommen, abholen, Kasse leeren, ausbauen. Zeiten laufen in echter Zeit weiter.
 const BQ = window.GLOW_BOUTIQUE;
 // Taschen der Kollektion kennt auch die Figur, damit man sie in der Stadt tragen kann

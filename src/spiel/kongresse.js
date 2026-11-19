@@ -1,4 +1,4 @@
-// Berlin City · kongresse.js · Kongresse, Messen und Vorträge der Ärztin, Sterneverfall und die Statusleiste (Reise, Glow-Boost)
+// Berlin · kongresse.js · Kongresse, Messen und Vorträge der Ärztin, Sterneverfall und die Statusleiste (Reise, Glow-Boost)
 // Du reist in echter Zeit ab. In der Zeit führt dein Team die Praxis (Stufe 2), du kannst nicht selbst behandeln.
 // Zurück gibt es Honorar, Follower, Sterne und einen Glow-Boost. Wer länger als 2 Tage auf keinem Kongress war, verliert langsam Sterne.
 function kongressWeiter(k, jetzt) { const S = KQ.STERNE;

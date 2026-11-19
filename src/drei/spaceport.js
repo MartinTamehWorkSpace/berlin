@@ -1,4 +1,4 @@
-// Berlin City 3D · spaceport.js · Spree Spaceport hinter dem Flughafen: Betonrampe, Stahl-Startturm mit Greifarmen, Edelstahlrakete (Booster und Raumschiff mit Klappen),
+// Berlin 3D · spaceport.js · Spree Spaceport hinter dem Flughafen: Betonrampe, Stahl-Startturm mit Greifarmen, Edelstahlrakete (Booster und Raumschiff mit Klappen),
 // Kugeltanks, Wasserturm, Schild. Nachts angestrahlt (nur leuchtende Flächen, keine echten Lichter). Zur Viertelstunde nach jeder vollen Stunde startet die Rakete
 // mit Feuer und Rauch und steht danach wieder auf der Rampe. Antippen zeigt den Ausblick: Mond und Mars, für Milliardäre, noch gesperrt.
 import * as THREE from 'three';

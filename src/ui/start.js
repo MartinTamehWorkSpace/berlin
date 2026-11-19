@@ -1,4 +1,4 @@
-// Berlin City · start.js · wird als klassisches Skript in index.html geladen (gemeinsamer globaler Bereich, Reihenfolge zählt)
+// Berlin · start.js · wird als klassisches Skript in index.html geladen (gemeinsamer globaler Bereich, Reihenfolge zählt)
 // ---------- Startbildschirm und Figur ----------
 const LOOK={skin:['#f6dcc8','#f1d0b5','#e4b997','#c99a76','#8d5b3d','#5c3b29'],frisur:[['welle','Wellen'],['glatt','Lang glatt'],['bob','Bob'],['dutt','Dutt'],['zopf','Zopf'],['locken','Locken'],['kurz','Kurz']],
   hair:['#141414','#3a2416','#6b4630','#a8562a','#e6d3a3','#f4f0e6','#b5462c'],out:['#f4efe6','#16171a','#ff4fa3','#c9b48a','#1d3557','#2e8b57','#c8b6e2']};
@@ -12,6 +12,6 @@ function startAufbauen(){const pr=ST.profil;const sw=(id,list,key)=>{const el=do
   const h=document.getElementById('sHandle');if(document.activeElement!==h)h.value=pr.handle||'';startZeichnen()}
 document.getElementById('sHandle').oninput=e=>{ST.profil.handle=e.target.value.replace(/[^\wäöüÄÖÜß.@-]/g,'').slice(0,20)};
 document.getElementById('sLos').onclick=()=>{let h=(ST.profil.handle||'').trim();if(!h){document.getElementById('sHandle').focus();toast('Gib dir einen Namen für die Stadt');return}if(h[0]!=='@')h='@'+h;ST.profil.handle=h;
-  save();lookAnwenden();document.getElementById('start').hidden=true;karten();hud();toast(`Willkommen in Berlin City, ${h}`)};
+  save();lookAnwenden();document.getElementById('start').hidden=true;karten();hud();toast(`Willkommen in Berlin, ${h}`)};
 startAufbauen();lookAnwenden();
 (function startTick(){if(!document.getElementById('start').hidden){startZeichnen();requestAnimationFrame(startTick)}})();

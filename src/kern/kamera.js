@@ -1,4 +1,4 @@
-// Berlin City · kamera.js · wird als klassisches Skript in index.html geladen (gemeinsamer globaler Bereich, Reihenfolge zählt)
+// Berlin · kamera.js · wird als klassisches Skript in index.html geladen (gemeinsamer globaler Bereich, Reihenfolge zählt)
 // ---------- Kamera ----------
 let Z=1,CX=0,CY=0,DPR=1,W=0,H=0;
 const wx=(x,y)=>(x-y)*32,wy=(x,y,z)=>(x+y)*16-z;
