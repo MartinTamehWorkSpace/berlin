@@ -95,7 +95,7 @@ function sockelUndTurm(b, gr) { const p = b.pod, w = 4 * M - .8, d = w, hs = 4.6
     for (const [px, pz] of [[1, 1], [1, -1], [-1, 1], [-1, -1]]) box(.35, th, .35, profil, px * (tw / 2 - .17), hs, pz * (tw / 2 - .17), gr);
     for (let i = 1; i < 3; i++) { box(.18, th, .18, profil, -tw / 2 + i * tw / 3, hs, tw / 2, gr); box(.18, th, .18, profil, tw / 2, hs, -tw / 2 + i * tw / 3, gr) }
     if (t.led) { const led = new THREE.Mesh(new THREE.PlaneGeometry(tw * .8, th * .35), markenSchild(b.top || 'work')); led.position.set(0, hs + th * .55, tw / 2 + .05); gr.add(led) }
-    top = hs + th; box(tw + .3, .4, tw + .3, neon(t.crown || '#8fe3f0', 4), 0, top - .4, 0, gr);
+    top = hs + th; box(tw + .3, .4, tw + .3, neon(t.crown || '#e9e4dc', 2), 0, top - .4, 0, gr);
     if (t.spire) box(.3, 9, .3, std('#cfd8de', { metalness: .8, roughness: .2 }), 0, top + .6, 0, gr) }
   solardach(gr, (t ? w - .6 : w) - .4, (t ? w - .6 : w) - .4, top);
   if (b.top && b.top !== 'work') { const s = new THREE.Mesh(new THREE.PlaneGeometry(9, 1.9), markenSchild(b.top)); s.position.set(0, top + 2.4, w / 2 - .6); gr.add(s); box(9.2, .3, .3, ATTIKA, 0, top + .5, w / 2 - .6, gr) }
