@@ -82,6 +82,11 @@ function einrichtung(b){const a=etagen(b)[b.stock||0].a,x=b.x,y=b.y,O=[];const a
     // Zwei in Lederharnisch an der Theke
     [[2.55,2.35],[2.78,2.6]].forEach(([u,v],i)=>{const m=human({});Object.assign(m,{x:x+u,y:y+v,idle:1,ph:i*3,top:'#0a0a0c',leg:'#0a0a0c',dress:0,skin:'#d6b79c'});
       add('p',u,v,()=>{person(m);const[px,py]=pt(x+u,y+v,13),[qx,qy]=pt(x+u,y+v,18);g.strokeStyle='rgba(226,229,236,.5)';g.lineWidth=.9*Z;g.beginPath();g.moveTo(px-2.6*Z,py);g.lineTo(qx+2.6*Z,qy);g.moveTo(px+2.6*Z,py);g.lineTo(qx-2.6*Z,qy);g.stroke()})});
+    // In der Ecke beugen sich zwei ueber einen Stahltisch und spielen mit Mehl
+    K(2.38,.96,.82,.44,9,'#4e4b47');
+    add('g',2.79,1.03,()=>{const[px,py]=pt(x+2.79,y+1.18,9.3);g.fillStyle='rgba(248,250,255,.85)';for(let i=0;i<3;i++)g.fillRect(px-9*Z+i*5.5*Z,py-2*Z,1.3*Z,5*Z);g.fillStyle=`rgba(248,250,255,${.35+.15*Math.sin(T*1.7)})`;g.beginPath();g.arc(px+8*Z,py-1*Z,2.6*Z,0,7);g.fill()});
+    [[2.48,1.44],[3.04,1.44]].forEach(([u,v],i)=>{const m=human({});Object.assign(m,{x:x+u,y:y+v,idle:1,ph:i*4,top:'#101016',leg:'#101016',dress:0});
+      add('p',u,v,()=>{const d=Math.max(0,Math.sin(T*1.6+i*2.2))*.09;m.y-=d;person(m);m.y+=d})});
     // Nebel zieht knapp ueber dem Boden durch
     add('f',2,2.05,()=>{for(let i=0;i<3;i++){const[px,py]=pt(x+1+i*1.05,y+1.7+((T*.18+i*.5)%2.1),2);g.fillStyle='rgba(198,204,214,.065)';g.beginPath();g.ellipse(px,py,27*Z,7*Z,0,0,7);g.fill()}})}
   else if(a==='buero'){for(let i=0;i<2;i++)for(let j=0;j<3;j++){K(.5+i*1.6,.5+j*1.1,1.1,.5,11,'#f4f1ea');K(.7+i*1.6,.55+j*1.1,.5,.06,7,'#1d2a36',11)}}
