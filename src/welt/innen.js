@@ -63,10 +63,25 @@ function einrichtung(b){const a=etagen(b)[b.stock||0].a,x=b.x,y=b.y,O=[];const a
     K(.22,3.05,1.6,.1,40,'#0a0a0c');K(1.78,3.05,.1,.95,40,'#0a0a0c');
     add('g',.9,3.4,()=>{const[px,py]=pt(x+.9,y+3.45,13);g.fillStyle=`rgba(255,42,30,${.16+.11*Math.sin(T*1.3)})`;g.beginPath();g.arc(px,py,17*Z,0,7);g.fill()});
     // Hinter dem Vorhang zwei Schatten im Dunkeln, durch den Schlitz nur zu erahnen
-    K(.88,1.05,.14,1.95,.26,'#4a4a4e',38);K(.92,1.12,.1,.78,34,'#08080a');K(.92,2.22,.1,.74,34,'#08080a');
-    const SCH=[human({}),human({})];SCH.forEach((m,i)=>Object.assign(m,{x:x+.44+i*.14,y:y+2.0+i*.11,idle:1,ph:i*2,top:'#0b0b0d',leg:'#0b0b0d',dress:0,skin:'#2b2521',hair:'#0b0b0d',sz:.98}));
-    SCH.forEach((m,i)=>add('p',.44+i*.14,2.0+i*.11,()=>{const d=Math.sin(T*2.4)*.07*(i?1:-1);m.y+=d;person(m);m.y-=d}));
-    add('g',.5,2.05,()=>{const[px,py]=pt(x+.5,y+2.05,10);g.fillStyle=`rgba(255,42,30,${.1+.06*Math.sin(T*1.1)})`;g.beginPath();g.arc(px,py,13*Z,0,7);g.fill()});
+    K(.86,.95,.14,1.25,.26,'#4a4a4e',38);K(.9,1.0,.1,.5,34,'#08080a');K(.9,1.72,.1,.46,34,'#08080a');
+    const SCH=[human({}),human({})];SCH.forEach((m,i)=>Object.assign(m,{x:x+.4+i*.14,y:y+1.52+i*.1,idle:1,ph:i*2,top:'#0b0b0d',leg:'#0b0b0d',dress:0,skin:'#2b2521',hair:'#0b0b0d',sz:.98}));
+    SCH.forEach((m,i)=>add('p',.4+i*.14,1.52+i*.1,()=>{const d=Math.sin(T*2.4)*.07*(i?1:-1);m.y+=d;person(m);m.y-=d}));
+    add('g',.45,1.55,()=>{const[px,py]=pt(x+.45,y+1.55,10);g.fillStyle=`rgba(255,42,30,${.1+.06*Math.sin(T*1.1)})`;g.beginPath();g.arc(px,py,13*Z,0,7);g.fill()});
+    // Andreaskreuz an der linken Wand, Fesseln an den vier Enden
+    add('g',.04,2.6,()=>{poly([pt(x,y+2.4,6),pt(x,y+2.54,6),pt(x,y+3.3,34),pt(x,y+3.16,34)],'#6b6864');poly([pt(x,y+3.16,6),pt(x,y+3.3,6),pt(x,y+2.54,34),pt(x,y+2.4,34)],'#57544f');
+      for(const[v,z]of[[2.47,7],[3.23,7],[2.47,32],[3.23,32]])poly([pt(x,y+v-.07,z),pt(x,y+v+.07,z),pt(x,y+v+.07,z+2),pt(x,y+v-.07,z+2)],'#b9b2a6')});
+    // Stahlwanne vorne links
+    K(.3,3.35,1.15,.55,7,'#7f8387');K(.38,3.4,.99,.45,.4,'#20252a',6.6);
+    // Kaefig vorne rechts, einer steht drin
+    for(const[u,v]of[[2.82,3.08],[3.66,3.08],[2.82,3.78],[3.66,3.78]])K(u,v,.09,.09,25,'#55524e');
+    for(let i=0;i<5;i++)K(2.82,3.08+i*.175,.93,.03,.06,'#4a4743',4+i*4.4);
+    add('k',3.24,3.42,()=>top4(x+2.82,y+3.08,.93,.79,25,'#3d3a37'));
+    const KF=human({});Object.assign(KF,{x:x+3.24,y:y+3.42,idle:1,ph:5,top:'#0d0d10',leg:'#0d0d10',dress:0,skin:'#3a322c'});add('p',3.24,3.4,()=>person(KF));
+    // Ketten von der Decke ueber der Tanzflaeche
+    add('g',1.1,1.1,()=>{for(let i=0;i<4;i++){const[ax,ay]=pt(x+1.1+i*.2,y+1.1,48),[bx2,by2]=pt(x+1.1+i*.2,y+1.1,24+2*Math.sin(T*1.4+i));g.strokeStyle='rgba(150,148,142,.55)';g.lineWidth=.8*Z;g.beginPath();g.moveTo(ax,ay);g.lineTo(bx2,by2);g.stroke()}});
+    // Zwei in Lederharnisch an der Theke
+    [[2.55,2.35],[2.78,2.6]].forEach(([u,v],i)=>{const m=human({});Object.assign(m,{x:x+u,y:y+v,idle:1,ph:i*3,top:'#0a0a0c',leg:'#0a0a0c',dress:0,skin:'#d6b79c'});
+      add('p',u,v,()=>{person(m);const[px,py]=pt(x+u,y+v,13),[qx,qy]=pt(x+u,y+v,18);g.strokeStyle='rgba(226,229,236,.5)';g.lineWidth=.9*Z;g.beginPath();g.moveTo(px-2.6*Z,py);g.lineTo(qx+2.6*Z,qy);g.moveTo(px+2.6*Z,py);g.lineTo(qx-2.6*Z,qy);g.stroke()})});
     // Nebel zieht knapp ueber dem Boden durch
     add('f',2,2.05,()=>{for(let i=0;i<3;i++){const[px,py]=pt(x+1+i*1.05,y+1.7+((T*.18+i*.5)%2.1),2);g.fillStyle='rgba(198,204,214,.065)';g.beginPath();g.ellipse(px,py,27*Z,7*Z,0,0,7);g.fill()}})}
   else if(a==='buero'){for(let i=0;i<2;i++)for(let j=0;j<3;j++){K(.5+i*1.6,.5+j*1.1,1.1,.5,11,'#f4f1ea');K(.7+i*1.6,.55+j*1.1,.5,.06,7,'#1d2a36',11)}}
@@ -78,7 +93,7 @@ function einrichtung(b){const a=etagen(b)[b.stock||0].a,x=b.x,y=b.y,O=[];const a
 function innen(b){const x=b.x,y=b.y,WH=58;const ee=etagen(b)[b.stock||0];const k=ee.k.find(v=>v!=='res')||(ee.a==='home'?'home':null);const BERG=k==='berg',T=performance.now()/1000;
   /* Berghain: Beton, Dunkelheit, Tanzfläche im Takt (128 BPM), rote Leuchtbänder, Stroboskop */
   const PAL=BERG?['#16161a','#1e1e23','#2c2b2f','#232226','#ff3b2f','#b8261d']:['#efe6dc','#e6dbcf','#f4efe8','#dcd3c8','#ff7eb6','#e0609c'];const takt=Math.floor(T*128/60);
-  top4(x,y,4,4,0,PAL[0]);for(let i=0;i<4;i++)for(let j=0;j<4;j++){if((i+j)%2)top4(x+i,y+j,1,1,0,PAL[1]);if(BERG&&(i*7+j*3+takt)%5===0)top4(x+i+.05,y+j+.05,.9,.9,0,['rgba(255,59,47,.55)','rgba(120,60,255,.45)','rgba(255,255,255,.25)'][(i+j+takt)%3])}
+  top4(x,y,4,4,0,PAL[0]);for(let i=0;i<4;i++)for(let j=0;j<4;j++){if((i+j)%2)top4(x+i,y+j,1,1,0,PAL[1]);if(BERG&&(i*7+j*3+takt)%5===0)top4(x+i+.05,y+j+.05,.9,.9,0,['rgba(255,59,47,.5)','rgba(255,18,10,.34)','rgba(240,244,250,.18)'][(i+j+takt)%3])}
   poly([pt(x,y,0),pt(x+4,y,0),pt(x+4,y,WH),pt(x,y,WH)],PAL[2]);poly([pt(x,y,0),pt(x,y+4,0),pt(x,y+4,WH),pt(x,y,WH)],PAL[3]);
   poly([pt(x,y,WH-6),pt(x+4,y,WH-6),pt(x+4,y,WH),pt(x,y,WH)],PAL[4]);poly([pt(x,y,WH-6),pt(x,y+4,WH-6),pt(x,y+4,WH),pt(x,y,WH)],PAL[5]);
   if(BERG){for(let i=0;i<4;i++){poly([pt(x+.4+i,y,10),pt(x+.6+i,y,10),pt(x+.6+i,y,WH-8),pt(x+.4+i,y,WH-8)],'rgba(255,59,47,'+(.25+.25*Math.sin(T*6+i))+')')}if(takt%8<1)poly([pt(x,y,0),pt(x+4,y,0),pt(x+4,y+4,0),pt(x,y+4,0)],'rgba(255,255,255,.12)')}

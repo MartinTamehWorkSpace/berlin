@@ -28,7 +28,7 @@ const BR={
  spa:{n:'Glow Spa',t:'Massagen und Facials. Füllt Energie und Glow.',fx:[]},
  salon:{n:'Salon Blond',t:'Friseur. Neue Haare, neuer Glow.',fx:[]},
  apfel:{n:'Apfel Store',t:'Smartphones und Laptops. Bessere Kamera, mehr Follower.',fx:[]},
- berg:{n:'Berghain',t:'Techno in einem alten Heizkraftwerk. Kein Schild, keine Fotos, lange Schlange. Wer reinkommt, bleibt bis Montag.',fx:[['Durchtanzen bis Montag','Follower +200 · Schlaf −40 · Stil +8'],['An der Tuer abgewiesen','Laune −15 · Follower +5'],['Panorama Bar','Laune +12 · Schlaf −10'],['Darkroom: in den Mund pinkeln lassen','50 € · Laune +20 · Stil −25 · Mundwasser nicht inklusive']]},
+ berg:{n:'Berghain',t:'Techno in einem alten Heizkraftwerk. Kein Schild, keine Fotos, lange Schlange. Wer reinkommt, bleibt bis Montag. Unten laeuft die Fetischnacht: Dresscode Leder, Latex oder Haut, Handykameras werden an der Tuer abgeklebt.',fx:[['Durchtanzen bis Montag','Follower +200 · Schlaf −40 · Stil +8'],['An der Tuer abgewiesen','Laune −15 · Follower +5'],['Panorama Bar','Laune +12 · Schlaf −10'],['Darkroom: in den Mund pinkeln lassen','50 € · Laune +20 · Stil −25 · Mundwasser nicht inklusive'],['Kaefig fuer eine Stunde','80 € · Follower +40 · Laune +10'],['Im Harnisch durch die Nacht','Stil +15 · Laune +8 · 120 €']]},
  arena:{n:'Luba Arena',t:'Die große Konzerthalle im Westen. Heute Abend ausverkauft, außer für dich.',fx:[]},
  jets:{n:'Glow Airport',t:'Privatterminal mit Lounge. Vier Glowstream-Jets auf dem Vorfeld, einer davon vielleicht bald deiner.',fx:[]},
  nicky:{n:'Nicky Beach Yachtclub',t:'Yachtclub mit eigenem Strand. Daybeds, Champagner, Jacht-Charter, Sonnenuntergang.',fx:[]},
