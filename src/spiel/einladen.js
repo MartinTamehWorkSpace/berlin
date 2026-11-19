@@ -11,4 +11,4 @@ function einladenBereich(cb) { const ich = window.KONTO_ICH; cb.append(el_('h4',
   const feld = el_('input', 'einladelink'); feld.value = link; feld.readOnly = true; feld.onclick = () => feld.select(); const r = el_('div', 'partygaeste');
   const kopie = el_('button', 'zweit', '📋 Link kopieren'); kopie.onclick = () => { navigator.clipboard && navigator.clipboard.writeText(link).then(() => toast('Link kopiert')).catch(() => feld.select()) };
   r.append(kopie); if (navigator.share) { const teil = el_('button', 'zweit', '📤 Teilen'); teil.onclick = () => navigator.share({ title: 'Glow City', text: 'Bau mit mir deine Beauty-Klinik in Glow City 💖', url: link }).catch(() => {}); r.append(teil) }
-  if (ich.admin) { const a = el_('button', 'zweit', '📊 Dashboard öffnen'); a.onclick = () => open('/admin.html', '_blank'); r.append(a) } cb.append(feld, r) }
+  if (ich.admin) { const a = el_('button', 'zweit', '📊 Dashboard öffnen'); a.onclick = () => open('/dashboard.html', '_blank'); r.append(a) } cb.append(feld, r) }
