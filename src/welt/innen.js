@@ -34,8 +34,12 @@ function innenLeute(b){const a=etagen(b)[b.stock||0].a,L=[];const e0=etagen(b)[b
   if(e0.nachbar){const echt=P.find(p=>p.nachbarId===e0.nachbar);if(echt){const n=human({});Object.assign(n,{x:b.x+2.4,y:b.y+1.6,idle:1,skin:echt.skin,hair:echt.hair,top:echt.top,leg:echt.leg,c1:echt.c1,w:echt.w,dress:echt.dress,frisur:echt.frisur,name:echt.name,sz:1.05});L.push(n)}
     for(let i=0;i<2;i++){const k=human({});Object.assign(k,{x:b.x+1+i*1.3,y:b.y+2.6,idle:1,ph:i+3});L.push(k)}}
   if(a==='home'&&typeof partyGaeste==='function')partyGaeste(b,b.stock||0,L);
-  if(a==='darkroom'){const platz=[[.55,.75],[.6,1.95],[.5,3.05],[1.75,.6],[2.0,3.3],[3.3,3.3],[2.55,1.75],[2.75,1.95],[1.5,2.5],[1.68,2.62]];
-    platz.forEach(([u,v],i)=>{const k=human({});Object.assign(k,{x:b.x+u,y:b.y+v,idle:1,ph:i*2.1,top:'#1b1b22',leg:'#15151b',skin:'#6b5b50',hair:'#14141a',dress:0,w:i%3?1:0,sz:.96,klub:i%KLUB_DARK.length,liste:'dark',paar:i>=6?1:0});L.push(k)});return L}
+  if(a==='darkroom'){const platz=[[.6,.75],[.62,1.9],[.55,3.02],[.95,3.1],[1.75,.62],[1.95,.74],[2.05,3.3],[2.22,3.42],[3.3,3.3],[3.42,3.4],[2.6,1.8],[2.78,1.95],[2.95,2.1],[1.5,2.45],[1.68,2.57],[1.3,1.6],[3.5,1.2],[2.3,2.8]];
+    platz.forEach(([u,v],i)=>{const k=human({});const haut=['#7d6552','#8a7465','#6b5b50','#9b8068','#5d4c42'][i%5];
+      // Im Darkroom traegt keiner was, hoechstens Riemen
+      Object.assign(k,{x:b.x+u,y:b.y+v,idle:1,ph:i*2.1,skin:haut,top:haut,leg:haut,c1:haut,c2:haut,hair:'#14141a',dress:0,coat:0,bag:null,bagK:null,
+        outfit:i%6===0?'leder':null,muster:i%6===0?'harness':null,w:i%3?1:0,sz:.96,nackt:1,
+        klub:i%KLUB_DARK.length,liste:'dark',paar:[3,5,7,9,12,14].includes(i)?1:0,takt:i});L.push(k)});return L}
   if(a==='panorama'){const sitz=[[.6,1.2],[.6,1.9],[.65,2.6],[1.5,3.3],[2.3,3.35],[3.1,3.3],[2.6,.7],[3.2,1.5],[1.3,.8],[2.0,1.6],[1.0,2.4],[2.9,2.5]];
     sitz.forEach(([u,v],i)=>{const k=human({});Object.assign(k,{x:b.x+u,y:b.y+v,idle:1,ph:i*1.3,top:['#15151b','#2a2a32','#3a2a2a','#1d2430'][i%4],leg:'#15151b',dress:i%4===0?1:0,w:i%3?1:0,hs:i%4,sz:.95+Math.random()*.12,klub:i%KLUB_PANO.length,liste:'pano'});L.push(k)});
     const bk=human({});Object.assign(bk,{x:b.x+3.4,y:b.y+.8,idle:1,ph:2,top:'#0f0f12',leg:'#0f0f12',w:1,star:1,name:'Barfrau',sz:1.04,klub:0,liste:'pano'});L.push(bk);return L}
@@ -112,14 +116,37 @@ function einrichtung(b){const a=etagen(b)[b.stock||0].a,x=b.x,y=b.y,O=[];const a
     // Nebel zieht knapp ueber dem Boden durch
     add('f',2,2.05,()=>{for(let i=0;i<3;i++){const[px,py]=pt(x+1+i*1.05,y+1.7+((T*.18+i*.5)%2.1),2);g.fillStyle='rgba(198,204,214,.065)';g.beginPath();g.ellipse(px,py,27*Z,7*Z,0,0,7);g.fill()}})}
   else if(a==='darkroom'){
-    // Fast kein Licht: Nischen mit Matratzen, Trennwaende, Sling, Bank, rote Funzeln
-    K(.18,.4,.14,3.2,30,'#08080a');K(2.0,.28,1.9,.12,30,'#08080a');
-    for(let i=0;i<3;i++)K(.3,.5+i*1.15,.55,.85,5,'#141318');
-    K(2.3,1.5,.12,.12,26,'#46433f');K(3.3,1.5,.12,.12,26,'#46433f');K(2.3,2.4,.12,.12,26,'#46433f');K(3.3,2.4,.12,.12,26,'#46433f');
+    // Keine Deko, nur Geraet: Trennwaende, Gloryhole-Wand, Fickbank, Andreaskreuz, Kaefig, Sling, Haken mit Werkzeug, Wanne, Gully
+    K(.18,.4,.14,3.2,34,'#08080a');K(2.0,.26,1.9,.12,34,'#08080a');
+    // Gloryhole-Wand quer durch den Raum, drei Loecher
+    K(1.1,1.95,1.9,.12,30,'#0b0b0e');
+    for(let i=0;i<3;i++)add('g',1.35+i*.55,1.98,()=>{const[px,py]=pt(x+1.35+i*.55,y+1.98,13);g.fillStyle='#000';g.beginPath();g.ellipse(px,py,3.2*Z,4.2*Z,0,0,7);g.fill();g.strokeStyle='rgba(150,146,140,.5)';g.lineWidth=.5*Z;g.stroke()});
+    // Nischen mit Matratzen links
+    for(let i=0;i<3;i++){K(.3,.5+i*1.1,.6,.82,5,'#141318');K(.3,.5+i*1.1,.6,.1,13,'#1d1a20')}
+    // Fickbank vorne links: gepolstert, Kniestuetzen, Fesseln
+    K(.55,3.0,1.0,.5,8,'#1c1a1f');K(.55,3.0,1.0,.5,.22,'#2b2229',8);K(.55,3.5,.14,.14,5,'#46433f');K(1.41,3.5,.14,.14,5,'#46433f');
+    // Andreaskreuz an der hinteren Wand
+    add('g',.05,.9,()=>{poly([pt(x,y+.7,6),pt(x,y+.84,6),pt(x,y+1.6,34),pt(x,y+1.46,34)],'#55524d');poly([pt(x,y+1.46,6),pt(x,y+1.6,6),pt(x,y+.84,34),pt(x,y+.7,34)],'#46433f');
+      for(const[v,z]of[[.77,7],[1.53,7],[.77,32],[1.53,32]])poly([pt(x,y+v-.07,z),pt(x,y+v+.07,z),pt(x,y+v+.07,z+2),pt(x,y+v-.07,z+2)],'#b9b2a6')});
+    // Sling an vier Ketten
+    K(2.3,1.5,.12,.12,28,'#46433f');K(3.3,1.5,.12,.12,28,'#46433f');K(2.3,2.4,.12,.12,28,'#46433f');K(3.3,2.4,.12,.12,28,'#46433f');
     K(2.44,1.64,.86,.76,.2,'#201d1b',12);
-    add('g',2.85,2.0,()=>{for(const[u,v]of[[2.36,1.56],[3.36,1.56],[2.36,2.46],[3.36,2.46]]){const[ax,ay]=pt(x+u,y+v,26),[bx2,by2]=pt(x+u,y+v,12.3);g.strokeStyle='rgba(150,148,142,.5)';g.lineWidth=.7*Z;g.beginPath();g.moveTo(ax,ay);g.lineTo(bx2,by2);g.stroke()}});
-    K(3.5,2.9,.38,1,9,'#17161a');K(2.6,.45,1.0,.5,6,'#4b4f52');K(2.66,.5,.88,.4,.3,'#15181a',5.6);
-    for(const[u,v]of[[.62,.34],[3.3,.6],[1.25,3.5]])add('g',u,v,()=>{const[px,py]=pt(x+u,y+v,24);g.fillStyle='rgba(190,26,16,.12)';g.beginPath();g.arc(px,py,13*Z,0,7);g.fill();g.fillStyle=`rgba(230,60,40,${.4+.2*Math.sin(T*1.5+u)})`;g.beginPath();g.arc(px,py,2.4*Z,0,7);g.fill()})}
+    add('g',2.85,2.0,()=>{for(const[u,v]of[[2.36,1.56],[3.36,1.56],[2.36,2.46],[3.36,2.46]]){const[ax,ay]=pt(x+u,y+v,28),[bx2,by2]=pt(x+u,y+v,12.3);g.strokeStyle='rgba(150,148,142,.5)';g.lineWidth=.7*Z;g.beginPath();g.moveTo(ax,ay);g.lineTo(bx2,by2);g.stroke()}});
+    // Kaefig vorne rechts, Gitter und einer drin
+    for(const[u,v]of[[2.85,3.05],[3.7,3.05],[2.85,3.8],[3.7,3.8]])K(u,v,.08,.08,24,'#4f4c48');
+    for(let i=0;i<5;i++)K(2.85,3.05+i*.19,.93,.03,.05,'#46433f',4+i*4.2);
+    add('k',3.28,3.4,()=>top4(x+2.85,y+3.05,.93,.83,24,'#35322f'));
+    // Wandhaken mit Werkzeug neben dem Kreuz
+    K(1.3,.3,.9,.1,22,'#0e0e11');
+    add('g',1.75,.33,()=>{for(let i=0;i<5;i++){const[px,py]=pt(x+1.4+i*.17,y+.33,21);g.strokeStyle='rgba(120,116,110,.75)';g.lineWidth=.55*Z;g.beginPath();g.moveTo(px,py);g.lineTo(px+(i%2?1.2:-1.2)*Z,py+(5+i)*Z);g.stroke()}});
+    // Wanne und Gully im Boden
+    K(2.5,.45,1.1,.52,6,'#44484b');K(2.56,.5,.98,.42,.3,'#101314',5.6);
+    add('f',2.0,2.9,()=>{const[px,py]=pt(x+2.0,y+2.9,.2);g.fillStyle='#17181a';g.beginPath();g.ellipse(px,py,5*Z,2.6*Z,0,0,7);g.fill();g.strokeStyle='rgba(120,120,124,.5)';g.lineWidth=.35*Z;for(let i=-2;i<3;i++){g.beginPath();g.moveTo(px-4*Z,py+i*Z);g.lineTo(px+4*Z,py+i*Z);g.stroke()}});
+    // Licht: drei rote Funzeln und eine Lampe, die flackert
+    for(const[u,v]of[[.62,.34],[3.3,.6],[1.25,3.5]])add('g',u,v,()=>{const[px,py]=pt(x+u,y+v,24);g.fillStyle='rgba(190,26,16,.12)';g.beginPath();g.arc(px,py,13*Z,0,7);g.fill();g.fillStyle=`rgba(232,58,38,${.4+.2*Math.sin(T*1.5+u)})`;g.beginPath();g.arc(px,py,2.4*Z,0,7);g.fill()});
+    add('g',3.6,1.1,()=>{const an=Math.sin(T*7)>-.3?1:0;if(!an)return;const[px,py]=pt(x+3.6,y+1.1,26);g.fillStyle='rgba(226,214,190,.5)';g.beginPath();g.arc(px,py,1.8*Z,0,7);g.fill();g.fillStyle='rgba(226,214,190,.07)';g.beginPath();g.arc(px,py,16*Z,0,7);g.fill()});
+    // Nebel und Dampf bleiben in Bodennaehe haengen
+    add('f',2.0,2.2,()=>{for(let i=0;i<4;i++){const[px,py]=pt(x+.8+i*.85,y+1.6+((T*.14+i*.5)%2.3),1.5);g.fillStyle='rgba(170,174,184,.05)';g.beginPath();g.ellipse(px,py,24*Z,6*Z,0,0,7);g.fill()}})}
   else if(a==='panorama'){
     // Lange Theke, Hocker, niedrige Baenke an der Fensterfront, Rauch im Gegenlicht
     K(2.3,.3,1.5,.5,13,'#4e4942');K(2.3,.3,1.5,.5,.3,'#8d8577',13);
@@ -217,26 +244,42 @@ const KLUB_LEUTE=[
    ['„Mach mal heller."','„Niemals."',{stil:-2}],
    ['„Wie lange machst du das schon?"','„Länger als du lebst."',{}]]}];
 const KLUB_DARK=[
- {n:'Stimme',t:'aus dem Dunkeln',s:'Du siehst nichts. Jemand steht einen Schritt neben dir.',a:[
-   ['„Hallo?"','„Pssst."',{}],
-   ['Stehen bleiben','Nach einer Weile geht die Person weiter.',{fol:10}],
-   ['Zurück zum Vorhang','Du findest raus, ohne jemanden anzurempeln. Kleine Kunst.',{stil:2}]]},
- {n:'Jemand am Vorhang',t:'passt auf',s:'„Handy aus. Licht aus. Dann ist alles gut."',a:[
-   ['„Alles klar."','„Dann viel Spaß."',{stil:2}],
-   ['„Was sind die Regeln?"','„Fragen. Und bei Nein ist Schluss."',{stil:4}],
-   ['Umdrehen','„Auch okay. Oben ist Bar."',{}]]},
- {n:'Rico',t:'Security mit Lampe',s:'Er leuchtet kurz an dir vorbei, nicht ins Gesicht.',a:[
+ {n:'Jemand im Dunkeln',t:'wartet seit einer Weile',s:'Eine Hand findet deine und hält sie fest. Sie wartet, ob du sie wegziehst.',a:[
+   ['Hand halten und mitgehen','Ihr verschwindet in der ersten Nische. Danach weißt du nicht mehr, wie spät es ist.',{fol:30,energie:-15,stil:-5}],
+   ['In den Sling','Ihr braucht eine Weile, bis die Ketten richtig hängen. Danach geht es schnell.',{fol:40,energie:-20}],
+   ['„Erst sagen, wie du heißt."','„Hier heißt keiner irgendwie." Aber die Hand bleibt.',{stil:3}],
+   ['Nur zugucken','Du lehnst dich an die Wand und siehst zu. Auch eine Art Abend.',{fol:10,energie:-5}],
+   ['Hand wegziehen','Sofort weg, kein Wort. So läuft das hier.',{stil:2}]]},
+ {n:'Zwei an der Wand',t:'suchen einen Dritten',s:'Sie machen Platz zwischen sich und sehen dich an.',a:[
+   ['Dazwischen stellen','Du kommst zwei Stunden später wieder raus.',{fol:60,energie:-25,stil:-8}],
+   ['„Nur ihr beide, ich guck."','„Auch gut." Sie drehen sich wieder zueinander.',{fol:15,energie:-5}],
+   ['Einen von beiden mitnehmen','Der andere bleibt an der Wand und wartet auf den nächsten.',{fol:35,energie:-15}],
+   ['Nach Regeln fragen','„Fragen vorher, aufhören auf Wort. Sonst alles."',{stil:5}],
+   ['Kopfschütteln','Sie nicken und machen weiter.',{}]]},
+ {n:'Mann im Sling',t:'liegt schon drin',s:'„Ich liege hier seit zwanzig Minuten. Willst du oder soll ich den Nächsten fragen?"',a:[
+   ['„Ich will."','Jemand hält dir wortlos Handschuhe hin. Danach ist deine Nacht gelaufen.',{fol:55,energie:-25,stil:-10}],
+   ['„Zu zweit?"','Er ruft jemanden aus der Nische dazu.',{fol:45,energie:-20}],
+   ['Ihm Wasser holen','„Du bist mir der Liebste." Er trinkt und bleibt liegen.',{stil:4,geld:-5}],
+   ['„Nur die Ketten richten."','Du hängst ihn eine Stufe höher. Er bedankt sich ernsthaft.',{stil:3}],
+   ['„Frag den Nächsten."','„Mach ich." Kein Drama.',{}]]},
+ {n:'Frau an der Bank',t:'klopft neben sich',s:'Sie klopft auf die Bank neben sich und sagt nichts dazu.',a:[
+   ['Hinsetzen','Es bleibt nicht beim Sitzen.',{fol:40,energie:-18,stil:-4}],
+   ['„Was magst du?"','Sie sagt es dir direkt ins Ohr. Du nickst.',{fol:35,energie:-15}],
+   ['Zu ihrer Freundin rübergucken','Die winkt. Jetzt seid ihr zu dritt.',{fol:50,energie:-22}],
+   ['Nur danebensetzen','Ihr sitzt zehn Minuten im Dunkeln. Dann geht sie.',{energie:6}],
+   ['Weitergehen','Sie klopft schon beim Nächsten.',{}]]},
+ {n:'Typ im Harnisch',t:'steht am Kreuz',s:'„Ich hänge gleich da vorne. Machst du mit oder guckst du?"',a:[
+   ['Ihn festschnallen','Du kriegst genaue Ansagen und hältst dich dran.',{fol:45,energie:-15,stil:-5}],
+   ['Tauschen, du gehst ans Kreuz','Er schnallt dich fest. Das Wort zum Aufhören vereinbart ihr vorher.',{fol:65,energie:-28,stil:-12}],
+   ['„Zeig mir das Werkzeug."','Er geht die Haken durch wie eine Speisekarte.',{stil:6}],
+   ['Zugucken','Nach fünf Minuten steht eine ganze Reihe neben dir.',{fol:20}],
+   ['„Nicht heute."','„Dann nächstes Mal." Er hängt sich selbst ein.',{}]]},
+ {n:'Rico',t:'Security mit Lampe',s:'Er leuchtet knapp an dir vorbei, nie ins Gesicht.',a:[
    ['Nicken','Er nickt zurück und geht weiter.',{}],
-   ['„Alles ruhig?"','„Immer. Deshalb bin ich hier."',{stil:2}],
-   ['„Kann ich hier schlafen?"','„Nein."',{}]]},
- {n:'Zwei',t:'sehen kurz auf',s:'Zwei Schatten, dicht beieinander. Einer schaut kurz zu dir rüber.',a:[
-   ['Weitergehen','Sie sind schon wieder beschäftigt.',{}],
-   ['Nicken','Nicken zurück. Mehr braucht es nicht.',{fol:5}],
-   ['Dazustellen','Es wird kurz still. Dann ein Platz für dich.',{fol:25,stil:-3}]]},
- {n:'Typ auf der Bank',t:'macht Pause',s:'„Setz dich, wenn du willst. Hier ist es am leisesten."',a:[
-   ['Setzen','Ihr sitzt zehn Minuten. Danach geht es wieder.',{energie:12}],
-   ['„Erste Mal hier?"','„Sechstes Jahr."',{}],
-   ['Stehen bleiben','„Auch gut."',{}]]}];
+   ['„Alles ruhig?"','„Immer. Deshalb stehe ich hier."',{stil:2}],
+   ['„Was ist hier verboten?"','„Handy, Kamera, und wenn einer Nein sagt."',{stil:5}],
+   ['„Kann ich hier schlafen?"','„Nein."',{}],
+   ['Nach dem Ausgang fragen','„Links halten, dann die Treppe. Oben gibt es Wasser."',{}]]}];
 const KLUB_PANO=[
  {n:'Barfrau',t:'Panorama Bar',s:'„Von hier siehst du die Sonne aufgehen. Dauert noch zwanzig Minuten."',a:[
    ['Mate bestellen','„Vier Euro. Und trink was Richtiges dazu."',{geld:-4,energie:12}],
