@@ -34,10 +34,10 @@ export function neueFigur() { const g = new THREE.Group(), m = { haut: mat('#e4b
   const dutt = new THREE.Mesh(DUTT, m.haar); dutt.position.set(0, 1.92, -.08); g.add(dutt);
   const locken = new THREE.Mesh(LOCKEN, m.haar); locken.position.set(0, 1.74, -.04); g.add(locken);
   const zopf = new THREE.Mesh(ZOPF, m.haar); zopf.position.set(0, 1.42, -.15); zopf.rotation.x = .25; g.add(zopf);
-  const brille = new THREE.Mesh(BRILLE, BRILLE_M); brille.position.set(0, 1.735, .15); g.add(brille);
+  const brille = new THREE.Mesh(BRILLE, BRILLE_M); brille.position.set(0, 1.735, .15); g.add(brille); /* Berliner Beanie */ const muetze = new THREE.Mesh(new THREE.SphereGeometry(.2, 12, 8, 0, Math.PI * 2, 0, Math.PI * .55), m.muetze = mat('#1c1d21', { roughness: .95 })); muetze.position.set(0, 1.84, 0); muetze.visible = false; g.add(muetze);
   const kette = new THREE.Mesh(KETTE, GOLD); kette.rotation.x = Math.PI / 2.3; kette.position.y = 1.5; g.add(kette);
   const creolen = new THREE.Group(); for (const x of [-.165, .165]) { const c = new THREE.Mesh(CREOLE, GOLD); c.position.set(x, 1.66, .01); c.rotation.y = Math.PI / 2; creolen.add(c) } g.add(creolen);
-  g.traverse(o => { if (o.isMesh) o.castShadow = false }); g.userData = { m, beine, arme, kleid, oberteil, tasche, lang, bob, dutt, locken, zopf, haar, brille, kette, creolen, p: null }; g.visible = false; return g }
+  g.traverse(o => { if (o.isMesh) o.castShadow = false }); g.userData = { m, beine, arme, kleid, oberteil, tasche, lang, bob, dutt, locken, zopf, haar, brille, kette, creolen, muetze, p: null }; g.visible = false; return g }
 const TEX = {}, TASCHEN_TEX = {};
 const SCHATTEN_GEO = new THREE.CircleGeometry(.42, 20), SCHATTEN_M = (() => { const c = document.createElement('canvas'); c.width = c.height = 64; const x = c.getContext('2d'); const r = x.createRadialGradient(32, 32, 2, 32, 32, 32); r.addColorStop(0, 'rgba(0,0,0,.55)'); r.addColorStop(1, 'rgba(0,0,0,0)'); x.fillStyle = r; x.fillRect(0, 0, 64, 64);
   return new THREE.MeshBasicMaterial({ map: new THREE.CanvasTexture(c), transparent: true, depthWrite: false }) })();
@@ -48,7 +48,7 @@ export function einkleiden(f, p) { const { m, kleid, oberteil, tasche, lang, bei
   m.unten.color.set(p.dress ? (p.skin || '#e4b997') : (p.c2 || p.leg || '#222')); const kl = !!(p.dress || p.outfit === 'kleid'); kleid.visible = kl; oberteil.visible = !kl;
   const t = (p.bagK && FG.TASCHE[p.bagK]) || (p.tasche && FG.TASCHE[p.tasche]) || null; tasche.visible = !!(t || p.bag); const schl = p.bagK || p.tasche || p.bag || 'x'; if (tasche.userData.schl !== schl) { tasche.clear(); if (tasche.visible) tasche.add(tasche3d(t || { c: p.bag || '#111', d: '#c9a46b', w: 4.4, h: 3.2, f: 'klappe' }, schl)); tasche.userData.schl = schl } const fr = p.frisur || (p.w === 0 ? 'kurz' : ['welle', 'bob', 'dutt', 'kurz'][p.hs || 0]); const ud = f.userData;
   ud.lang.visible = fr === 'welle' || fr === 'glatt' || fr === 'zopf'; ud.bob.visible = fr === 'bob'; ud.dutt.visible = fr === 'dutt'; ud.locken.visible = fr === 'locken'; ud.zopf.visible = fr === 'zopf'; ud.haar.visible = fr !== 'locken';
-  const acc = p.acc || []; ud.brille.visible = acc.includes('sonnenbrille'); ud.kette.visible = acc.includes('goldkette') || acc.includes('perlen'); ud.creolen.visible = acc.includes('creolen');
+  const acc = p.acc || []; ud.brille.visible = acc.includes('sonnenbrille'); ud.kette.visible = acc.includes('goldkette') || acc.includes('perlen'); ud.creolen.visible = acc.includes('creolen'); if (ud.muetze) { const mz = p.muetze ?? (p.echt || p.ctrl ? null : ((p.ph || 0) * 7 % 1 < .35 ? ['#1c1d21', '#3b3f2f', '#4a1e24', '#2c3a4f', '#c8a24a'][Math.floor((p.ph || 0) * 13) % 5] : null)); ud.muetze.visible = !!mz; if (mz) m.muetze.color.set(mz) }
   m.lippe.color.set(p.lippe || (p.w === 0 ? '#b07a6a' : '#c2185b')); m.auge.color.set(p.augen || '#3a2a1e') }
 export function gehen(f, t, laeuft) { const { beine, arme } = f.userData, w = laeuft ? Math.sin(t * 7 + (f.userData.p ? f.userData.p.ph || 0 : 0)) * .45 : 0; beine[0].b.rotation.x = w; beine[1].b.rotation.x = -w; arme[0].rotation.x = -w * .6; arme[1].rotation.x = w * .25 }
 
