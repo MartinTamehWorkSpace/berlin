@@ -9,6 +9,7 @@ function figurFuer(id, d) { let p = ECHT.get(id);
   if (!p) { p = Object.assign(human({}), { star: 1, echt: 1, s: 0, v: 0, ph: Math.random() * 6, sz: 1.08, lp: loop(PLAZA, .1) }); ECHT.set(id, p); P.push(p) }
   if (d.name) p.name = String(d.name).slice(0, 24);
   if (d.look) Object.assign(p, { skin: d.look.skin || p.skin, frisur: d.look.frisur, hair: d.look.hair || p.hair, c1: d.look.c1, top: d.look.c1 || p.top, w: d.look.frisur === 'kurz' ? 0 : 1 });
+  if (!p.prof || !p.prof.name) p.prof = Object.assign({ handle: 'Echter Spieler', titel: 'Live in Berlin', lohn: 0, stil: 0, fol: 0, verm: 0, glow: 0 }, p.prof || {}, { name: p.name, p });
   return p }
 
 function starten() { const ich = window.KONTO_ICH; if (!ich || raum) return;
@@ -46,16 +47,17 @@ function wirkung(a, empfaenger) { if (typeof ST === 'undefined') return; if (a.t
 function aktionSenden(a, p, id) { const ich = window.KONTO_ICH; if (!raum || !raum.connected || !ich) return toast('Live-Verbindung fehlt noch');
   if (a.kosten && ST.geld < a.kosten) return toast('Dafür reicht dein Geld nicht'); if (a.kosten) ST.geld -= a.kosten;
   raum.publish(AKTION, JSON.stringify({ von: ich.id, vonName: (ST.profil && ST.profil.handle) || ich.name, an: id, a: a.id }));
-  if (a.tanz) p.tanzBis = Date.now() + a.tanz * 1000; wirkung(a, false); toast(a.ich(p.name)); if (typeof news === 'function') news(a.ich(p.name)) }
+  if (a.tanz) p.tanzBis = Date.now() + a.tanz * 1000; wirkung(a, false); toast(a.ich(p.name)); leisteZu() }
 function aktionErhalten(roh) { let d; try { d = JSON.parse(roh.toString()) } catch (e) { return } const ich = window.KONTO_ICH; if (!ich || d.an !== ich.id) return;
   const a = AKTIONEN.find(x => x.id === d.a); if (!a) return; const p = ECHT.get(d.von); const n = (p && p.name) || d.vonName || 'Jemand';
   if (a.tanz && p) p.tanzBis = Date.now() + a.tanz * 1000; wirkung(a, true); if (typeof banner === 'function') banner('● LIVE', a.du(n), a.fol ? `+${a.fol} Follower` : ''); else toast(a.du(n)) }
-/* Leiste unten in der Mitte: erscheint, sobald ein echter Mitspieler im selben Raum oder höchstens 4 Felder entfernt ist */
+/* Kleiner Knopf oben in der Mitte (unter der Leiste mit Happy Hour): „● Leon ist bei dir“. Erst Antippen klappt die Aktionen auf, nach einer Aktion klappt sie wieder zu. */
 const leiste = document.createElement('div'); leiste.className = 'mitleiste'; leiste.hidden = true; document.body.append(leiste);
-const css = document.createElement('style'); css.textContent = `.mitleiste{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(150px + env(safe-area-inset-bottom,0px));z-index:45;max-width:calc(100% - 24px);padding:10px 12px;border-radius:18px;background:rgba(14,12,20,.92);border:1px solid #3ee08f;box-shadow:0 10px 30px rgba(0,0,0,.5);font-family:var(--body);color:#fff;text-align:center}.mitleiste[hidden]{display:none}.mitleiste b{display:block;font-size:12px;letter-spacing:.08em;color:#3ee08f;margin-bottom:8px}.mitleiste .reihe{display:flex;flex-wrap:wrap;gap:6px;justify-content:center}.mitleiste button{font:700 12px var(--body);padding:8px 10px;border-radius:12px;border:0;background:#ff4fa3;color:#fff;cursor:pointer}`; document.head.append(css);
-let leisteFuer = '';
-setInterval(() => { if (typeof ICH === 'undefined') return; const r = raumName();
+const css = document.createElement('style'); css.textContent = `.mitleiste{position:fixed;left:50%;transform:translateX(-50%);top:calc(150px + env(safe-area-inset-top,0px));z-index:44;font-family:var(--body);color:#fff;text-align:center}.mitleiste[hidden]{display:none}.mitleiste .pille{font:800 12px var(--body);padding:7px 12px;border-radius:999px;border:1px solid #3ee08f;background:rgba(14,12,20,.88);color:#3ee08f;cursor:pointer}.mitleiste .reihe{display:grid;grid-template-columns:1fr 1fr;gap:5px;margin-top:6px;padding:8px;border-radius:14px;background:rgba(14,12,20,.92);border:1px solid rgba(62,224,143,.5)}.mitleiste .reihe[hidden]{display:none}.mitleiste .reihe button{font:700 11px var(--body);padding:7px 8px;border-radius:10px;border:0;background:#ff4fa3;color:#fff;cursor:pointer;white-space:nowrap}`; document.head.append(css);
+let leisteFuer = '', reiheEl = null; function leisteZu() { if (reiheEl) reiheEl.hidden = true }
+setInterval(() => { const st = document.getElementById('start'); if (typeof ICH === 'undefined' || (st && !st.hidden) || document.querySelector('.login')) { leiste.hidden = true; leisteFuer = ''; return } const r = raumName();
   const nah = [...ECHT.entries()].filter(([, p]) => p.live && (r ? p.drin === r : !p.drin && Math.hypot(p.x - ICH.x, p.y - ICH.y) < 4)).sort((a, b) => Math.hypot(a[1].x - ICH.x, a[1].y - ICH.y) - Math.hypot(b[1].x - ICH.x, b[1].y - ICH.y))[0];
   if (!nah) { leiste.hidden = true; leisteFuer = ''; return } const [id, p] = nah; leiste.hidden = false; if (leisteFuer === id + p.name) return; leisteFuer = id + p.name;
-  leiste.replaceChildren(); const k = document.createElement('b'); k.textContent = '● ' + p.name + ' ist bei dir'; const reihe = document.createElement('div'); reihe.className = 'reihe';
+  leiste.replaceChildren(); const k = document.createElement('button'); k.className = 'pille'; k.textContent = '● ' + p.name + ' ist bei dir ▾'; const reihe = document.createElement('div'); reihe.className = 'reihe'; reihe.hidden = true; reiheEl = reihe;
+  k.onclick = () => { reihe.hidden = !reihe.hidden };
   for (const a of AKTIONEN) { const btn = document.createElement('button'); btn.textContent = a.k; btn.onclick = () => aktionSenden(a, p, id); reihe.append(btn) } leiste.append(k, reihe) }, 700);

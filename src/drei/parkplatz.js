@@ -1,7 +1,7 @@
 // Glow City 3D · parkplatz.js · Ein Parkplatz als Baustein: Belag, 2 Reihen Buchten mit weißen Linien, Lichtmasten, Schild, geparkte Autos.
 // Benutzt von Arena und Flughafen. Ort, Drehung, Buchten und Schild kommen als Werte, nachts gehen die Masten an.
 import * as THREE from 'three';
-import { namensSchild, parkAuto } from './leben.js?v=1795048730';
+import { namensSchild, parkAuto } from './leben.js?v=1795048739';
 const BELAG = new THREE.MeshStandardMaterial({ color: '#55585e', roughness: .85 }), LINIE = new THREE.MeshStandardMaterial({ color: '#f4f1ea', roughness: .6 }), MAST = new THREE.MeshStandardMaterial({ color: '#2a2f3a', metalness: .6, roughness: .4 });
 export function parkplatz(eltern, x, z, { buchten = 10, drehung = 0, schild = '', belegt = .45 } = {}) { const B = 2.8, g = new THREE.Group(); g.position.set(x, 0, z); g.rotation.y = drehung; eltern.add(g);
   const belag = new THREE.Mesh(new THREE.PlaneGeometry(buchten * B + 4, 20), BELAG); belag.rotation.x = -Math.PI / 2; belag.position.y = .04; belag.receiveShadow = true; g.add(belag);
