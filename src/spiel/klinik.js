@@ -55,8 +55,9 @@ function klinikWeiter() { const k = klinikStand(), jetzt = Date.now(), plaetze =
   const stunden = (jetzt - k.lohnBis) / 3.6e6; if (stunden > .01) { const lohn = Math.round((KQ.TEAM.filter(t => k.team[t.id]).reduce((s, t) => s + t.lohn, 0) + RUHM.MARKETING[k.marketing].lohn + RUHM.BUDGET[k.budget].proStunde) * stunden); if (lohn) { ausgeben(k, lohn, 'laufend'); k.loehne = (k.loehne || 0) + lohn } k.lohnBis = jetzt }
   const geduld = KQ.GEDULD * (k.team.empfang ? 1.5 : 1) * (1 + ausbauWert(k, 'geduld')); let konkurrenz = 0;
   k.warte = k.warte.filter(w => { const b = behandlung(w.beh); if (!k.geraete[b.geraet] && jetzt - w.ankunft > KQ.GEDULD_OHNE_GERAET * 1000) { konkurrenz++; return false } if (jetzt - w.ankunft > (w.geduld || geduld) * 1000) { weg++; return false } return true });
-  if (konkurrenz) toast(`${konkurrenz} ${konkurrenz === 1 ? 'Kundin ist' : 'Kundinnen sind'} zur Konkurrenz gegangen: Gerät fehlt`);
-  if (weg) { k.sterne = Math.max(1, k.sterne - .08 * weg); toast(`${weg} ${weg === 1 ? 'Kundin ist' : 'Kundinnen sind'} gegangen, weil niemand Zeit hatte`) }
+  const klinikLeise = typeof ST !== 'undefined' && ST.karriere && !KLINIK.offen; /* Berlin: Karriere ist Hauptspiel, Klinik meldet sich nur, wenn sie offen ist */
+  if (konkurrenz && !klinikLeise) toast(`${konkurrenz} ${konkurrenz === 1 ? 'Kundin ist' : 'Kundinnen sind'} zur Konkurrenz gegangen: Gerät fehlt`);
+  if (weg) { k.sterne = Math.max(1, k.sterne - .08 * weg); if (!klinikLeise) toast(`${weg} ${weg === 1 ? 'Kundin ist' : 'Kundinnen sind'} gegangen, weil niemand Zeit hatte`) }
   let schleifen = 0; while (k.naechste <= jetzt && schleifen++ < 30) { if (k.warte.length < plaetze) { k.warte.push(neueKundin(k, k.naechste)); neu++ } k.naechste += abstandKundin(k) * 1000 * (.7 + Math.random() * .6) }
   if (k.naechste < jetzt) k.naechste = jetzt + abstandKundin(k) * 1000;
   // Fertige Beiträge gehen online und bringen Follower
