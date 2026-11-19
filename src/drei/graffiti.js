@@ -36,7 +36,7 @@ export function graffiti(szene) { grauMachen(szene); const g = new THREE.Group()
   st(new THREE.BoxGeometry(17.6, 1.6, 4.8), sand, 0, 10.6, 0); st(new THREE.BoxGeometry(12, 1.6, 3.6), sand, 0, 12.2, 0);
   const wagen = st(new THREE.BoxGeometry(2.4, 1.2, 1.6), gruen, 0, 13.6, 0); for (let i = 0; i < 4; i++) { st(new THREE.BoxGeometry(.5, 1.3, 1.6), gruen, -1.8 + i * 1.2, 13.7, -1.3); st(new THREE.BoxGeometry(.35, .7, .4), gruen, -1.8 + i * 1.2, 14.6, -1.95) }
   st(new THREE.CylinderGeometry(.18, .18, 2.2, 8), gruen, 0, 15.2, .2); st(new THREE.SphereGeometry(.45, 10, 8), gruen, 0, 16.5, .2);
-  const bahn = sBahn(g); spaetis(g); ryotei(g, mats); strassenbild(g); weltzeituhr(g); const streife = polizei(g);
+  const bahn = sBahn(g); spaetis(g); ryotei(g, mats); strassenbild(g); weltzeituhr(g); oberbaum(g); const streife = polizei(g);
   return { weiter(dt = .016) { bahn(dt); streife() } } }
 /* S-Bahn auf dem Viadukt am Nordrand: Ziegelbögen, Gleis, rot-gelber Zug pendelt hin und her */
 function sBahn(g) { const y0 = -2.6 * M, x0 = -34 * M, x1 = 58 * M, H = 6.5, ziegel = new THREE.MeshStandardMaterial({ color: '#7a4a3a', roughness: .95 }), dunkel = new THREE.MeshStandardMaterial({ color: '#2a2b2f', roughness: .7 });
@@ -111,3 +111,10 @@ function polizei(g) { const autos = [], silber = new THREE.MeshStandardMaterial(
   return () => { const P = window.POLIZEI; if (!P) return; const t = performance.now() / 1000; let blink = false;
     P.forEach((p, i) => { const a = autos[i]; if (!a) return; const nx = p.x * M, nz = p.y * M; if (a.userData.alt) { const dx = nx - a.userData.alt[0], dz = nz - a.userData.alt[1]; if (Math.abs(dx) + Math.abs(dz) > .01) a.rotation.y = Math.atan2(-dz, dx) } a.userData.alt = [nx, nz]; a.position.set(nx, 0, nz); if (p.blau > 0) blink = true });
     l1.emissiveIntensity = blink && Math.sin(t * 14) > 0 ? 4 : 0; l2.emissiveIntensity = blink && Math.sin(t * 14) <= 0 ? 4 : 0 } }
+/* Oberbaumbrücke über die Spree: rote Ziegelbögen, zwei Türme mit Zinnen, oben die U-Bahn-Trasse in Gelb */
+function oberbaum(g) { const x0 = 2 * M, z0 = 44 * M, L = 40, ziegel = new THREE.MeshStandardMaterial({ color: '#8a3b2c', roughness: .95 }), hell = new THREE.MeshStandardMaterial({ color: '#b5654a', roughness: .9 });
+  const b = new THREE.Group(); b.position.set(x0, 0, z0); g.add(b); const st = (geo, m, x, y, z) => { const o = new THREE.Mesh(geo, m); o.position.set(x, y, z); o.castShadow = o.receiveShadow = true; b.add(o); return o };
+  st(new THREE.BoxGeometry(10, 2, L), ziegel, 0, 4.5, L / 2); for (let i = 0; i < 6; i++) { st(new THREE.BoxGeometry(10, 5, 1.6), ziegel, 0, 1.5, i * 7.5 + 1) ; st(new THREE.BoxGeometry(10.2, .4, 1.8), hell, 0, 4, i * 7.5 + 1) }
+  for (const z of [L * .38, L * .62]) { st(new THREE.BoxGeometry(3, 12, 3), ziegel, 3.2, 6, z); for (let k = 0; k < 4; k++) st(new THREE.BoxGeometry(.7, 1, .7), ziegel, 2.2 + (k % 2) * 2, 12.5, z - 1 + Math.floor(k / 2) * 2) }
+  st(new THREE.BoxGeometry(3, 1.2, L), hell, -2.5, 6.1, L / 2); const zug = st(new THREE.BoxGeometry(2.4, 2.2, 12), new THREE.MeshStandardMaterial({ color: '#f2b705', roughness: .5 }), -2.5, 7.8, L / 2);
+  const f = new THREE.MeshStandardMaterial({ color: '#1b2430', emissive: '#ffe7b0', emissiveIntensity: .3 }); for (const sx of [-1.21, 1.21]) st(new THREE.BoxGeometry(.05, .8, 10.5), f, -2.5 + sx, 8.1, L / 2) }
