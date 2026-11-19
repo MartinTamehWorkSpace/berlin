@@ -1,7 +1,7 @@
 // Berlin City 3D · wasser.js · Jachten (am Steg, fahrend, deine eigene) und drei Hubschrauber zwischen den Hochhausdächern
 import * as THREE from 'three';
-import { M } from './haeuser.js?v=1795051072';
-import { namensSchild, neueFigur, einkleiden, tanzen } from './leben.js?v=1795051072';
+import { M } from './haeuser.js?v=1795051294';
+import { namensSchild, neueFigur, einkleiden, tanzen } from './leben.js?v=1795051294';
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 // Echte Bootsmodelle aus Blender (werkzeug/boote_blender.py): Superjacht, Motorjacht, Speedboot. Bug zeigt nach +X.
 const BOOT_MODELL = {}, MODELL_DATEI = { gross: 'super', jacht: 'motor', speed: 'speed' }, MODELL_L = { gross: 32, jacht: 18, speed: 9 }, MODELL_H = { gross: 2.4, jacht: 1.7, speed: 1 };
@@ -11,14 +11,14 @@ function modellBoot(typ, L, eigen, farben) { if (typ === 'riva') return rivaBoot
   k.traverse(o => { if (!o.isMesh) return; o.castShadow = true; if (eigen) { const n = o.material.name; if (n === 'Rumpf' || n === 'Unterrumpf' || n === 'Streifen') { o.material = o.material.clone(); o.material.color.set(n === 'Streifen' ? (farben && farben.streifen) || '#d9b44a' : n === 'Rumpf' ? (farben && farben.lack) || '#0d0e12' : (farben && farben.lack) || '#16171a'); if (n === 'Streifen') { o.material.metalness = .8; o.material.roughness = .2 } } } }); g.add(k); g.userData.deck = MODELL_H[typ] * sk - .3; g.userData.L = L; return g }
 
 const std = (c, o = {}) => new THREE.MeshStandardMaterial(Object.assign({ color: c, roughness: .4 }, o));
-// Eigene Yacht veredeln: leuchtende Fensterbänder an beiden Seiten, goldene Deckskante, Unterwasserlicht, Jacuzzi am Bug, ab 40 m Helipad oben
+// Eigene Yacht veredeln: leuchtende Fensterbänder an beiden Seiten, goldene Deckskante, Jacuzzi am Bug, ab 40 m Helipad oben
 const LICHTBAND = new THREE.MeshStandardMaterial({ color: '#0b1520', emissive: '#9fd8ff', emissiveIntensity: .8 }), DECKGOLD = new THREE.MeshStandardMaterial({ color: '#e6c76a', emissive: '#e6c76a', emissiveIntensity: .6, metalness: .8, roughness: .3 });
 // Liegeplatz: kleine Boote am Steg, große Yachten (über 15 m) frei draußen vor Anker, damit nichts auf Steg, Terrassen oder Pool liegt
 function ankerplatz(o, g) { const L = (g && g.userData.L) || 8; if (L <= 15) return [o.x * M, 0, o.y * M]; return [o.x * M - L * .25, 0, 49 * M + L * .12] }
 function veredeln(g, L, it) { g.updateMatrixWorld(true); const box = new THREE.Box3(); for (const c of g.children) if (!c.isSprite) box.expandByObject(c); /* Schild nicht mitmessen */ const oben = box.max.y - g.position.y, deck = g.userData.deck || 1, B = (box.max.z - box.min.z) || L * .2;
   for (const sz of [-1, 1]) { for (let r = 0; r < (L > 40 ? 3 : L > 15 ? 2 : 1); r++) { const band = new THREE.Mesh(new THREE.BoxGeometry(L * .55, .18, .05), LICHTBAND); band.position.set(-L * .05, deck * .45 + r * Math.max(.6, (oben - deck) / 4), sz * (B / 2 + .03)); g.add(band) }
     const kante = new THREE.Mesh(new THREE.BoxGeometry(L * .9, .06, .06), DECKGOLD); kante.position.set(0, deck + .05, sz * (B / 2 - .05)); g.add(kante) }
-  const unten = new THREE.Mesh(new THREE.PlaneGeometry(L * 1.15, B * 1.6), new THREE.MeshBasicMaterial({ color: '#36e0ff', transparent: true, opacity: .35, blending: THREE.AdditiveBlending, depthWrite: false })); unten.rotation.x = -Math.PI / 2; unten.position.y = -.25; g.add(unten);
+  /* Unterwasserlicht entfernt (Martin 19.11.2026): die türkise Fläche färbte das Wasser rund ums eigene Boot anders */
   if (L > 12) { const pool = new THREE.Mesh(new THREE.CylinderGeometry(B * .18, B * .18, .3, 28), new THREE.MeshStandardMaterial({ color: '#4fd8f0', emissive: '#2ab8d8', emissiveIntensity: .5, roughness: .05 })); pool.position.set(L * .36, deck + .1, 0); g.add(pool) }
   if (L > 40) { const pad = new THREE.Mesh(new THREE.CylinderGeometry(B * .35, B * .35, .12, 36), new THREE.MeshStandardMaterial({ color: '#2a2f38', roughness: .6 })); pad.position.set(-L * .12, oben + .1, 0); g.add(pad);
     const c = document.createElement('canvas'); c.width = c.height = 128; const x = c.getContext('2d'); x.strokeStyle = '#ffffff'; x.lineWidth = 6; x.beginPath(); x.arc(64, 64, 54, 0, 7); x.stroke(); x.fillStyle = '#ffffff'; x.font = '900 70px sans-serif'; x.textAlign = 'center'; x.textBaseline = 'middle'; x.fillText('H', 64, 68);

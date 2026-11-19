@@ -1,6 +1,7 @@
 // Berlin City · innen.js · wird als klassisches Skript in index.html geladen (gemeinsamer globaler Bereich, Reihenfolge zählt)
 // ---------- Innenansicht: Haus wird bis aufs Erdgeschoss aufgeschnitten ----------
 function etagen(b){const E=[{n:'Erdgeschoss',a:art(b),k:(b.pod.shops.map(s=>s[3]))}];
+  if(E[0].a==='sc_terrasse'&&typeof scorpiusEtagen==='function')return scorpiusEtagen(E);
   // Berghain: zwei Raeume, Haupthalle und Darkroom hinter dem Vorhang
   if(E[0].a==='berghain'){E[0].n='Haupthalle';E[0].t='Tanzfläche, Theke, Dealer';
     E.push({n:'Darkroom',a:'darkroom',k:E[0].k,t:'Hinter dem Vorhang'});
@@ -17,8 +18,8 @@ function zeigeEtage(b){const E=etagen(b),e=E[b.stock||0];offen=b;const cb=docume
   document.getElementById('ct').textContent=`${b.title} · ${e.n}${e.t?' · '+e.t:''}`;
   if(e.k.includes('hotel')){const h=document.createElement('h4');h.textContent='Rooftop-Bar';const box=document.createElement('div');box.style.cssText='display:flex;flex-direction:column;gap:5px;margin-top:6px';box.append(...WS.KATALOG.filter(VERKAUF.hotel).map(zeile));cb.append(h,box)}
   if(e.a==='home'&&b.top==='home'){const hw=document.createElement('h4');hw.textContent='Einrichten';const bx=document.createElement('div');bx.style.cssText='display:flex;flex-direction:column;gap:5px;margin-top:6px';bx.append(...WS.KATALOG.filter(i=>i.kat==='wohnen').sort((a,c)=>a.rang-c.rang).map(zeile));cb.append(hw,bx);const sl=document.createElement('button');sl.className='big';sl.textContent='Schlafen: Energie auf 100';sl.onclick=()=>{ST.energie=100;save();toast('Ausgeschlafen. Energie 100');};cb.append(sl)}
-  if(e.nachbar&&typeof nachbarZuHause==='function')nachbarZuHause(cb,e.nachbar);if(typeof partyBereich==='function')partyBereich(cb,b);if(typeof klubBereich==='function')klubBereich(cb,b);
-  if(E.length>1){const h=document.createElement('h4');h.textContent=E[0].a==='berghain'?'Wohin im Club':'Aufzug';cb.append(h);E.forEach((x,i)=>{const bt=document.createElement('button');bt.className='big test';bt.style.marginTop='5px';bt.textContent=`${i===(b.stock||0)?'● ':''}${x.n}${x.t?' · '+x.t:''}`;bt.disabled=i===(b.stock||0);bt.onclick=()=>aufzug(b,i);cb.append(bt)})}
+  if(e.nachbar&&typeof nachbarZuHause==='function')nachbarZuHause(cb,e.nachbar);if(typeof partyBereich==='function')partyBereich(cb,b);if(typeof klubBereich==='function')klubBereich(cb,b);if(typeof scorpiusBereich==='function')scorpiusBereich(cb,b);
+  if(E.length>1){const h=document.createElement('h4');h.textContent=E[0].a==='berghain'||E[0].a==='sc_terrasse'?'Wohin im Club':'Aufzug';cb.append(h);E.forEach((x,i)=>{const bt=document.createElement('button');bt.className='big test';bt.style.marginTop='5px';bt.textContent=`${i===(b.stock||0)?'● ':''}${x.n}${x.t?' · '+x.t:''}`;bt.disabled=i===(b.stock||0);bt.onclick=()=>aufzug(b,i);cb.append(bt)})}
   const raus=document.createElement('button');raus.className='big test';raus.textContent='Haus verlassen';raus.onclick=verlassen;cb.append(raus)}
 let AUFZUG=0;
 function aufzug(b,i){const cl=etagen(b)[0].a==='berghain';AUFZUG=cl?0:1;toast(`${cl?'Du gehst in':'Aufzug fährt in'}: ${etagen(b)[i].n}`);setTimeout(()=>{b.stock=i;b.innen=innenLeute(b);ICH.x=b.x+2;ICH.y=b.y+3.1;zeigeEtage(b);AUFZUG=0},900)}
@@ -26,8 +27,8 @@ function betreten(b){if(b.meins==='boutique'){boutiqueAuf('laden');return}if(b.h
   ZIEL={cx:wx(b.x+2,b.y+2),cy:wy(b.x+2,b.y+2,0)-20,z:Math.min(3.4,Math.max(2,innerWidth/420))*DPR};
   if(b.top==='home'){b.stock=etagen(b).length-1;toast('Aufzug fährt nach oben in deine Wohnung')}b.innen=innenLeute(b);const c=document.getElementById('card');c.hidden=false;document.getElementById('hint').hidden=true;zeigeEtage(b)}
 function verlassen(){const b=INNEN;if(!b)return;INNEN=null;const[tx,ty]=tuer(b);ICH.x=tx;ICH.y=ty;ZIEL={cx:wx(tx,ty),cy:wy(tx,ty,0)-40,z:(innerWidth<600?1.1:1.6)*DPR};document.getElementById('card').hidden=true;offen=null}
-const art=b=>{const k=b.top==='home'?'home':(b.pod.shops[0]||[])[3]||'res';return{prado:'mode',shan:'mode',zahra:'mode',doug:'beauty',star:'cafe',ross:'markt',dn:'markt',lid:'markt',mehr:'markt',sac:'taschen',motors:'autos',klinik:'klinik',lab:'klinik',mcf:'gym',borch:'resto',hug:'resto',riva:'resto',boot:'club',work:'buero',home:'home',tif:'juwel',seph:'mode',vic:'mode',lulu:'mode',spa:'klinik',salon:'klinik',apfel:'buero',nicky:'club',berg:'berghain',bout:'mode',jets:'buero',arena:'club'}[k]||'home'};
-function innenLeute(b){const a=etagen(b)[b.stock||0].a,L=[];const e0=etagen(b)[b.stock||0];
+const art=b=>{const k=b.top==='home'?'home':(b.pod.shops[0]||[])[3]||'res';return{prado:'mode',shan:'mode',zahra:'mode',doug:'beauty',star:'cafe',ross:'markt',dn:'markt',lid:'markt',mehr:'markt',sac:'taschen',motors:'autos',klinik:'klinik',lab:'klinik',mcf:'gym',borch:'resto',hug:'resto',riva:'resto',boot:'club',work:'buero',home:'home',tif:'juwel',seph:'mode',vic:'mode',lulu:'mode',spa:'klinik',salon:'klinik',apfel:'buero',nicky:'sc_terrasse',berg:'berghain',bout:'mode',jets:'buero',arena:'club'}[k]||'home'};
+function innenLeute(b){if(typeof scorpiusLeute==='function'){const SL=scorpiusLeute(b);if(SL)return SL}const a=etagen(b)[b.stock||0].a,L=[];const e0=etagen(b)[b.stock||0];
   const team=CHAR_P.filter(p=>p.ort&&e0.k.includes(p.ort));team.forEach((p,i)=>{p.x=b.x+3.1-i*.7;p.y=b.y+.9+i*.25;p.idle=1;L.push(p)});const rolle={klinik:['Dr. Glatt','#ffffff',1],gym:['Trainer','#16171a',0],autos:['Verkäufer','#1d1e24',0],buero:['Kollegin','#3d405b',0],home:['',null,0],berg:['Türsteher','#0d0d0f',0],darkroom:['',null,0]}[a==='darkroom'?'darkroom':e0.k.includes('berg')?'berg':a]||['Verkäuferin','#16171a',0];
   if(rolle[0]&&!team.length){const st=human({});Object.assign(st,{x:b.x+3.1,y:b.y+.9,idle:1,top:rolle[1],leg:'#16171a',coat:rolle[2],star:1,name:rolle[0],sz:1.05});if(rolle[0]==='Türsteher'){st.klub=0;st.liste='club'}if(rolle[0]==='Dr. Glatt'){st.hair='#cfc9c0';st.hs=3}L.push(st)}
   // Bei Nachbarn zu Hause: die Person selbst und zwei Gäste, je nach Tag eine andere Szene
@@ -162,7 +163,7 @@ function einrichtung(b){const a=etagen(b)[b.stock||0].a,x=b.x,y=b.y,O=[];const a
   else{K(.4,.4,1.6,2.1,8,'#f2eee8');K(.4,.4,1.6,.25,16,'#c9b48a');K(2.4,.4,1.4,.6,9,'#8a8f96');K(2.6,2,.9,.9,7,'#c9b48a');K(3.4,3.3,.35,.35,22,'#4b5d4f')}
   if(typeof partyEinrichtung==='function')partyEinrichtung(b,x,y,add,K);
   return O}
-function innen(b){const x=b.x,y=b.y;const ee=etagen(b)[b.stock||0];const k=ee.k.find(v=>v!=='res')||(ee.a==='home'?'home':null);const DARK=ee.a==='darkroom',PANO=ee.a==='panorama',BERG=k==='berg'&&!DARK&&!PANO,T=performance.now()/1000;const WH=BERG?84:PANO?62:58;
+function innen(b){if(typeof scorpiusInnen==='function'&&scorpiusInnen(b))return;const x=b.x,y=b.y;const ee=etagen(b)[b.stock||0];const k=ee.k.find(v=>v!=='res')||(ee.a==='home'?'home':null);const DARK=ee.a==='darkroom',PANO=ee.a==='panorama',BERG=k==='berg'&&!DARK&&!PANO,T=performance.now()/1000;const WH=BERG?84:PANO?62:58;
   /* Berghain: Beton, Dunkelheit, Tanzfläche im Takt (128 BPM), rote Leuchtbänder, Stroboskop */
   const PAL=PANO?['#3b3934','#343029','#55504a','#443f39','#e8b26a','#bb7f3f']:DARK?['#09090b','#0c0c0e','#121214','#0e0e10','#8c1008','#5e0b05']:BERG?['#16161a','#1e1e23','#2c2b2f','#232226','#ff3b2f','#b8261d']:['#efe6dc','#e6dbcf','#f4efe8','#dcd3c8','#ff7eb6','#e0609c'];const takt=Math.floor(T*128/60);
   top4(x,y,4,4,0,PAL[0]);for(let i=0;i<4;i++)for(let j=0;j<4;j++){if((i+j)%2)top4(x+i,y+j,1,1,0,PAL[1]);if(BERG&&(i*7+j*3+takt)%5===0)top4(x+i+.05,y+j+.05,.9,.9,0,['rgba(255,59,47,.5)','rgba(255,18,10,.34)','rgba(240,244,250,.18)'][(i+j+takt)%3])}

@@ -14,11 +14,6 @@ function nickyAktion(a) { const jetzt = Date.now(); if (!partyNah() || jetzt < (
   if (a.tanz) { PARTY.tanzBis = jetzt + a.tanz * 1000; ICH.tanzBis = PARTY.tanzBis } toast(a.k + ' 🌴');
   setTimeout(() => { ST.follower = (ST.follower || 0) + a.fol; ST.stil = (ST.stil || 0) + a.stil; xpGeben(a.xp); save(); hud(); karten(); banner('SCORPIUS', a.text, `+${a.fol} Follower · +${a.stil} Stil`) }, Math.max(1500, a.tanz * 1000)) }
 function partyWeiter() { const leiste = aktionsLeiste(), karte = document.getElementById('card'); leiste.hidden = !!(karte && !karte.hidden) || !!INNEN || (typeof KLINIK !== 'undefined' && KLINIK.offen);
-  let k = document.getElementById('bTanzen'), menue = document.getElementById('nickyMenue'); const nah = partyNah();
-  if (!k) { k = document.createElement('button'); k.id = 'bTanzen'; k.className = 'anlegen'; k.onclick = () => { PARTY.offen = !PARTY.offen; partyWeiter() }; leiste.append(k);
-    menue = document.createElement('div'); menue.id = 'nickyMenue'; menue.style.cssText = 'flex-basis:100%;width:100%;display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:6px;margin-top:6px'; leiste.style.flexWrap = 'wrap'; leiste.append(menue) }
-  k.hidden = !nah; menue.hidden = !nah || !PARTY.offen; if (!nah) { PARTY.offen = false; return }
-  const tanzt = Date.now() < PARTY.tanzBis; k.textContent = tanzt ? '💃 Du feierst …' : PARTY.offen ? '🌴 Scorpius Berlin ▴' : '🌴 Scorpius Berlin ▾'; if (!PARTY.offen) return;
-  if (menue.children.length !== NICKY.length) { menue.replaceChildren(...NICKY.map(a => { const b = document.createElement('button'); b.className = 'anlegen'; b.style.whiteSpace = 'nowrap'; b.dataset.id = a.id; b.onclick = () => nickyAktion(a); return b })) }
-  for (const b of menue.children) { const a = NICKY.find(x => x.id === b.dataset.id), rest = Math.ceil(((PARTY.pausen[a.id] || 0) - Date.now()) / 1000);
-    b.disabled = tanzt || rest > 0; b.textContent = rest > 0 ? `${a.k.split(' ')[0]} wieder in ${dauer(rest)}` : a.k + (a.kosten ? ` · ${euro(a.kosten)}` : '') } }
+  let k = document.getElementById('bTanzen'); const nah = partyNah(); const alt = document.getElementById('nickyMenue'); if (alt) alt.remove();
+  if (!k) { k = document.createElement('button'); k.id = 'bTanzen'; k.className = 'anlegen'; k.textContent = '🌴 Ins Scorpius'; k.onclick = () => { const b = B.find(x => x.title === 'Scorpius Berlin'); if (b) betreten(b) }; leiste.append(k) }
+  k.hidden = !nah }
