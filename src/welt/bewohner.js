@@ -1,6 +1,6 @@
 // Berlin City · bewohner.js · wird als klassisches Skript in index.html geladen (gemeinsamer globaler Bereich, Reihenfolge zählt)
 // ---------- Menschen ----------
-const SK=['#f3d5bf','#e4b997','#c48f6b','#8d5b3d','#5c3b29'],HAIR=['#2b2118','#5a3d2b','#dcc28e','#141414','#8a4b2c','#cfc9c0'];
+const SK=['#f3d5bf','#e4b997','#c48f6b','#8d5b3d','#5c3b29'],HAIR=['#2b2118','#5a3d2b','#dcc28e','#141414','#8a4b2c','#cfc9c0','#141414','#2b2118','#e8e4dc','#ff4f8b','#3fa87a'];/* Berlin: auch Platin, Pink, Grün */
 /* Berlin (Martin 19.11.2026): dunkler angezogen. Viel Schwarz, Anthrazit, Oliv, Denim, ein Bordeaux, kaum Helles */
 const CL=['#0f0f11','#16171a','#1c1d21','#232428','#2b2d31','#33363b','#3b3f2f','#4a4f3a','#2c3a4f','#3a4a63','#4a1e24','#5b5f63','#16171a','#0f0f11','#7a6a58'];
 const BAGS=['#111','#f2eee8','#c8102e','#d8c39a','#1e6b4a'];
