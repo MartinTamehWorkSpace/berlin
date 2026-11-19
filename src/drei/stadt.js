@@ -31,7 +31,7 @@ const szene = new THREE.Scene(); szene.fog = new THREE.Fog('#c8b9d8', 140, 420);
 const kamera = new THREE.PerspectiveCamera(40, innerWidth / innerHeight, 2, 3000); // Nahgrenze 2 statt 0,3: 7-mal genauere Tiefe, Böden flackern nicht mehr übereinander
 const steuer = new OrbitControls(kamera, leinwand); steuer.enableDamping = true; steuer.maxPolarAngle = Math.PI * .47; steuer.minPolarAngle = Math.PI * .06; steuer.minDistance = 7; steuer.maxDistance = 170; steuer.enablePan = true; steuer.screenSpacePanning = false; steuer.panSpeed = 1.4;
 // Bedienung (Martin, 17.11.2026): Ziehen dreht die Kamera um dich oder dein Boot, rechte Maustaste oder zwei Finger verschieben die Stadt, Scrollen zoomt
-steuer.mouseButtons = { LEFT: THREE.MOUSE.ROTATE, MIDDLE: THREE.MOUSE.DOLLY, RIGHT: THREE.MOUSE.PAN }; steuer.touches = { ONE: THREE.TOUCH.ROTATE, TWO: THREE.TOUCH.DOLLY_PAN };
+steuer.mouseButtons = { LEFT: THREE.MOUSE.PAN, MIDDLE: THREE.MOUSE.DOLLY, RIGHT: THREE.MOUSE.ROTATE }; steuer.touches = { ONE: THREE.TOUCH.PAN, TWO: THREE.TOUCH.DOLLY_ROTATE }; steuer.screenSpacePanning = false; /* Martin 19.11.2026: Ziehen schiebt über die Stadt, rechte Taste dreht */
 let frei = false; steuer.addEventListener('start', () => { if (typeof MEINBOOT !== 'undefined' && MEINBOOT.an) return; /* an Bord bleibt die Kamera am Boot und dreht nur */ frei = true; fokusPunkt = null });
 
 // Himmel und Licht
