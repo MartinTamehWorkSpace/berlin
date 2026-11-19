@@ -40,7 +40,9 @@ function verbrauchen(it){if(ST.geld<preisVon(it))return;if(it.id==='makeup'&&typ
   toast([`${it.name}`,it.energie?`Energie ${it.energie>0?'+':''}${it.energie}`:'',it.follower?`Follower +${it.follower}`:'',it.stil?`Stil +${it.stil}`:''].filter(Boolean).join(' · '));offen&&zeigeEtage(offen)}
 // Admin-Konten (Martin) testen ohne Tagessperren und Wartelisten
 const ADMIN_NAMEN=['@martintameh','@martin test 1','@martin test 2','@martin test1','@martin test2'];
-const allesFrei=()=>!!(window.KONTO_ICH&&KONTO_ICH.admin)||ADMIN_NAMEN.includes(String((ST.profil&&ST.profil.handle)||'').toLowerCase());
+/* Berlin (Martin, 19.11.2026): alles sofort frei, keine Wartezeiten, und jede Person bekommt einmalig 1 Mrd. € Startkapital */
+const allesFrei=()=>true;
+setInterval(()=>{if(typeof ST==='undefined'||ST.berlinKohle||!document.getElementById('start').hidden)return;ST.berlinKohle=1;ST.geld+=1e9;save();hud();if(typeof banner==='function')banner('💰 BERLIN','Alles ist freigeschaltet','+1 Mrd. €')},3000);
 // Inzahlungnahme: kaufst du ein neues Boot oder einen neuen Jet, gibst du dein bisheriges in Zahlung und bekommst 50 % seines Preises angerechnet
 const INZAHLUNG_KAT=['jacht','jet'];
 const inzahlung=it=>INZAHLUNG_KAT.includes(it.kat)?WS.KATALOG.filter(i=>i.kat===it.kat&&ST.besitz[i.id]&&i.id!==it.id).reduce((s,i)=>s+Math.round(i.preis*.5),0):0;
