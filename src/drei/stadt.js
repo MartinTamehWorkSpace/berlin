@@ -156,6 +156,10 @@ const zoom = f => { tmp.subVectors(kamera.position, steuer.target).multiplyScala
 // Kino-Modus für Reels: Oberfläche aus, Kamera fliegt langsam um den Glow Tower, über die Promenade und zurück. Tippen beendet.
 const KINO = { an: false, t: 0 }; document.getElementById('zkino').onclick = () => { KINO.an = true; KINO.t = 0; document.body.classList.add('kino'); const h = document.body.appendChild(Object.assign(document.createElement('div'), { className: 'kinohinweis', textContent: 'Kino-Modus · tippen zum Beenden' })); setTimeout(() => h.style.opacity = 0, 2000); setTimeout(() => h.remove(), 3200) };
 addEventListener('pointerdown', () => { if (!KINO.an || KINO.t < .5) return; KINO.an = false; document.body.classList.remove('kino') }, true);
+/* Steuerkreuz (Martin 19.11.2026): ⟲ ⟳ drehen die Kamera um den Blickpunkt, gedrückt halten dreht weiter */
+{ const achse = new THREE.Vector3(0, 1, 0), dreh = new THREE.Vector3(); const drehen = w => { dreh.subVectors(kamera.position, steuer.target).applyAxisAngle(achse, w); kamera.position.copy(steuer.target).add(dreh); steuer.update() };
+  for (const [id, w] of [['zlinks', .06], ['zrechts', -.06]]) { const k = document.getElementById(id); let t = null; const stopp = () => { clearInterval(t); t = null };
+    k.onpointerdown = e => { e.preventDefault(); drehen(w * 2); stopp(); t = setInterval(() => drehen(w), 30) }; k.onpointerup = k.onpointerleave = k.onpointercancel = stopp } }
 document.getElementById('zin').onclick = () => zoom(.75); document.getElementById('zout').onclick = () => zoom(1.33); document.getElementById('zich').onclick = () => { fokusPunkt = null; frei = false; tmp.subVectors(kamera.position, steuer.target).setLength(26); kamera.position.copy(steuer.target).add(tmp) };
 
 // ---------- Antippen: wie im 2D-Spiel (Haus = hingehen, Figur = Setcard, eigenes Auto = ein- und aussteigen) ----------
