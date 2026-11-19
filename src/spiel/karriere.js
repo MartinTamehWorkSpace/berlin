@@ -23,16 +23,19 @@ const MISSIONEN = {
     { t: 'Erster Deal am Görlitzer Park', ok: k => k.deals >= 1, lohn: 5000 }, { t: '3 Deals ohne erwischt zu werden', ok: k => k.serie >= 3, lohn: 20000 },
     { t: 'Deal am RAW-Gelände', ok: k => k.orte.raw, lohn: 30000 }, { t: 'Deal am Kottbusser Tor', ok: k => k.orte.kotti, lohn: 30000 },
     { t: 'Entkomme mit 3 Sternen der Polizei', ok: k => k.entkommen3, lohn: 80000 }, { t: '25 Deals insgesamt', ok: k => k.deals >= 25, lohn: 250000 },
-    { t: 'Eine Million auf der Straße verdient', ok: k => k.umsatz >= 1e6, lohn: 500000 }],
+    { t: 'Eine Million auf der Straße verdient', ok: k => k.umsatz >= 1e6, lohn: 500000 },
+    { t: 'Entkomme dem Hubschrauber (4 Sterne)', ok: k => k.entkommen4, lohn: 1000000 }, { t: '100 Deals', ok: k => k.deals >= 100, lohn: 2500000 }, { t: '10 Millionen Umsatz', ok: k => k.umsatz >= 1e7, lohn: 5000000 }],
   gastro: [
     { t: 'Kauf dein erstes Lokal', ok: k => k.laeden >= 1, lohn: 20000 }, { t: 'Leere zum ersten Mal die Kasse', ok: k => k.kassen >= 1, lohn: 15000 },
     { t: 'Besitze 3 Lokale', ok: k => k.laeden >= 3, lohn: 300000 }, { t: 'Gib einen Promi-Abend', ok: k => k.events >= 1, lohn: 200000 },
-    { t: '50.000 € pro Minute Einnahmen', ok: k => gastroProMin() >= 50000, lohn: 1e6 }, { t: 'Kauf das Scorpius', ok: () => !!(ST.gastro && ST.gastro.nicky), lohn: 5e6 }],
+    { t: '50.000 € pro Minute Einnahmen', ok: k => gastroProMin() >= 50000, lohn: 1e6 }, { t: 'Kauf das Scorpius', ok: () => !!(ST.gastro && ST.gastro.nicky), lohn: 5e6 },
+    { t: '10 Ausbauten in deinen Lokalen', ok: () => Object.keys(ST.ausbau || {}).length >= 10, lohn: 3e6 }, { t: 'Gib 5 Promi-Abende', ok: k => k.events >= 5, lohn: 4e6 }, { t: 'Alle 6 Lokale gehören dir', ok: k => k.laeden >= 6, lohn: 1e7 }],
   influ: [
     { t: 'Dreh Content am Brandenburger Tor', ok: k => k.orte.tor, lohn: 5000 }, { t: 'Zeig dich am Fernsehturm', ok: k => k.orte.alex, lohn: 8000 },
     { t: 'Sunset-Reel im Scorpius', ok: k => k.orte.scorp, lohn: 15000 }, { t: 'Story aus der Berghain-Schlange', ok: k => k.orte.berg, lohn: 20000 },
     { t: 'Ein Video geht viral', ok: k => k.viral >= 1, lohn: 50000 }, { t: 'An allen 6 Hotspots gedreht', ok: k => ['tor', 'alex', 'ufer', 'berg', 'scorp', 'kadeve'].every(o => k.orte[o]), lohn: 300000 },
-    { t: '1 Million Follower', ok: () => (ST.follower || 0) >= 1e6, lohn: 1e6 }] };
+    { t: '1 Million Follower', ok: () => (ST.follower || 0) >= 1e6, lohn: 1e6 },
+    { t: '3 Kooperationen angenommen', ok: () => Object.keys(ST.koops || {}).length >= 3, lohn: 2e6 }, { t: '5 virale Videos', ok: k => k.viral >= 5, lohn: 3e6 }, { t: 'Eigene Modelinie im KaDeVe', ok: () => !!(ST.koops && ST.koops.mode), lohn: 1e7 }] };
 const kst = () => { ST.kar = ST.kar || { deals: 0, serie: 0, umsatz: 0, orte: {}, laeden: 0, kassen: 0, events: 0, viral: 0, posts: 0, m: { dealer: 0, gastro: 0, influ: 0 }, pause: {} }; return ST.kar };
 const nahAn = (o, r = 2.2) => { const p = ORTE[o] && ORTE[o].p(); return p && !INNEN && Math.hypot(ICH.x - p.x, ICH.y - p.y) < r };
 const AUSBAU = [{ id: 'koch', n: '👨‍🍳 Sternekoch einstellen', f: .5 }, { id: 'dj', n: '🎧 Resident-DJ', f: .3 }, { id: 'terr', n: '🌿 Dachterrasse', f: .4 }, { id: 'pr', n: '📰 PR-Agentur aus Mitte', f: .6 }];
@@ -60,7 +63,7 @@ function polizeiWeiter(dt) { const k = ST.kar, sterne = (ST.fahndung || 0);
   const jagt = POLIZEI.some(p => p.jagd); if (jagt && !ST.jagdAn) toast('🚨 Streife hinter dir! Lauf und tauch ab.'); ST.jagdAn = jagt;
   /* Abtauchen: ohne Streife in der Nähe verliert man alle 20 Sekunden einen Stern */
   if (sterne > 0) { const nah = POLIZEI.some(p => Math.hypot(ICH.x - p.x, ICH.y - p.y) < 9); ST.fahndungUhr = (ST.fahndungUhr || 0) + (nah ? 0 : dt);
-    if (ST.fahndungUhr > 20) { ST.fahndungUhr = 0; if (sterne >= 3 && k) k.entkommen3 = true; ST.fahndung = sterne - 1; toast(ST.fahndung ? `Abgetaucht: noch ${ST.fahndung} ★` : 'Die Polizei hat dich verloren'); missionPruefen(); save() } } }
+    if (ST.fahndungUhr > 20) { ST.fahndungUhr = 0; if (sterne >= 3 && k) k.entkommen3 = true; if (sterne >= 4 && k) k.entkommen4 = true; ST.fahndung = sterne - 1; toast(ST.fahndung ? `Abgetaucht: noch ${ST.fahndung} ★` : 'Die Polizei hat dich verloren'); missionPruefen(); save() } } }
 function erwischt() { const k = kst(), strafe = Math.min(ST.geld * .1, 250000 * (ST.fahndung || 1)); ST.geld -= strafe; ST.fahndung = 0; ST.fahndungUhr = 0; k.serie = 0;
   for (const p of POLIZEI) { p.x += 6; p.jagd = false } banner('🚓 FESTGENOMMEN', 'Die Polizei hat dich am Wickel. Ware weg, Kaution bezahlt.', `−${euro(Math.round(strafe))}`); save(); hud() }
 
