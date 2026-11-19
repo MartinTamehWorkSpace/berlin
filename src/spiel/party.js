@@ -16,9 +16,9 @@ function nickyAktion(a) { const jetzt = Date.now(); if (!partyNah() || jetzt < (
 function partyWeiter() { const leiste = aktionsLeiste(), karte = document.getElementById('card'); leiste.hidden = !!(karte && !karte.hidden) || !!INNEN || (typeof KLINIK !== 'undefined' && KLINIK.offen);
   let k = document.getElementById('bTanzen'), menue = document.getElementById('nickyMenue'); const nah = partyNah();
   if (!k) { k = document.createElement('button'); k.id = 'bTanzen'; k.className = 'anlegen'; k.onclick = () => { PARTY.offen = !PARTY.offen; partyWeiter() }; leiste.append(k);
-    menue = document.createElement('div'); menue.id = 'nickyMenue'; menue.style.cssText = 'display:grid;grid-template-columns:1fr 1fr;gap:5px;margin-top:6px'; leiste.append(menue) }
+    menue = document.createElement('div'); menue.id = 'nickyMenue'; menue.style.cssText = 'flex-basis:100%;width:100%;display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:6px;margin-top:6px'; leiste.style.flexWrap = 'wrap'; leiste.append(menue) }
   k.hidden = !nah; menue.hidden = !nah || !PARTY.offen; if (!nah) { PARTY.offen = false; return }
   const tanzt = Date.now() < PARTY.tanzBis; k.textContent = tanzt ? '💃 Du feierst …' : PARTY.offen ? '🌴 Nicky Beach ▴' : '🌴 Nicky Beach ▾'; if (!PARTY.offen) return;
-  if (menue.children.length !== NICKY.length) { menue.replaceChildren(...NICKY.map(a => { const b = document.createElement('button'); b.className = 'anlegen'; b.dataset.id = a.id; b.onclick = () => nickyAktion(a); return b })) }
+  if (menue.children.length !== NICKY.length) { menue.replaceChildren(...NICKY.map(a => { const b = document.createElement('button'); b.className = 'anlegen'; b.style.whiteSpace = 'nowrap'; b.dataset.id = a.id; b.onclick = () => nickyAktion(a); return b })) }
   for (const b of menue.children) { const a = NICKY.find(x => x.id === b.dataset.id), rest = Math.ceil(((PARTY.pausen[a.id] || 0) - Date.now()) / 1000);
     b.disabled = tanzt || rest > 0; b.textContent = rest > 0 ? `${a.k.split(' ')[0]} wieder in ${dauer(rest)}` : a.k + (a.kosten ? ` · ${euro(a.kosten)}` : '') } }

@@ -1,7 +1,7 @@
 // Glow City 3D · haeuser.js · Häuser aus dem Stadtplan (B): Art déco, Glas mit Solardach, Glow Tower. Schilder kommen aus brand() des Spiels.
 // Ein Feld des Spiels = 3 Meter. Spiel-x wird 3D-X, Spiel-y wird 3D-Z.
 import * as THREE from 'three';
-import { markise, glasfassade } from './texturen.js?v=1795049000';
+import { markise, glasfassade } from './texturen.js?v=1795049048';
 
 export const M = 3;
 export const NEON = [], FENSTER = [], GLAS = []; // GLAS: Hochhausglas, nachts chromartig spiegelnd

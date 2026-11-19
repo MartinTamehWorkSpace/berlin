@@ -2,9 +2,9 @@
 // Du läufst als deine Figur, tippst Kundinnen an (behandeln) und fertige Plätze (abrechnen). Der Stand kommt immer aus ST.klinik.
 import * as THREE from 'three';
 import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
-import { neueFigur, einkleiden, gehen } from './leben.js?v=1795049000';
+import { neueFigur, einkleiden, gehen } from './leben.js?v=1795049048';
 import { RoundedBoxGeometry } from 'three/addons/geometries/RoundedBoxGeometry.js';
-import { hindernisseSammeln, schritt } from './kollision.js?v=1795049000';
+import { hindernisseSammeln, schritt } from './kollision.js?v=1795049048';
 
 const std = (c, o = {}) => new THREE.MeshStandardMaterial(Object.assign({ color: c, roughness: .5 }, o));
 const leinwand = (w, h, mal) => { const c = document.createElement('canvas'); c.width = w; c.height = h; mal(c.getContext('2d'), w, h); const t = new THREE.CanvasTexture(c); t.colorSpace = THREE.SRGBColorSpace; t.anisotropy = 8; return t };
