@@ -1,7 +1,8 @@
 // Berlin City · wohin.js · Knopf „Wohin?“ in der Leiste: alle Orte der Stadt als große Kacheln nach Thema.
 // Antippen: Kamera fliegt hin, du gehst oder fährst los (Auto, Uber oder zu Fuß wie beim Antippen eines Hauses).
 const WOHIN = [
-  ['Deine Orte', [['Alex Tower', '🩺', 'Deine Klinik'], ['Deine Boutique', '🛍️', 'Ware und Kasse'], ['@zuhause', '🏠', 'Deine Wohnung']]],
+  ['Karriere', [['@uhr', '🕰️', 'Weltzeituhr · Karriere'], ['@ort:goerli', '💊', 'Görli · Deals'], ['@ort:raw', '💊', 'RAW · Deals'], ['@ort:kotti', '💊', 'Kotti · Deals'], ['@ort:tor', '📸', 'Brandenburger Tor'], ['@ort:ufer', '📸', 'East Side Ufer']]],
+  ['Deine Orte', [['Alex Tower', '🩺', 'Fernsehturm · Klinik'], ['Deine Boutique', '🛍️', 'Ware und Kasse'], ['@zuhause', '🏠', 'Deine Wohnung']]],
   ['Ausgehen', [['Scorpius Berlin', '🏖️', 'Pool-Party'], ['Spree Arena', '🎤', 'Konzerte'], ['Berghain', '🖤', 'Techno und Fetischnacht'], ['Papillong', '🍸', 'Bar am Wasser'], ['Borchert', '🥂', 'Restaurant'], ['Grill Royale', '⚓', 'Am Anleger']]],
   ['Shopping', [['Maison du Sac', '👜', 'Taschen'], ['Tiffanny & Co.', '💎', 'Schmuck'], ['Galeries Lafayetto', '👗', 'Mode'], ['KaDeVe', '🛒', 'Mall'], ['Beauty Galerie', '💄', 'Beauty'], ['Spree Motors', '🚗', 'Autos'], ['Markthalle Zehn', '🧺', 'Markt']]],
   ['Wellness', [['Spree Spa', '🧖', 'Spa'], ['Health Hub', '🏋️', 'Fitness'], ['Klinik Dr. Glatt', '✨', 'Beratung']]],
@@ -17,9 +18,10 @@ const SYM_PFAD = { '🩺': 'M6 3v6a6 6 0 0 0 12 0V3M12 15v2a4 4 0 0 0 8 0v-3M20 
 function symbol(emoji) { const d = SYM_PFAD[emoji]; if (!d) return el_('span', 'ic', emoji); const s = document.createElementNS('http://www.w3.org/2000/svg', 'svg'); s.setAttribute('viewBox', '0 0 24 24'); s.setAttribute('class', 'ic'); s.innerHTML = `<path d="${d}" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>`; return s }
 // Große Orte zeigt die Kamera in der Mitte des Geländes, nicht am Eingang
 const WOHIN_BLICK = { 'Spree Arena': [-34, 7], 'Flughafen Tempelhoff': [58, 22] };
-function wohinFahren(b) { if (b.spaceport) { document.getElementById('card').hidden = true; offen = null; ZIEL = { cx: 32 * (80 - 6), cy: 16 * (80 + 6) - 50, z: 1 }; setTimeout(() => typeof spaceportZeigen === 'function' && spaceportZeigen(), 1800); return } document.getElementById('card').hidden = true; offen = null; const [bx, by] = WOHIN_BLICK[b.title] || [b.x + 2, b.y + 2]; ZIEL = { cx: wx(bx, by), cy: wy(bx, by, 0) - 60, z: 1 }; laufeZu(b.x + 2, b.y + 2, b) }
+function wohinFahren(b) { if (b.spaceport) { document.getElementById('card').hidden = true; offen = null; ZIEL = { cx: 32 * (80 - 6), cy: 16 * (80 + 6) - 50, z: 1 }; setTimeout(() => typeof spaceportZeigen === 'function' && spaceportZeigen(), 1800); return } document.getElementById('card').hidden = true; offen = null; const [bx, by] = WOHIN_BLICK[b.title] || [b.x + 2, b.y + 2]; ZIEL = { cx: wx(bx, by), cy: wy(bx, by, 0) - 60, z: 1 }; laufeZu(b.x + 2, b.y + 2, b.pod ? b : null) }
 function wohin() { if (INNEN) verlassen(); const cb = panel('Wohin?');
-  for (const [gruppe, orte] of WOHIN) { const da = orte.map(([t, ic, z]) => [t === '@zuhause' ? B.find(b => b.top === 'home') : t === '@spaceport' ? { title: 'Spree Spaceport', spaceport: true, x: 82, y: 4 } : B.find(b => b.title === t), ic, z]).filter(o => o[0]); if (!da.length) continue;
+  for (const [gruppe, orte] of WOHIN) { const da = orte.map(([t, ic, z]) => [t === '@uhr' ? { title: 'Weltzeituhr', x: PLAZA.x + .5, y: PLAZA.y + 1 } : t.startsWith('@ort:') && typeof ORTE !== 'undefined' ? (() => { const q = ORTE[t.slice(5)].p(); return q && { title: ORTE[t.slice(5)].n, x: q.x - 2, y: q.y - 2 } })() :
+      t === '@zuhause' ? B.find(b => b.top === 'home') : t === '@spaceport' ? { title: 'Spree Spaceport', spaceport: true, x: 82, y: 4 } : B.find(b => b.title === t), ic, z]).filter(o => o[0]); if (!da.length) continue;
     const h = el_('h4', 'wohinkopf', gruppe), raster = el_('div', 'wohin');
     for (const [b, ic, z] of da) { const k = el_('button', 'wohinort'); k.append(symbol(ic), el_('b', null, b.top === 'home' && z === 'Deine Wohnung' ? 'Dein Zuhause' : b.title), el_('small', null, z)); k.onclick = () => wohinFahren(b); raster.append(k) }
     cb.append(h, raster) } if (typeof einladenBereich === 'function') einladenBereich(cb) }
