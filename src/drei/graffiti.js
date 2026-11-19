@@ -114,6 +114,11 @@ function polizei(g) { const autos = [], silber = new THREE.MeshStandardMaterial(
     const b1 = new THREE.Mesh(new THREE.BoxGeometry(.3, .18, .6), l1); b1.position.set(-.2, 1.9, -.35); a.add(b1); const b2 = new THREE.Mesh(new THREE.BoxGeometry(.3, .18, .6), l2); b2.position.set(-.2, 1.9, .35); a.add(b2);
     for (const [rx, rz] of [[-1.4, -.95], [1.4, -.95], [-1.4, .95], [1.4, .95]]) { const r = new THREE.Mesh(new THREE.CylinderGeometry(.38, .38, .25, 12), new THREE.MeshStandardMaterial({ color: '#111' })); r.rotation.x = Math.PI / 2; r.position.set(rx, .38, rz); a.add(r) }
     a.userData.alt = null; autos.push(a) }
+  /* Fußstreife am Görli und am Kotti: je zwei Polizisten in Dunkelblau mit Mütze */
+  const uniform = new THREE.MeshStandardMaterial({ color: '#1c2a44', roughness: .7 }), haut = new THREE.MeshStandardMaterial({ color: '#e4b997' }), weste = new THREE.MeshStandardMaterial({ color: '#c8d400', roughness: .6 });
+  setTimeout(() => { if (typeof ORTE === 'undefined') return; for (const o of ['goerli', 'kotti']) { const q = ORTE[o].p(); if (!q) continue; for (let i = 0; i < 2; i++) { const f = new THREE.Group(); f.position.set((q.x + 1.6 + i * .8) * M / M * M, 0, (q.y - 1.2) * M); g.add(f);
+      const k = new THREE.Mesh(new THREE.CapsuleGeometry(.25, .9, 4, 8), uniform); k.position.y = .8; f.add(k); const w = new THREE.Mesh(new THREE.CylinderGeometry(.27, .27, .45, 10), weste); w.position.y = 1.05; f.add(w);
+      const h = new THREE.Mesh(new THREE.SphereGeometry(.18, 8, 6), haut); h.position.y = 1.55; f.add(h); const m = new THREE.Mesh(new THREE.CylinderGeometry(.2, .2, .1, 10), uniform); m.position.y = 1.72; f.add(m) } } }, 1500);
   /* Hubschrauber ab 4 Sternen: kreist über dir, Suchscheinwerfer als heller Kegel */
   const heli = new THREE.Group(); heli.visible = false; g.add(heli); const rumpf = new THREE.Mesh(new THREE.CapsuleGeometry(.9, 2.6, 6, 12), new THREE.MeshStandardMaterial({ color: '#1452a0', roughness: .4 })); rumpf.rotation.z = Math.PI / 2; heli.add(rumpf);
   const heck = new THREE.Mesh(new THREE.BoxGeometry(3.2, .3, .3), silber); heck.position.x = -2.6; heli.add(heck); const rotor = new THREE.Mesh(new THREE.BoxGeometry(7, .06, .3), new THREE.MeshStandardMaterial({ color: '#111' })); rotor.position.y = 1.1; heli.add(rotor);
