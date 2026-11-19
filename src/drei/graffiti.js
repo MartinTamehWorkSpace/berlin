@@ -36,7 +36,7 @@ export function graffiti(szene) { grauMachen(szene); const g = new THREE.Group()
   st(new THREE.BoxGeometry(17.6, 1.6, 4.8), sand, 0, 10.6, 0); st(new THREE.BoxGeometry(12, 1.6, 3.6), sand, 0, 12.2, 0);
   const wagen = st(new THREE.BoxGeometry(2.4, 1.2, 1.6), gruen, 0, 13.6, 0); for (let i = 0; i < 4; i++) { st(new THREE.BoxGeometry(.5, 1.3, 1.6), gruen, -1.8 + i * 1.2, 13.7, -1.3); st(new THREE.BoxGeometry(.35, .7, .4), gruen, -1.8 + i * 1.2, 14.6, -1.95) }
   st(new THREE.CylinderGeometry(.18, .18, 2.2, 8), gruen, 0, 15.2, .2); st(new THREE.SphereGeometry(.45, 10, 8), gruen, 0, 16.5, .2);
-  const bahn = sBahn(g); spaetis(g); ryotei(g, mats); strassenbild(g); weltzeituhr(g); oberbaum(g); const streife = polizei(g);
+  const bahn = sBahn(g); spaetis(g); ryotei(g, mats); strassenbild(g); weltzeituhr(g); oberbaum(g); buddyBaeren(g); const streife = polizei(g);
   /* Zielringe der Karriere: gelb pulsierende Ringe an Deal-Ecken oder Hotspots */
   const ringe = {}, ringMat = new THREE.MeshBasicMaterial({ color: '#ffb21a', transparent: true, opacity: .7, depthWrite: false });
   const zielringe = () => { if (typeof ORTE === 'undefined' || typeof ST === 'undefined') return; const ids = ST.karriere === 'dealer' ? ['goerli', 'raw', 'kotti'] : ST.karriere === 'influ' ? ['tor', 'alex', 'ufer', 'berg', 'scorp', 'kadeve'] : [];
@@ -131,3 +131,11 @@ function oberbaum(g) { const x0 = 2 * M, z0 = 44 * M, L = 40, ziegel = new THREE
   for (const z of [L * .38, L * .62]) { st(new THREE.BoxGeometry(3, 12, 3), ziegel, 3.2, 6, z); for (let k = 0; k < 4; k++) st(new THREE.BoxGeometry(.7, 1, .7), ziegel, 2.2 + (k % 2) * 2, 12.5, z - 1 + Math.floor(k / 2) * 2) }
   st(new THREE.BoxGeometry(3, 1.2, L), hell, -2.5, 6.1, L / 2); const zug = st(new THREE.BoxGeometry(2.4, 2.2, 12), new THREE.MeshStandardMaterial({ color: '#f2b705', roughness: .5 }), -2.5, 7.8, L / 2);
   const f = new THREE.MeshStandardMaterial({ color: '#1b2430', emissive: '#ffe7b0', emissiveIntensity: .3 }); for (const sx of [-1.21, 1.21]) st(new THREE.BoxGeometry(.05, .8, 10.5), f, -2.5 + sx, 8.1, L / 2) }
+/* Buddy Bären: bunt bemalte Bären mit erhobenen Armen an Straßenecken */
+function buddyBaeren(g) { const r = zufall(31), STR = [1, 9, 17, 25, 33], F = [['#c8211b', '#ffd400'], ['#1452a0', '#ffffff'], ['#2b7a3d', '#ffb21a'], ['#ff2f7d', '#16171a'], ['#ffd400', '#1452a0'], ['#ffffff', '#c8211b']];
+  for (let n = 0; n < 7; n++) { const [f1, f2] = F[n % F.length], m1 = new THREE.MeshStandardMaterial({ color: f1, roughness: .5 }), m2 = new THREE.MeshStandardMaterial({ color: f2, roughness: .5 });
+    const b = new THREE.Group(), x = (STR[Math.floor(r() * 5)] - 1.6) * M, z = (STR[Math.floor(r() * 5)] + 1.6) * M; b.position.set(x, 0, z); b.rotation.y = r() * 6; g.add(b);
+    const teil = (geo, m, px, py, pz, rz = 0) => { const o = new THREE.Mesh(geo, m); o.position.set(px, py, pz); o.rotation.z = rz; o.castShadow = true; b.add(o); return o };
+    teil(new THREE.BoxGeometry(1.4, .3, 1), m2, 0, .15, 0); teil(new THREE.CapsuleGeometry(.55, .9, 4, 10), m1, 0, 1.25, 0); teil(new THREE.SphereGeometry(.42, 12, 10), m1, 0, 2.4, 0);
+    for (const s of [-1, 1]) { teil(new THREE.SphereGeometry(.14, 8, 6), m2, s * .3, 2.75, 0); teil(new THREE.CapsuleGeometry(.16, .7, 4, 8), m1, s * .72, 2.1, 0, s * -.5); teil(new THREE.CapsuleGeometry(.18, .5, 4, 8), m1, s * .28, .55, 0) }
+    teil(new THREE.SphereGeometry(.22, 10, 8), m2, 0, 1.45, .45); teil(new THREE.SphereGeometry(.12, 8, 6), m2, 0, 2.33, .38) } }
