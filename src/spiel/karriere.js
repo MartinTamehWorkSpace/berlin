@@ -66,9 +66,11 @@ function erwischt() { const k = kst(), strafe = Math.min(ST.geld * .1, 250000 * 
 
 /* ---------- Aktionen an Orten ---------- */
 function deal(o) { const k = kst(), t = Date.now(); if ((k.pause['d_' + o] || 0) > t) return toast('Hier ist gerade zu viel los. Komm gleich wieder.');
+  if ((ST.ware || 0) < 1) return toast('Keine Ware mehr. Nachschub gibt es beim Kontakt am Kotti.'); ST.ware--;
   const basis = [1500, 4000, 12000, 30000, 80000][Math.min(4, Math.floor((k.m.dealer || 0) / 1.5))], geld = Math.round(basis * (.7 + Math.random() * .8));
   k.pause['d_' + o] = t + 25000; ST.geld += geld; k.deals++; k.serie++; k.umsatz += geld; k.orte[o] = 1; ST.fahndung = Math.min(5, (ST.fahndung || 0) + (Math.random() < .55 ? 1 : 0)); ST.fahndungUhr = 0;
   banner('💊 DEAL', `${ORTE[o].n}: Kunde zufrieden`, `+${euro(geld)}${ST.fahndung ? ' · ' + '★'.repeat(ST.fahndung) : ''}`); missionPruefen(); save(); hud() }
+function nachschub() { const preis = 6000 + (kst().m.dealer || 0) * 4000; if (ST.geld < preis) return toast(`Nachschub kostet ${euro(preis)}`); ST.geld -= preis; ST.ware = (ST.ware || 0) + 10; banner('📦 NACHSCHUB', 'Kontakt am Kotti: 10 Päckchen', `−${euro(preis)} · Ware ${ST.ware}`); save(); hud() }
 function content(o) { const k = kst(), t = Date.now(); if ((k.pause['c_' + o] || 0) > t) return toast(`Hier hast du gerade gedreht. Wieder in ${dauer(Math.ceil(((k.pause['c_' + o]) - t) / 1000))}`);
   const viral = Math.random() < .12, fol = Math.round((200 + (k.m.influ || 0) * 400) * (viral ? 25 : 1) * (.7 + Math.random() * .6));
   k.pause['c_' + o] = t + 90000; k.orte[o] = 1; k.posts++; if (viral) k.viral++; ST.follower = (ST.follower || 0) + fol; ST.geld += Math.round(fol * 2.5); ICH.tanzBis = Date.now() + 6000;
@@ -89,12 +91,12 @@ setInterval(() => { if (typeof ST !== 'undefined' && ST.karriere) missionPruefen
 function karriereZeigen() { const kar = ST.karriere, cb = panel(kar ? `${KARRIEREN[kar].ic} ${KARRIEREN[kar].n} · ${karRang(kar)}` : '🕰️ Weltzeituhr · Wähl deine Karriere'); const k = kst();
   const absatz = t => { const p = document.createElement('p'); p.className = 'hin'; p.textContent = t; cb.append(p) }, knopf = (t, f, aus) => { const b = document.createElement('button'); b.className = 'big test'; b.style.marginTop = '5px'; b.textContent = t; b.disabled = !!aus; b.onclick = f; cb.append(b) };
   if (!kar) { absatz('Am Alexanderplatz entscheidest du, wer du in Berlin sein willst. Du kannst später wechseln, dein Fortschritt bleibt.');
-    for (const [id, K] of Object.entries(KARRIEREN)) knopf(`${K.ic} ${K.n} · ${K.t}`, () => { ST.karriere = id; save(); banner('NEUE KARRIERE', `${K.ic} ${K.n}`, K.raenge[0]); karriereZeigen() }); return }
+    for (const [id, K] of Object.entries(KARRIEREN)) knopf(`${K.ic} ${K.n} · ${K.t}`, () => { ST.karriere = id; if (id === 'dealer' && ST.ware == null) ST.ware = 5; save(); banner('NEUE KARRIERE', `${K.ic} ${K.n}`, K.raenge[0]); karriereZeigen() }); return }
   const L = MISSIONEN[kar], i = k.m[kar] || 0; const h = document.createElement('h4'); h.textContent = 'Missionen'; cb.append(h);
   L.forEach((m, j) => absatz(`${j < i ? '✅' : j === i ? '▶️' : '▫️'} ${m.t} · ${euro(m.lohn)}`));
   const h2 = document.createElement('h4'); cb.append(h2);
   if (kar === 'dealer' && ST.fahndung) knopf(`⚖️ Anwalt anrufen · Sterne weg · ${euro(40000 * ST.fahndung * ST.fahndung)}`, () => { bestechen(); karriereZeigen() });
-  if (kar === 'dealer') { h2.textContent = 'Deine Ecken'; absatz(`Deals: ${k.deals} · Umsatz: ${euro(k.umsatz)} · Fahndung: ${'★'.repeat(ST.fahndung || 0) || 'keine'}`); absatz('Geh zum Görlitzer Park (bei den Lofts Kreuzberg), zum RAW-Gelände (am Berghain) oder zum Kotti (an der Platte). Dort erscheint der Knopf „Deal“. Streifenwagen mit Blaulicht jagen dich, solange du Sterne hast. Tauch ab, bis sie dich verlieren.') }
+  if (kar === 'dealer') { h2.textContent = 'Deine Ecken'; absatz(`Ware: ${ST.ware || 0} · Deals: ${k.deals} · Umsatz: ${euro(k.umsatz)} · Fahndung: ${'★'.repeat(ST.fahndung || 0) || 'keine'}`); absatz('Geh zum Görlitzer Park (bei den Lofts Kreuzberg), zum RAW-Gelände (am Berghain) oder zum Kotti (an der Platte). Dort erscheint der Knopf „Deal“. Ware kaufst du beim Kontakt am Kotti. Streifenwagen mit Blaulicht jagen dich, solange du Sterne hast. Tauch ab, bis sie dich verlieren.') }
   if (kar === 'gastro') { h2.textContent = 'Lokale'; for (const l of LAEDEN) { const meins = ST.gastro && ST.gastro[l.id]; knopf(meins ? `✓ ${l.t} · ${euro(lokalProMin(l))}/Min · Kasse vor Ort leeren` : `${l.t} kaufen · ${euro(l.preis)} · ${euro(l.proMin)}/Min`, () => { if (!meins) { lokalKaufen(l); karriereZeigen() } }, meins);
       if (meins) for (const a of AUSBAU) { const hat = ST.ausbau && ST.ausbau[l.id + a.id], preis = Math.round(l.preis * a.f); if (!hat) knopf(`   ${a.n} · ${euro(preis)} · +${Math.round(a.f * 100)} %`, () => { if (ST.geld < preis) return toast('Dafür reicht dein Geld nicht'); ST.geld -= preis; ST.ausbau = ST.ausbau || {}; ST.ausbau[l.id + a.id] = 1; banner('🔨 AUSBAU', `${l.t}: ${a.n.slice(2).trim()}`, `+${Math.round(a.f * 100)} % Einnahmen`); save(); hud(); karriereZeigen() }) } }
     absatz(`Einnahmen gesamt: ${euro(gastroProMin())} pro Minute. Die Kasse füllt sich bis zu 4 Stunden, dann ist sie voll.`) }
@@ -110,11 +112,12 @@ setInterval(() => { if (typeof ICH === 'undefined' || typeof ST === 'undefined')
   if (!b) { b = document.createElement('button'); b.id = 'bKarriere'; b.className = 'anlegen'; leiste.append(b) }
   const kar = ST.karriere; let f = null, t = '';
   if (!INNEN && Math.hypot(ICH.x - (PLAZA.x + 2), ICH.y - (PLAZA.y + 2)) < 3.5) { t = kar ? '🕰️ Karriere & Missionen' : '🕰️ Karriere wählen'; f = karriereZeigen }
-  else if (kar === 'dealer') { const o = ['goerli', 'raw', 'kotti'].find(o => nahAn(o)); if (o) { t = `💊 Deal · ${ORTE[o].n}`; f = () => deal(o) } }
+  else if (kar === 'dealer') { const o = ['goerli', 'raw', 'kotti'].find(o => nahAn(o)); if (o) { t = `💊 Deal · ${ORTE[o].n} · Ware ${ST.ware || 0}`; f = () => deal(o) }
+    let w = document.getElementById('bWare'); if (!w) { w = document.createElement('button'); w.id = 'bWare'; w.className = 'anlegen'; w.onclick = nachschub; leiste.append(w) } w.hidden = o !== 'kotti'; w.textContent = `📦 Nachschub · ${euro(6000 + (kst().m.dealer || 0) * 4000)}` }
   else if (kar === 'influ') { const o = ['tor', 'alex', 'ufer', 'berg', 'scorp', 'kadeve'].find(o => nahAn(o, 2.6)); if (o) { t = `📸 Content drehen · ${ORTE[o].n}`; f = () => content(o) } }
   else if (kar === 'gastro' && ST.gastro) { const l = LAEDEN.find(l => ST.gastro[l.id] && (INNEN ? INNEN === lokalHaus(l.id) : (() => { const p = lokalPos(l.id); return p && Math.hypot(ICH.x - p.x, ICH.y - p.y) < 2.6 })()));
     if (l) { t = `💶 Kasse leeren · ${l.t}`; f = () => gastroKasse(l); let e = document.getElementById('bPromi'); if (!e) { e = document.createElement('button'); e.id = 'bPromi'; e.className = 'anlegen'; leiste.append(e) } e.textContent = '🥂 Promi-Abend · 150.000 €'; e.hidden = false; e.onclick = () => promiAbend(l) } }
-  const pr = document.getElementById('bPromi'); if (pr && !(kar === 'gastro' && f)) pr.hidden = true;
+  const bw = document.getElementById('bWare'); if (bw && kar !== 'dealer') bw.hidden = true; const pr = document.getElementById('bPromi'); if (pr && !(kar === 'gastro' && f)) pr.hidden = true;
   b.hidden = !f; if (f) { b.textContent = t; b.onclick = f }
   /* Fahndungssterne und Karriere oben in der Leiste */
   let c = document.getElementById('hKar'); if (!c) { const hud0 = document.querySelector('.hud'); if (!hud0) return; const d = document.createElement('div'); d.className = 'chip karriere'; d.innerHTML = '<span>Karriere</span><b id="hKar"></b>'; d.style.pointerEvents = 'auto'; d.style.cursor = 'pointer'; d.onclick = karriereZeigen; hud0.append(d); c = document.getElementById('hKar') }
